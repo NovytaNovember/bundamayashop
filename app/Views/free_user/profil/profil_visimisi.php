@@ -123,7 +123,7 @@
                             <li class="nav-item"><a class="nav-link" href="/tendik">Tenaga Pendidik</a></li>
                             <li class="nav-item"><a class="nav-link" href="/pendaftaran">Pendaftaran</a></li>
                             <li class="nav-item"><a class="nav-link" href="/pengumuman">Pengumuman</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/kegiatan">Kegiatan</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/kegiatan_freeuser">Kegiatan</a></li>
                             <li class="nav-item submenu dropdown ml-auto login">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     <i class></i> Login
@@ -187,11 +187,8 @@
         <div class="row justify-content-center">
             <div class="card col-lg-6 mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Tujuan</h5>
-                    <p class="card-text">1. Terwujudnya lingkungan belajar yang menumbuhkan keimanan dan ketakwaan pada Tuhan yang Maha Esa.
-                                        2. Terwujudnya lingkungan belajar yang menumbuhkan sikap gotong royong.
-                                        3. Terwujudnya lingkungan belajar yang menumbuhkan sikap saling menghargai dalam perbedaan.
-                                        4. terwujudnya pribadi anak yang disiplin, tanggung jawab, jujur, kreatif, dan mandiri</p>
+                    <h5 class="card-title">Visi</h5>
+                    <p class="card-text" style= "text-align: justify">Mewujudkan generasi yang Beriman dan Bertaqwa, Gotong Royong, Toleransi, dan Berkarakter.</p>
                 </div>
             </div>
         </div>
@@ -199,16 +196,23 @@
             <div class="card col-lg-6 mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Misi</h5>
-                    <p class="card-text">1. Menanamkan lingkungan belajar yang menumbuhkan keimanan dan ketakwaan pada Tuhan yang Maha Esa.
-                                        2. Menanamkan lingkungan belajar yang menumbuhkan sikap gotong royong.
-                                        3. Menanamkan lingkungan belajar yang menumbuhkan sikap saling menghargai dalam perbedaan.
-                                        4. menanamkan lingkungan belajar yang menumbuhkan sikap disiplin, tanggung jawab, jujur, kreatif, dan mandiri.</p>
+                    <ol class="card-text" style= "text-align: justify">
+                        <li> Menanamkan lingkungan belajar yang menumbuhkan keimanan dan ketakwaan pada Tuhan yang Maha Esa.</li>
+                        <li>Menanamkan lingkungan belajar yang menumbuhkan sikap gotong royong.</li>
+                        <li>Menanamkan lingkungan belajar yang menumbuhkan sikap saling menghargai dalam perbedaan.</li>
+                        <li>menanamkan lingkungan belajar yang menumbuhkan sikap disiplin, tanggung jawab, jujur, kreatif, dan mandiri.</li>
+                    </ol>
                 </div>
             </div>
             <div class="card col-lg-6 mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Visi</h5>
-                    <p class="card-text">Mewujudkan generasi yang Beriman dan Bertaqwa, Gotong Royong, Toleransi, dan Berkarakter.</p>
+                    <h5 class="card-title">Tujuan</h5>
+                    <ol class="card-text" style= "text-align: justify">
+                        <li>Terwujudnya lingkungan belajar yang menumbuhkan keimanan dan ketakwaan pada Tuhan yang Maha Esa.</li>
+                        <li>Terwujudnya lingkungan belajar yang menumbuhkan sikap gotong royong.</li>
+                        <li>Terwujudnya lingkungan belajar yang menumbuhkan sikap saling menghargai dalam perbedaan.</li>
+                        <li>Terwujudnya pribadi anak yang disiplin, tanggung jawab, jujur, kreatif, dan mandiri.</li>
+                    </ol>
                 </div>
             </div>
         </div>
@@ -249,3 +253,6 @@
 
 </html>
 <!-- DEBUG-VIEW ENDED 4 APPPATH\Views\layout\footer.php -->
+
+
+                

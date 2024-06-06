@@ -19,132 +19,103 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
-
         .section {
             margin-bottom: 20px;
         }
-
         .label {
             font-weight: bold;
             margin-right: 10px;
         }
-
         .table-container {
             margin: 20px;
         }
-
         .table-container table {
             width: 100%;
             border-collapse: collapse;
         }
-
-        .table-container th,
-        .table-container td {
+        .table-container th, .table-container td {
             border: 1px solid #ddd;
             padding: 8px;
         }
-
         .table-container th {
             background-color: #f2f2f2;
             text-align: left;
         }
-
         .table-container td .btn {
             margin-right: 5px;
         }
-
         .table-container .search-box {
             float: right;
             margin-bottom: 10px;
         }
-
         .btn-green {
             background-color: #28a745;
             color: white;
         }
-
         .btn-green:hover {
             background-color: #218838;
         }
-
         .pagination-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
-
         .btn-blue {
             background-color: #007bff;
             color: white;
         }
-
         .btn-blue:hover {
             background-color: #0056b3;
         }
-
         .btn-container {
             display: flex;
             justify-content: flex-end;
             margin-top: 20px;
         }
-
         .table-container {
             margin: 20px;
         }
-
         .table-container table {
             width: 100%;
             border-collapse: collapse;
         }
-
-        .table-container th,
-        .table-container td {
+        .table-container th, .table-container td {
             border: 1px solid #ddd;
             padding: 8px;
         }
-
         .table-container th {
             background-color: #f2f2f2;
             text-align: left;
         }
-
         .table-container td .btn {
             margin-right: 5px;
         }
-
         .table-container .search-box {
             float: right;
             margin-bottom: 10px;
         }
-
         .btn-green {
             background-color: #28a745;
             color: white;
         }
-
         .btn-green:hover {
             background-color: #218838;
         }
-
         .pagination-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
-
         .form-table {
             width: 100%;
             border: 1px solid #ddd;
             border-collapse: collapse;
         }
-
-        .form-table th,
-        .form-table td {
+        .form-table th, .form-table td {
             border: 1px solid #ddd;
             padding: 15px;
             vertical-align: top;
         }
-
         .form-header {
             background-color: #007bff;
             color: white;
@@ -152,7 +123,6 @@
             font-size: 18px;
             border-radius: 5px 5px 0 0;
         }
-
         .form-container {
             background-color: white;
             padding: 20px;
@@ -162,68 +132,53 @@
             display: flex;
             flex-direction: column;
         }
-
         .form-container form {
             flex: 1;
         }
-
         .form-container form .btn-primary {
             align-self: flex-end;
         }
-
         .form-group label {
             font-weight: bold;
         }
-
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
             margin-right: 10px;
         }
-
         .btn-primary:hover {
             background-color: #0056b3;
             border-color: #0056b3;
         }
-
         .table-container {
             margin: 20px;
         }
-
         .table-container table {
             width: 100%;
             border-collapse: collapse;
         }
-
-        .table-container th,
-        .table-container td {
+        .table-container th, .table-container td {
             border: 1px solid #ddd;
             padding: 8px;
         }
-
         .table-container th {
             background-color: #f2f2f2;
             text-align: left;
         }
-
         .table-container td .btn {
             margin-right: 5px;
         }
-
         .table-container .search-box {
             float: right;
             margin-bottom: 10px;
         }
-
         .btn-green {
             background-color: #28a745;
             color: white;
         }
-
         .btn-green:hover {
             background-color: #218838;
         }
-
         .pagination-container {
             display: flex;
             justify-content: center;
@@ -240,12 +195,12 @@
             <ul class="navbar-nav">
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="index3.html" class="nav-link">
-                        <i class="fas fa-list"></i>
-                        <span class="font-weight-bold" style="font-size: 1.2em;"><?= $judul; ?></span>
+                        <i class="fas fa-list"></i> 
+                        <span class="font-weight-bold" style="font-size: 1.2em;">Data Kegiatan</span>
                     </a>
                 </li>
             </ul>
-
+            
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -259,7 +214,7 @@
                         <span class="dropdown-item dropdown-header">Info Pengguna</span>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
-                            <i class="fas fa-key mr-2"></i> Level: Admin
+                            <i class="fas fa-key mr-2"></i> Level: Kepala Sekolah
                         </a>
                         <a href="./index2.html" class="dropdown-item">
                             <i class="fas fa-users mr-2"></i> Daftar Akun
@@ -358,11 +313,11 @@
 
         <!-- Konten Start -->
 
-        <?= $this->renderSection('konten')  ?>
+              <?= $this->renderSection('konten')  ?>
 
         <!-- Konten End -->
 
-
+        
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

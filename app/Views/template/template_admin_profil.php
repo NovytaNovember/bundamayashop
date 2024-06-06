@@ -241,7 +241,7 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="index3.html" class="nav-link">
                         <i class="fas fa-list"></i>
-                        <span class="font-weight-bold" style="font-size: 1.2em;"><?= $judul; ?></span>
+                        <span class="font-weight-bold" style="font-size: 1.2em;">Data Profil</span>
                     </a>
                 </li>
             </ul>
@@ -302,30 +302,12 @@
                             </a>
                         </li>
                         <li class="nav-item menu-open">
-                            <a href="#" class="nav-link ">
+                            <a href="/profil" class="nav-link ">
                                 <i class="fas fa-user"></i>
                                 <p>
                                     Profil
-                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="./index.html" class="nav-link active">
-                                        <p>Sejarah Sekolah</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index2.html" class="nav-link">
-                                        <p>Visi Misi & Tujuan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
-                                        <p>Struktur Organisasi</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
                             <a href="tenaga_pendidik" class="nav-link">
@@ -340,7 +322,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pendaftaran" class="nav-link">
+                            <a href="/pendaftaran" class="nav-link">
                                 <i class="fas fa-clipboard-list"></i>
                                 <p>Pendaftaran</p>
                             </a>

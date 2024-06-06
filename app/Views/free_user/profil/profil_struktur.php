@@ -124,7 +124,7 @@
                             <li class="nav-item"><a class="nav-link" href="/tendik">Tenaga Pendidik</a></li>
                             <li class="nav-item"><a class="nav-link" href="/pendaftaran">Pendaftaran</a></li>
                             <li class="nav-item"><a class="nav-link" href="/pengumuman">Pengumuman</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/kegiatan">Kegiatan</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/kegiatan_freeuser">Kegiatan</a></li>
                             <li class="nav-item submenu dropdown ml-auto login">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     <i class></i> Login
@@ -170,7 +170,7 @@
 </div>
 <div class="card-body">
     <h5 class="card-title">Struktur Organisasi</h5>
-    <img src="/img/pembuatan jus.jpg" class="img-fluid" alt="..." style="width: 40%">
+    <img src="/img/struktur-organisasi.jpg" class="img-fluid" alt="..." style="width: 40%">
   </div>
   <div class="container-fluid">
     <div class="card text-center">
