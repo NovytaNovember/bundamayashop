@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | dashboard</title>
+    <title>TK Kartika V-38</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -242,6 +242,7 @@
                     <a href="index3.html" class="nav-link">
                         <i class="fas fa-list"></i>
                         <span class="font-weight-bold" style="font-size: 1.2em;"><?= $judul; ?></span>
+                        <span class="font-weight-bold" style="font-size: 1.2em;">Data Pendaftaran</span>
                     </a>
                 </li>
             </ul>
@@ -306,47 +307,30 @@
                                 <i class="fas fa-user"></i>
                                 <p>
                                     Profil
-                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="./index.html" class="nav-link active">
-                                        <p>Sejarah Sekolah</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index2.html" class="nav-link">
-                                        <p>Visi Misi & Tujuan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
-                                        <p>Struktur Organisasi</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="tenaga_pendidik" class="nav-link">
+                            <a href="tenaga_pendidik" class="nav-link <?php echo ($sidebar == 'Tenaga Pendidik') ? 'active' : '' ?>">
                                 <i class="fas fa-chalkboard-teacher"></i>
                                 <p>Tenaga Pendidik</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="pages/widgets.html" class="nav-link <?php echo ($sidebar == 'Kegiatan') ? 'active' : '' ?>">
                                 <i class="fas fa-calendar"></i>
                                 <p>Kegiatan</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pendaftaran" class="nav-link">
+                            <a href="pendaftaran" class="nav-link <?php echo ($sidebar == 'Pendaftaran') ? 'active' : '' ?>">
                                 <i class="fas fa-clipboard-list"></i>
                                 <p>Pendaftaran</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pengumuman" class="nav-link">
+                            <a href="pengumuman" class="nav-link <?php echo ($sidebar == 'Pengumuman') ? 'active' : '' ?>">
                                 <i class="fas fa-bullhorn"></i>
                                 <p>Pengumuman</p>
                             </a>
@@ -361,8 +345,6 @@
         <?= $this->renderSection('konten')  ?>
 
         <!-- Konten End -->
-
-
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

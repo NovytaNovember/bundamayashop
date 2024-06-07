@@ -197,58 +197,122 @@
 <!-- Link Css -->
 <link rel="stylesheet" href="/css/pengantarStyle.css">
 
-<div class="container-fluid">
-    <!-- <div class="container text-start">
-        <div class="row">
-            <div class="col-sm-4">
-                <img src="/img/illustrasi2.png" class="img-fluid" alt="...">
-            </div>
-            <div class="col-sm-8">
-                <h5>
-                    Selamat datang di Satuan Satgas Pencegahan dan Penanganan Kekerasan Seksual Politeknik Negeri Tanah Laut
-                </h5>
-                <p class="paragraph">
-                    Kami dengan tulus mengucapkan selamat datang dan berterima kasih atas kunjungan Anda ke platform ini. Website ini didedikasikan untuk memberikan suara kepada mereka yang mungkin telah mengalami kekerasan seksual atau berada dalam situasi yang meresahkan.
-                </p>
-                <p class="paragraph">
-                    Kekerasan seksual adalah masalah serius yang memengaruhi banyak individu di seluruh dunia. Kami menyadari betapa pentingnya memberikan sumber daya, dukungan, dan pelaporan yang tepat untuk korban kekerasan seksual. Di sini, kami menawarkan berbagai sumber daya, informasi, dan panduan yang dapat membantu Anda dalam menghadapi situasi yang sulit ini.
-                </p>
-                <p class="paragraph">
-                    Kami percaya bahwa setiap cerita penting, dan kami siap mendengarkan dan mendukung Anda. Kami juga menyediakan alat pelaporan yang aman dan terpercaya untuk membantu pihak berwenang menindaklanjuti tindakan kekerasan seksual.
-                </p>
-                <hr>
-                <h5>Tujuan Satgas PPKS ULM <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
-                        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
-                        <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
-                    </svg></h5>
-                Meningkatkan pemenuhan perlindungan dan penghargaan pada hak-hak mahasiswa/i dalam rangka mencapai program Merdeka belajar. Tes 123                <hr>
-                <h5>Visi : </h5>
-                <p class="paragraph">
-                    Mewujudkan pemenuhan hak-hak dasar/ asasi mahasiswa untuk mencapai Kesejahteraan,Perlindungan dan Penghapusan segala bentuk tindak kekerasan terhadap Mahasiswa/i dalam kehidupan kampus, bermasyarakat, berbangsa dan bernegara.                </p>
-                <h5>Misi : </h5>
-                <ol><li><span style="color: rgb(68, 68, 68); font-family: Raleway, sans-serif; text-align: justify; background-color: rgb(255, 255, 255);">Meningkatkan pemenuhan perlindungan hak-hak mahasiswa untuk </span><span style="color: inherit; font-family: inherit; text-align: justify; background-color: rgb(255, 255, 255);">terciptanya zona merdeka belajar.</span></li><li><span style="color: inherit; font-family: inherit; text-align: justify; background-color: rgb(255, 255, 255);">Penghapusan segala bentuk tindak kekerasan terhadap mahasiswa/i</span></li><li><span style="color: inherit; font-family: inherit; text-align: justify; background-color: rgb(255, 255, 255);">Peningkatan kemampuan kelembagaan dalam melaksanakan program <span style="color: inherit; font-family: inherit; font-weight: 600;">sesuai amanah Kemendikbud No. 30 Tahun 2021 untuk menghapus </span><span style="color: inherit; font-family: inherit; font-weight: 600;">segala bentuk kekerasan seksual di Universitas Lambung Mangkurat </span><span style="color: inherit; font-family: inherit;">Tes</span><br></span><br></li></ol>            </div>
-        </div>
-    </div> -->
-    <div class="card text-center">
-  <div class="card-body">
-  <div class="content">
+
+          <div class="card text-center">
+            <div class="card-body">
+            <div class="content">
   
             <div class="col">
                 <img src="<?= base_url()?>/img/logo TK.png" alt="logo TK.png" class="img-fluid">
+         </div>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabel Data Anak</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .icon {
+            text-align: center;
+        }
+        body {
+    font-family: Arial, sans-serif;
+}
+
+.table-header {
+    display: flex;
+    justify-content: flex-end; /* Align the search box to the right */
+    margin-bottom: 10px; /* Space between search box and table */
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+}
+
+label {
+    margin-right: 10px;
+}
+
+input[type="text"] {
+    padding: 5px;
+}
+
+        
+
+
+    </style>
+</head>
+<!-- Banner -->
+    <div style="width: 300px; height:100px"></div>
+    <div class="container">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="content">
+                   
+                  <!-- Table Section -->
+                  <div class="table-header">
+            <div class="search-box">
+                <label for="search">Search:</label>
+                <input type="text" id="search" name="search">
             </div>
-
-    <h4>Sebelum Mengklik Daftar, Silahkan Anda Login Terlebih Dahulu!</h4>
-    <button type="button" class="btn btn-success" onclick="location.href='login.html'">Daftar</button>
-
-    <div class="alert alert-success mt-4" role="alert">
-      <h5>Persyaratan PPDB Online TK Kartika V-38:</h5>
-      <ul>
-        <li>Pas photo 3x4 sebanyak 4 lembar (latar belakang merah pakaian bebas)</li>
-        <li>Foto copy akte kelahiran 2 lembar</li>
-        <li>Foto copy kartu keluarga 2 lembar</li>
-      </ul>
+        </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Anak</th>
+                                    <th>Tempat Lahir</th>
+                                    <th>Tanggal Lahir</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>Agama</th>
+                                    <th>Detail</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Novyta Maharani</td>
+                                    <td>Tanah Laut</td>
+                                    <td>22-11-2003</td>
+                                    <td>Perempuan</td>
+                                    <td>Islam</td>
+                                    <td class="icon"><a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/visible.png" alt="Detail" width="20"></a></td>
+                                </tr>
+                                <!-- Tambahkan baris lain sesuai kebutuhan -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+
+
+
+
+
+  
 <!-- DEBUG-VIEW ENDED 3 APPPATH\Views\pages\User\pengantar.php -->
 <!-- DEBUG-VIEW START 4 APPPATH\Views\layout\footer.php -->
 <div class="container-xxl mt-5">

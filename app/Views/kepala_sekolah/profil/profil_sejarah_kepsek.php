@@ -1,4 +1,3 @@
-
 <!-- DEBUG-VIEW START 1 APPPATH\Views\layout\header-user.php -->
 <!doctype html>
 <html lang="en">

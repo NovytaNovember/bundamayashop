@@ -2,7 +2,7 @@
 
 <?= $this->section('konten'); ?>
 
-<<<<<<< HEAD
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="<?= base_url()?>/https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -46,7 +46,7 @@
         }
     </style>
 </head>
-=======
+
   <!-- Main content -->
   <div class="content-wrapper">
   <div class="content">
@@ -89,7 +89,7 @@
                       <!-- End of additional minimal example rows -->
                   </tbody>
               </table>
->>>>>>> ca236054bdec86d143c9e5492679ac01e360d851
+
 
           </div>
       </div><!-- /.container-fluid -->
@@ -98,7 +98,7 @@
 
   <!-- Content End -->
 
-<<<<<<< HEAD
+
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
@@ -128,31 +128,12 @@
                                 <p>Beranda</p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
-                                <i class="fas fa-user"></i>
-                                <p>
-                                    Profil
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
+                       
+                        <li class="nav-item">
+                            <a href="pages/widgets.html" class="nav-link">
+                            <i class="fas fa-user"></i>
+                                <p>Profil</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="./index.html" class="nav-link active">
-                                        <p>Sejarah Sekolah</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index2.html" class="nav-link">
-                                        <p>Visi Misi & Tujuan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
-                                        <p>Struktur Organisasi</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
                             <a href="pages/widgets.html" class="nav-link">
@@ -183,127 +164,6 @@
             </div>
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">Tabel Data Pendaftaran</h1>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div><!-- /.content-header -->     
-
-            <!-- Main content -->
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="table-container">
-                        <button class="btn btn-green" onclick="addData()">Tambah</button>
-                        <div class="search-box">
-                            <label for="search">Search: </label>
-                            <input type="text" id="search">
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Calon Peserta Didik</th>
-                                    <th>Tempat Lahir</th>
-                                    <th>Tanggal Lahir</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>Agama</th>
-                                    <th>Detail</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Novyta Maharani</td>
-                                    <td>Tanah Laut</td>
-                                    <td>22-11-2003</td>
-                                    <td>Perempuan</td>
-                                    <td>Islam</td>
-                                    <td><button class="btn btn-info btn-sm"><i class="fa fa-eye"></i></button></td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</button>
-                                        <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Rahmad Darmawan</td>
-                                    <td>Banjarmasin</td>
-                                    <td>15-07-2005</td>
-                                    <td>Laki-laki</td>
-                                    <td>Islam</td>
-                                    <td><button class="btn btn-info btn-sm"><i class="fa fa-eye"></i></button></td>
-                                    <td>
-                                    <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</button>
-                                        <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</button>
-                                    </td>
-                                </tr>
-                                <!-- Additional minimal example rows -->
-                                <tr>
-                                    <td>3</td>
-                                    <td>John Doe</td>
-                                    <td>Jakarta</td>
-                                    <td>01-01-2000</td>
-                                    <td>Laki-laki</td>
-                                    <td>Kristen</td>
-                                    <td><button class="btn btn-info btn-sm"><i class="fa fa-eye"></i></button></td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</button>
-                                        <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Jane Doe</td>
-                                    <td>Surabaya</td>
-                                    <td>05-05-2002</td>
-                                    <td>Perempuan</td>
-                                    <td>Katolik</td>
-                                    <td><button class="btn btn-info btn-sm"><i class="fa fa-eye"></i></button></td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</button>
-                                        <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</button>
-                                    </td>
-                                </tr>
-                                <!-- End of additional minimal example rows -->
-                            </tbody>
-                        </table>
-
-                        <!-- Pagination -->
-                        <div class="pagination-container">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div><!-- /.container-fluid -->
-            </div><!-- /.content -->
-        </div><!-- /.content-wrapper -->
-
-        <footer class="main-footer">
-            <div class="float-right d-none d-sm-block">
-                <b>Version</b> 3.2.0
-            </div>
-            <strong>Contact</strong> 0822-5004-4551 | tk.kompi623@gmail.com
-        </footer>
-
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->
@@ -319,6 +179,6 @@
 </body>
 
 </html>
-=======
+
   <?= $this->endSection(); ?>
->>>>>>> ca236054bdec86d143c9e5492679ac01e360d851
+

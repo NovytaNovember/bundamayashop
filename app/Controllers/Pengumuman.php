@@ -6,15 +6,17 @@ class Pengumuman extends BaseController
 {
     public function index()
     {
-        
-        return view('admin/pengumuman/pengumuman.php');
+        $data = [
+            'sidebar' => 'Pengumuman',
+        ];
+        return view('admin/pengumuman/pengumuman.php',$data);
 
     }
 
     public function tambah()
     {
         $data = [
-            'sidebar' => 'Pendaftaran',
+            'sidebar' => 'Pengumuman',
         ];
 
         return view('admin/pengumuman/form_pengumuman.php',$data);
@@ -23,7 +25,9 @@ class Pengumuman extends BaseController
 
     public function simpan()
     {
-
+        $data = [
+            'sidebar' => 'Pengumuman',
+        ];
 
         return view('admin/pengumuman/pengumuman.php');
 
@@ -31,14 +35,18 @@ class Pengumuman extends BaseController
 
     public function edit()
     {
-
-        return view('admin/pengumuman/form_edit_pengumuman.php');
+        $data = [
+            'sidebar' => 'Pengumuman',
+        ];
+        return view('admin/pengumuman/form_edit_pengumuman.php',$data);
 
     }
 
     public function update()
     {
-
+        $data = [
+            'sidebar' => 'Pengumuman',
+        ];
         
         return view('admin/pengumuman/pengumuman.php');
 
@@ -46,13 +54,18 @@ class Pengumuman extends BaseController
 
     public function detail_hasil()
     {
-        return view('admin/pengumuman/detail_hasil_pengumuman.php');
+        $data = [
+            'sidebar' => 'Pengumuman',
+        ];
+        return view('admin/pengumuman/detail_hasil_pengumuman.php',$data);
 
     }
 
     public function hapus()
     {
-
+        $data = [
+            'sidebar' => 'Pengumuman',
+        ];
         return view('admin/pengumuman/pengumuman.php');
 
     }

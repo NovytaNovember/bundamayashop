@@ -170,7 +170,7 @@
 </div>
 <div class="card-body">
     <h5 class="card-title">Struktur Organisasi</h5>
-    <img src="/img/struktur-organisasi.jpg" class="img-fluid" alt="..." style="width: 40%">
+    <img src="/img/struktur organisasi.jpg" class="img-fluid" alt="..." style="width: 40%">
   </div>
   <div class="container-fluid">
     <div class="card text-center">
