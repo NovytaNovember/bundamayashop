@@ -10,10 +10,12 @@ class Kegiatan extends BaseController
 
     protected $kegiatan;
     protected $tendik;
+    public $ModelKegiatan;
 
     public function __construct()
     {
         $this->kegiatan = new M_kegiatan();
+        $this->ModelKegiatan = new \App\Models\ModelKegiatan();
         $this->tendik = new M_tenaga_pendidik();
     }
 
@@ -29,12 +31,30 @@ class Kegiatan extends BaseController
 
     public function tambah()
     {
-        $data['tendik'] = $this->tendik->getTendik();
+
+        $data = [
+            'tendik' => $this->tendik->getTendik(),
+            'kegiatan' => $this->kegiatan->getKegiatan(),
+            'judul' => 'Data Tambah Kegiatan'
+        ];
+
         return view('admin/kegiatan/form_tambah_kegiatan', $data);
     }
 
     public function simpan()
     {
+
+        $data = [
+            'judul' => $this->request->getPost('judul'),
+            'status' => $this->request->getPost('status'),
+            'id_tendik' => $this->request->getPost('id_tendik'),
+            'tanggal_dibuat' => $this->request->getPost('tanggal_dibuat'),
+            'tanggal_diubah' => "12-12-2012",
+            'gambar' => "gambar"
+        ];
+        $this->ModelKegiatan->insert($data);
+        return redirect()->to(base_url('tambah_kegiatan'))->with('pesan', 'Data Berhasil Ditambah !');
+        die;
         $validate = $this->validate([
             'judul' => [
                 'label' => 'Judul',
@@ -57,42 +77,62 @@ class Kegiatan extends BaseController
                     'required' => '{field} tidak boleh kosong.'
                 ]
             ],
-            // 'gambar' => [
-            //     'label' => 'Gambar',
-            //     'rules' => 'uploaded[gambar]',
-            //     'errors' => [
-            //         'uploaded' => 'Gambar tidak boleh kosong',
-            //     ]
-            // ],
+            'gambar' => [
+                'label' => 'Gambar',
+                'rules' => 'uploaded[gambar]',
+                'errors' => [
+                    'uploaded' => 'Gambar tidak boleh kosong',
+                ]
+            ],
         ]);
 
 
-
         if ($validate) {
-
-
-            $this->kegiatan->insert(
-                [
-                    'judul' => esc($this->request->getPost('judul')),
-                    'status' => esc($this->request->getPost('status')),
-                    'id_tendik' => esc($this->request->getPost('id_tendik')),
-                    'tanggal_dibuat' => esc($this->request->getPost('tanggal_dibuat')),
-                    'tanggal_diubah' => "12-12-2012",
-                    'gambar' => "gambar"
-                ]
-            );
             return redirect()->to('tambah_kegiatan')->with('pesan', 'Data Berhasil Ditambah !');
         } else {
             return redirect()->to('tambah_kegiatan')->with('error', 'Data Gagal Ditambah !');
         }
     }
-    public function edit()
+    public function edit(int $id)
     {
-        return view('admin/kegiatan/form_edit_kegiatan');
+        $kegiatan = $this->ModelKegiatan->find($id);
+        $updateData = [
+            'id_kegiatan' => $kegiatan['id_kegiatan'],
+            'judul' => $kegiatan['judul'],
+            'id_tendik' => $kegiatan['id_tendik'],
+            'status' => $kegiatan['status'],
+            'tanggal_dibuat' => $kegiatan['tanggal_dibuat'],
+            'tanggal_diubah' => $kegiatan['tanggal_diubah'],
+            'gambar' => $kegiatan['gambar'],
+        ];
+        $data = [
+            'tendik' => $this->tendik->getTendik(),
+            'kegiatan' => $this->kegiatan->getKegiatan(),
+            'judul' => 'Data Edit Kegiatan',
+            'data' => $updateData
+        ];
+        return view('admin/kegiatan/form_edit_kegiatan', $data);
     }
 
-    public function hapus()
+    public function simpanedit($id)
     {
-        return view('admin/kegiatan/form_hapus_kegiatan');
+        $data = [
+            'judul' => $this->request->getPost('judul'),
+            'status' => $this->request->getPost('status'),
+            'tanggal_dibuat' => $this->request->getPost('tanggal_dibuat'),
+            'tanggal_diubah' => $this->request->getPost('tanggal_diubah'),
+            'gambar' => $this->request->getPost('gambar'),
+        ];
+
+        $this->ModelKegiatan->where('id_kegiatan', $id)->set($data)->update();
+        return redirect()->to(base_url('kegiatans'))->with('pesan', 'Data Berhasil Diedit !');
+        die;
+    }
+
+
+    public function hapus($id)
+    {
+        $this->ModelKegiatan->where('id_kegiatan', $id)->delete();
+        return redirect()->to(base_url('kegiatans'))->with('pesan', 'Data Berhasil Dihapus !');
     }
 }

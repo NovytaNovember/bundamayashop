@@ -4,15 +4,22 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class M_pendaftaran extends Model
+class ModelKegiatan extends Model
 {
-    protected $table            = 'pendaftaran';
-    protected $primaryKey       = 'id_pendaftaran';
+    protected $table            = 'kegiatan';
+    protected $primaryKey       = 'id_kegiatan';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_pendaftaran, id_akun, status, tahun, nama_calon peserta didik, tempat_lahir, tanggal_lahir, jenis_kelamin, alamat, nama_ayah, nama_ibu, pekerjaan_ayah, pekerjaan_ibu, no_telepon_ayah, no_telepon_ibu, agama'];
+    protected $allowedFields    = [
+        'id_tendik',
+        'judul',
+        'status',
+        'tanggal_dibuat',
+        'tanggal_diubah',
+        'gambar'
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -43,13 +50,4 @@ class M_pendaftaran extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function getPendaftaran($id = FALSE)
-    {
-        if ($id == FALSE) {
-            return $this->findAll();
-        }
-
-        return $this->where(['id_pendaftaran' => $id])->first();
-    }
 }

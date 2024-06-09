@@ -6,13 +6,20 @@ use CodeIgniter\Model;
 
 class M_Profil extends Model
 {
-    protected $table            = 'mprofils';
-    protected $primaryKey       = 'id';
+    protected $table            = 'profil';
+    protected $primaryKey       = 'id_profil';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'id_profil',
+        'tanggal_dibuat',
+        'visi_misi',
+        'tujuan',
+        'struktur_organisasi',
+        'sejarah_sekolah'
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

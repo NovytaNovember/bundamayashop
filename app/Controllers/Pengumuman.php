@@ -2,13 +2,25 @@
 
 namespace App\Controllers;
 
+use App\Models\M_pengumuman;
+
 class Pengumuman extends BaseController
 {
+    protected $pengumuman;
+   
+
+    public function __construct()
+    {
+        $this->pengumuman = new M_pengumuman();        
+    }
+
     public function index()
     {
         $data = [
-            'sidebar' => 'Pengumuman',
+            'pengumuman' => $this->pengumuman->getPengumuman(),
+            'judul' => 'Data Pengumuman'
         ];
+
         return view('admin/pengumuman/pengumuman.php',$data);
 
     }

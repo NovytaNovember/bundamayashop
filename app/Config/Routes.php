@@ -22,7 +22,7 @@ $routes->get('pendaftaran', 'Pendaftaran::index');
 $routes->get('form_pendaftaran', 'Pendaftaran::tambah');
 $routes->post('simpan_pendaftaran', 'Pendaftaran::simpan');
 $routes->get('form_edit_pendaftaran', 'Pendaftaran::edit');
-$routes->post('update_pendaftaran', 'Pendaftaran::update');
+$routes->post('form_edit_pendaftaran /(:num)', 'Pendaftaran::simpanedit/$1');
 $routes->get('detail_pendaftaran', 'Pendaftaran::detail');
 $routes->get('hapus_pendaftaran', 'Pendaftaran::hapus');
 
@@ -52,10 +52,11 @@ $routes->get('detail_pengumuman_kepalasekolah', 'Pengumuman_kepalasekolah::hasil
 
 
 $routes->get('kegiatans', 'Kegiatan::index');
-$routes->get('edit_kegiatan', 'Kegiatan::edit');
+$routes->get('edit_kegiatan/(:num)', 'Kegiatan::edit/$1');
+$routes->post('edit_kegiatan/(:num)', 'Kegiatan::simpanedit/$1');
 $routes->get('tambah_kegiatan', 'Kegiatan::tambah');
 $routes->post('tambah_kegiatan', 'Kegiatan::simpan');
-$routes->get('hapus_kegiatan', 'Kegiatan::hapus');
+$routes->get('hapus_kegiatan/(:num)', 'Kegiatan::hapus/$1');
 
 $routes->get('kegiatan', 'Kegiatan::index');
 $routes->get('form_edit_kegiatan', 'Kegiatan::edit');
@@ -65,9 +66,11 @@ $routes->get('form_hapus_kegiatan', 'Kegiatan::hapus');
 $routes->get('kegiatan_freeuser', 'Kegiatan_freeuser::index');
 
 $routes->get('kegiatan_kepsek', 'Kegiatan_kepala_sekolah::index');
-$routes->get('edit_kegiatan_kepsek', 'Kegiatan_kepala_sekolah::edit');
+$routes->get('edit_kegiatan_kepsek/(:num)', 'Kegiatan_kepala_sekolah::edit/$1');
+$routes->post('edit_kegiatan_kepsek/(:num)', 'Kegiatan_kepala_sekolah::editsimpan/$1');
 $routes->get('tambah_kegiatan_kepsek', 'Kegiatan_kepala_sekolah::tambah');
-$routes->get('hapus_kegiatan_kepsek', 'Kegiatan_kepala_sekolah::hapus');
+$routes->post('tambah_kegiatan_kepsek', 'Kegiatan_kepala_sekolah::simpan');
+$routes->get('hapus_kegiatan_kepsek/(:num)', 'Kegiatan_kepala_sekolah::hapus/$1');
 
 $routes->get('sejarah', 'Profil_freeuser::index');
 $routes->get('visi_misi', 'Profil_freeuser::lihat_visi');
@@ -79,6 +82,7 @@ $routes->get('struktur_kepsek', 'Profil_kepala_sekolah::lihat_struktur');
 
 $routes->get('profil_admin', 'Profil::edit_profil');
 $routes->get('edit_profil', 'Profil::form_edit_profil');
+$routes->post('edit_profil/(:num)', 'Profil::simpanedit/$1');
 
 $routes->get('profil_sejarah_admin', 'Profil::lihat_sejarah');
 $routes->get('visimisi_admin', 'Profil_admin::lihat_visi');

@@ -107,9 +107,9 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item"><a class="nav-link" href="/tendik">Tenaga Pendidik</a></li>
-                                <li class="nav-item"><a class="nav-link" href="/pendaftaran">Pendaftaran</a></li>
-                                <li class="nav-item"><a class="nav-link" href="/pengumuman">Pengumuman</a></li>
-                                <li class="nav-item"><a class="nav-link" href="/kegiatan">Kegiatan</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/pendaftaran_freeuser">Pendaftaran</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/pengumuman_freeuser">Pengumuman</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/kegiatan_freeuser">Kegiatan</a></li>
                                 <li class="nav-item submenu dropdown ml-auto login">
                                     <a href="<?= base_url('login'); ?>" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                         <i class=></i> Login

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class M_pendaftaran extends Model
+class ModelPendaftaran extends Model
 {
     protected $table            = 'pendaftaran';
     protected $primaryKey       = 'id_pendaftaran';
