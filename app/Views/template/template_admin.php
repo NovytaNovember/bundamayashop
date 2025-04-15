@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TK Kartika V-38</title>
+    <title>Bunda Maya Shop</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/template/AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -242,10 +243,10 @@
                     <a href="index3.html" class="nav-link">
                         <i class="fas fa-list"></i>
                         <span class="font-weight-bold" style="font-size: 1.2em;"><?= $judul; ?></span>
+
                     </a>
                 </li>
             </ul>
-
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -261,10 +262,10 @@
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-key mr-2"></i> Level: Admin
                         </a>
-                        <a href="./index2.html" class="dropdown-item">
+                        <a href="/akun" class="dropdown-item">
                             <i class="fas fa-users mr-2"></i> Daftar Akun
                         </a>
-                        <a href="./index3.html" class="dropdown-item">
+                        <a href="/logout" class="dropdown-item">
                             <i class="fas fa-sign-out-alt mr-2"></i> Logout
                         </a>
                     </div>
@@ -276,79 +277,74 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link">
-                <img src="/template/AdminLTE-3.2.0/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+                <img src="/img/logo_BM.png" alt="AdminLTE Logo"
+                    class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">Bunda Maya Shop</span>
             </a>
 
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="/template/AdminLTE-3.2.0/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
-                    </div>
-                </div>
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
 
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
-                                <i class="fas fa-home"></i>
-                                <p>Beranda</p>
-                            </a>
-                        </li>
-                        <li class="nav-item menu-open">
-                            <a href="<?= base_url('profil_admin') ?>" class="nav-link ">
-                                <i class="fas fa-user"></i>
-                                <p>
-                                    Profil
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="tenaga_pendidik" class="nav-link">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                                <p>Tenaga Pendidik</p>
-                            </a>
-                        </li>
+                    <li class="nav-item">
+                        <a href="/admin/dashboard" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
 
-                        <li class="nav-item">
-                            <a href="<?= base_url('kegiatans') ?>" class="nav-link">
-                                <i class="fas fa-calendar"></i>
-                                <p>Kegiatan</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pendaftaran" class="nav-link">
-                                <i class="fas fa-clipboard-list"></i>
-                                <p>Pendaftaran</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pengumuman" class="nav-link">
-                                <i class="fas fa-bullhorn"></i>
-                                <p>Pengumuman</p>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </aside>
+                    <li class="nav-item">
+                        <a href="/admin/produk" class="nav-link">
+                            <i class="fas fa-birthday-cake"></i>
+                            <p>Produk</p>
+                        </a>
+                    </li>
 
-        <!-- Konten Start -->
+                    <li class="nav-item">
+                        <a href="/admin/order" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            <p>Order</p>
+                        </a>
+                    </li>
 
-        <?= $this->renderSection('konten')  ?>
+                    <li class="nav-item">
+                        <a href="/admin/kategori" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            <p>Kategori</p>
+                        </a>
+                    </li>
 
-        <!-- Konten End -->
+                    <li class="nav-item">
+                        <a href="/admin/laporan/laporan_harian" class="nav-link">
+                            <i class="fas fa-file-alt"></i>
+                            <p>Laporan</p>
+                        </a>
+                    </li>
 
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
+                    <li class="nav-item">
+                        <a href="/admin/arsip_laporan" class="nav-link">
+                            <i class="fas fa-file-alt"></i>
+                            <p>Arsip Laporan</p>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+
+    </div>
+    </aside>
+
+    <!-- Konten Start -->
+
+    <?= $this->renderSection('konten')  ?>
+
+    <!-- Konten End -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
     </div><!-- ./wrapper -->
 
     <!-- jQuery -->
@@ -357,6 +353,43 @@
     <script src="/template/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/template/AdminLTE-3.2.0/dist/js/adminlte.min.js"></script>
+
+
+
+    <!-- PENCARIAN UNTUK FORM PENDAFATRAN ADMIN -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search');
+            searchInput.addEventListener('input', function() {
+                const searchText = this.value
+                    .toLowerCase(); // Ambil teks pencarian dan ubah menjadi huruf kecil
+                const tableRows = document.querySelectorAll(
+                    '.table-container tbody tr'); // Ambil semua baris tabel
+                tableRows.forEach(function(row) {
+                    const namaCalon = row.querySelector('td:nth-child(2)').textContent
+                        .toLowerCase(); // Ambil teks nama calon dari setiap baris tabel dan ubah menjadi huruf kecil
+                    const tempatLahir = row.querySelector('td:nth-child(3)').textContent
+                        .toLowerCase(); // Ambil teks tempat lahir dari setiap baris tabel dan ubah menjadi huruf kecil
+                    const tanggalLahir = row.querySelector('td:nth-child(4)').textContent
+                        .toLowerCase(); // Ambil teks tanggal lahir dari setiap baris tabel dan ubah menjadi huruf kecil
+                    const jenisKelamin = row.querySelector('td:nth-child(5)').textContent
+                        .toLowerCase(); // Ambil teks jenis kelamin dari setiap baris tabel dan ubah menjadi huruf kecil
+                    const agama = row.querySelector('td:nth-child(6)').textContent
+                        .toLowerCase(); // Ambil teks agama dari setiap baris tabel dan ubah menjadi huruf kecil
+
+                    // Cek apakah teks pencarian ada dalam salah satu kolom tabel
+                    if (namaCalon.includes(searchText) || tempatLahir.includes(searchText) ||
+                        tanggalLahir.includes(searchText) || jenisKelamin.includes(searchText) ||
+                        agama.includes(searchText)) {
+                        row.style.display = ''; // Jika ada, tampilkan baris
+                    } else {
+                        row.style.display = 'none'; // Jika tidak, sembunyikan baris
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
