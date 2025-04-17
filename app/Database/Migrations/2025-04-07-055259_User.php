@@ -29,8 +29,7 @@ class User extends Migration
             ],
             'level' => [
                 'type'       => 'ENUM',
-                'constraint' => ['admin', 'user', 'guest'],
-                'default'    => 'user',
+                'constraint' => ['admin', 'petugas', 'owner'],
             ],
             'created_at' => [
                 'type'    => 'DATETIME',

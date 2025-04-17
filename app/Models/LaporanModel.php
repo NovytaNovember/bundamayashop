@@ -6,14 +6,7 @@ use CodeIgniter\Model;
 
 class LaporanModel extends Model
 {
-    protected $table = 'penjualan';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['tanggal_penjualan', 'nama_produk', 'jumlah_terjual', 'harga', 'total_penjualan'];
-
-    public function getPenjualanByDateRange($tanggal_awal, $tanggal_akhir)
-    {
-        return $this->where('tanggal_penjualan >=', $tanggal_awal)
-                    ->where('tanggal_penjualan <=', $tanggal_akhir)
-                    ->findAll();
-    }
+    protected $table = 'laporan';
+    protected $primaryKey = 'id_laporan';
+    protected $allowedFields = ['file_laporan', 'bulan', 'tahun', 'kategori', 'total_penjualan_bulanan', 'created_at', 'updated_at'];
 }

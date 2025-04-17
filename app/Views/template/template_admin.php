@@ -323,7 +323,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="/admin/arsip_laporan" class="nav-link">
+                        <a href="/admin/arsip_laporan/arsip_laporan_perhari" class="nav-link">
                             <i class="fas fa-file-alt"></i>
                             <p>Arsip Laporan</p>
                         </a>

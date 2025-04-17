@@ -26,9 +26,13 @@ class Laporan extends Migration
                 'type'       => 'YEAR',
             ],
             'total_penjualan_bulanan' => [
-                'type'       => 'DECIMAL',
-                'constraint' => '15,2',
-                'default'    => 0.00,
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'kategori' => [
+                'type'       => 'ENUM',
+                'constraint' => ['perhari', 'perbulan'],
+                'default'    => 'perbulan',
             ],
             'created_at' => [
                 'type'    => 'DATETIME',

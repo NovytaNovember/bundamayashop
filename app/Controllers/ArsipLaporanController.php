@@ -2,39 +2,55 @@
 
 namespace App\Controllers;
 
+use App\Models\OrderModel;
+use App\Models\OrderItemModel;
 use App\Models\LaporanModel;
+use Carbon\Carbon;
 
 class ArsipLaporanController extends BaseController
 {
+    protected $orderModel;
+    protected $orderItemModel;
     protected $laporanModel;
 
     public function __construct()
     {
+        $this->orderModel = new OrderModel();
+        $this->orderItemModel = new OrderItemModel();
         $this->laporanModel = new LaporanModel();
     }
 
-    // Menampilkan halaman arsip laporan dengan form untuk memilih tanggal
+    // Halaman awal arsip laporan per hari
     public function index()
     {
-        $data['judul'] = 'Arsip Laporan Penjualan';
-        return view('admin/laporan', $data); // Pastikan view ini ada
-    }
+        $data['judul'] = 'Arsip Laporan Penjualan PerHari';
+        $laporan = $this->laporanModel->where('kategori', 'perhari')->findAll();
 
-    // Mengambil data laporan berdasarkan rentang tanggal yang dipilih
-    public function generateLaporan()
-    {
-        $tanggal_awal = $this->request->getPost('tanggal_awal');
-        $tanggal_akhir = $this->request->getPost('tanggal_akhir');
-
-        // Validasi input tanggal
-        if (!$tanggal_awal || !$tanggal_akhir) {
-            return redirect()->back()->with('error', 'Tanggal awal dan akhir harus diisi.');
+        // Format tanggal dengan Carbon
+        foreach ($laporan as &$item) {
+            $item['created_at'] = Carbon::parse($item['created_at'])->locale('id')->isoFormat('dddd, D MMMM YYYY');
         }
 
-        // Ambil data penjualan dari model berdasarkan rentang tanggal
-        $data['penjualan'] = $this->laporanModel->getPenjualanByDateRange($tanggal_awal, $tanggal_akhir);
-        $data['judul'] = 'Arsip Laporan Penjualan ' . date('d M Y', strtotime($tanggal_awal)) . ' - ' . date('d M Y', strtotime($tanggal_akhir));
+        $data['laporan'] = $laporan;
 
-        return view('admin/laporan', $data); // View yang sama akan digunakan untuk tampilkan hasil
+
+        return view('admin/arsip_laporan/arsip_laporan_perhari', $data);
+    }
+
+
+    public function perbulan()
+    {
+        $data['judul'] = 'Arsip Laporan Penjualan PerBulan';
+        $laporan = $this->laporanModel->where('kategori', 'perbulan')->findAll();
+
+        // Format tanggal dengan Carbon
+        foreach ($laporan as &$item) {
+            $item['created_at'] = Carbon::parse($item['created_at'])->locale('id')->isoFormat('MMMM YYYY');
+        }
+
+        $data['laporan'] = $laporan;
+
+
+        return view('admin/arsip_laporan/arsip_laporan_perbulan', $data);
     }
 }

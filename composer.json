@@ -12,7 +12,9 @@
     "require": {
         "php": "^8.1",
         "codeigniter4/framework": "^4.0",
+        "dompdf/dompdf": "*",
         "google/apiclient": "^2.18",
+        "nesbot/carbon": "^3.9",
         "phpoffice/phpspreadsheet": "^4.0",
         "tecnickcom/tcpdf": "^6.8"
     },
