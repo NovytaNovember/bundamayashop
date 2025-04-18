@@ -49,39 +49,51 @@ class LaporanController extends BaseController
     // Fungsi kirim laporan harian
     public function kirim_laporan_harian()
     {
-        // Ambil data order item yang ada
         $orders = $this->orderModel
             ->orderBy('created_at', 'DESC')
             ->findAll();
-
-        $orderItemModel = new \App\Models\OrderItemModel();
-
-        // Loop order dan ambil item-order-nya
+    
         foreach ($orders as &$order) {
-            $order['items'] = $orderItemModel
+            $order['items'] = $this->orderItemModel
                 ->select('order_item.*, produk.nama_produk, produk.harga')
                 ->join('produk', 'produk.id_produk = order_item.id_produk')
                 ->where('order_item.id_order', $order['id_order'])
                 ->findAll();
         }
-
+    
         $data = [
             'judul' => 'Laporan',
             'laporan' => $orders,
         ];
-
-
-        // view laporan
+    
+        // Render HTML dari view
         $view_laporan = view('admin/laporan/pdf_laporan_harian', $data);
-
-        // Buat instance Dompdf
+    
+        // Inisialisasi Dompdf
         $dompdf = new Dompdf();
         $dompdf->loadHtml($view_laporan);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-
-        $dompdf->stream("laporan_penjualan.pdf", ["Attachment" => true]);
+    
+        // Ambil output PDF-nya
+        $output = $dompdf->output();
+    
+        // Tentukan path penyimpanan (misalnya: public/laporan/laporan_harian.pdf)
+        $path = WRITEPATH . '../public/laporan/';
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true); // buat folder jika belum ada
+        }
+    
+        $filename = 'laporan_harian_' . date('Ymd_His') . '.pdf';
+        file_put_contents($path . $filename, $output);
+    
+        // Stream ke user (download)
+        return $this->response
+            ->setHeader('Content-Type', 'application/pdf')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($output);
     }
+    
 
     // Menampilkan halaman laporan bulanan
     public function laporan_bulanan()
@@ -111,41 +123,51 @@ class LaporanController extends BaseController
     }
 
     // Fungsi kirim laporan bulanan
+
     public function kirim_laporan_bulanan()
     {
-        // Ambil data order item yang ada
         $orders = $this->orderModel
             ->orderBy('created_at', 'DESC')
             ->findAll();
-
-        $orderItemModel = new \App\Models\OrderItemModel();
-
-        // Loop order dan ambil item-order-nya
+    
         foreach ($orders as &$order) {
-            $order['items'] = $orderItemModel
+            $order['items'] = $this->orderItemModel
                 ->select('order_item.*, produk.nama_produk, produk.harga')
                 ->join('produk', 'produk.id_produk = order_item.id_produk')
                 ->where('order_item.id_order', $order['id_order'])
                 ->findAll();
         }
-
+    
         $data = [
             'judul' => 'Laporan',
             'laporan' => $orders,
         ];
-
-
-        // view laporan
+    
         $view_laporan = view('admin/laporan/pdf_laporan_bulanan', $data);
-
-        // Buat instance Dompdf
+    
         $dompdf = new Dompdf();
         $dompdf->loadHtml($view_laporan);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-
-        $dompdf->stream("laporan_penjualan.pdf", ["Attachment" => true]);
+    
+        $output = $dompdf->output();
+    
+        // Simpan PDF ke folder public/laporan/
+        $path = WRITEPATH . '../public/laporan/';
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+    
+        $filename = 'laporan_bulanan_' . date('Ymd_His') . '.pdf';
+        file_put_contents($path . $filename, $output);
+    
+        // Stream ke user (download)
+        return $this->response
+            ->setHeader('Content-Type', 'application/pdf')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($output);
     }
+    
 
     
 }

@@ -11,18 +11,31 @@
                     <div class="d-flex justify-content-between mb-3">
                         <!-- Tombol Perhari dan Perbulan -->
                         <div class="btn-group">
-                            <a class="btn btn-default" href="<?= base_url('admin/laporan/laporan_harian'); ?>"> Perhari </a>
-                            <a class="btn btn-default" href="<?= base_url('admin/laporan/laporan_bulanan'); ?>"> Perbulan </a>
+                            <a class="btn btn-info text-white" href="<?= base_url('admin/laporan/laporan_harian'); ?>">
+                                <i class="fas fa-calendar-day"></i> Perhari
+                            </a>
+                            <a class="btn btn-warning text-dark" href="<?= base_url('admin/laporan/laporan_bulanan'); ?>">
+                                <i class="fas fa-calendar-alt"></i> Perbulan
+                            </a>
                         </div>
 
-                        <a href="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" class="btn btn-success"><i class="fas fa-paper-plane"></i>Kirim Laporan Harian</a>
-                        <!-- Tombol Kirim Laporan Harian -->
-                        <!-- <form id="laporanForm" action="<?= base_url('laporan/kirim_laporan_harian'); ?>" method="post">
-                            <button type="submit" class="btn btn-success" id="submitButton">
-                                <i class="fas fa-paper-plane"></i> Kirim Laporan Harian
-                            </button>
-                        </form> -->
+
+                        <div class="d-flex gap-2">
+                            <!-- Tombol Download Laporan Harian -->
+                            <a href="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" class="btn btn-primary">
+                                <i class="fas fa-download"></i> Download Laporan Harian
+                            </a>
+
+                            <!-- Tombol Kirim Laporan Harian -->
+                            <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" method="post">
+                                <button type="submit" class="btn btn-success" id="submitButton">
+                                    <i class="fab fa-whatsapp"></i> Kirim Laporan Harian
+                                </button>
+                            </form>
+
+                        </div>
                     </div>
+
 
                     <div class="card-body">
                         <table class="table table-bordered table-hover">
@@ -61,7 +74,7 @@
                                             <td><?= $no++; ?></td>
                                             <td><?= $tanggalOrder; ?></td>
                                             <td class="text-start"><?= esc($item['nama_produk']); ?></td>
-                                            <td><?= esc($item['jumlah']); ?> buah</td>
+                                            <td><?= esc($item['jumlah']); ?> pcs</td>
                                             <td>Rp <?= number_format($item['total_harga'] / $item['jumlah'], 0, ',', '.'); ?></td>
                                             <td>Rp <?= number_format($item['total_harga'], 0, ',', '.'); ?></td>
                                         </tr>
@@ -71,7 +84,7 @@
                             <tfoot>
                                 <tr>
                                     <th colspan="3" class="text-end">Total Keseluruhan</th>
-                                    <th class="text-center"><?= $totalJumlahTerjual; ?> buah</th>
+                                    <th class="text-center"><?= $totalJumlahTerjual; ?> pcs</th>
                                     <th class="text-center"></th> <!-- Kolom Harga Satuan dikosongkan -->
                                     <th class="text-center">Rp <?= number_format($totalKeseluruhan, 0, ',', '.'); ?></th>
                                 </tr>

@@ -7,13 +7,32 @@
 
             <div class="paper mt-4">
                 <div class="d-flex justify-content-between mb-3">
+                    <!-- Tombol Perhari dan Perbulan -->
                     <div class="btn-group">
-                        <a class="btn btn-default" href="<?= base_url('admin/laporan/laporan_harian'); ?>"> Perhari </a>
-                        <a class="btn btn-default active" href="<?= base_url('admin/laporan/laporan_bulanan'); ?>"> Perbulan </a>
+                        <a class="btn btn-info text-white" href="<?= base_url('admin/laporan/laporan_harian'); ?>">
+                            <i class="fas fa-calendar-day"></i> Perhari
+                        </a>
+                        <a class="btn btn-warning text-dark" href="<?= base_url('admin/laporan/laporan_bulanan'); ?>">
+                            <i class="fas fa-calendar-alt"></i> Perbulan
+                        </a>
                     </div>
-                    <a href="<?= base_url('admin/laporan/kirim_laporan_bulanan'); ?>" class="btn btn-success">
-                        <i class="fas fa-paper-plane"></i> Kirim Laporan Bulanan
-                    </a>
+
+                    <div class="d-flex gap-2">
+                            <!-- Tombol Download Laporan Bulanan -->
+                            <a href="<?= base_url('admin/laporan/kirim_laporan_bulanan'); ?>" class="btn btn-primary">
+                                <i class="fas fa-download"></i> Download Laporan Bulanan
+                            </a>
+
+                            <!-- Tombol Kirim Laporan Bulanan -->
+                            <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_bulanan'); ?>" method="post">
+                                <button type="submit" class="btn btn-success" id="submitButton">
+                                    <i class="fab fa-whatsapp"></i> Kirim Laporan Bulanan
+                                </button>
+                            </form>
+
+                        </div>
+
+
                 </div>
 
                 <div class="card-body">
@@ -34,19 +53,19 @@
                             $totalJumlahTerjual = 0; ?>
                             <?php foreach ($laporan as $item): ?>
                                 <?php
-                                    // Format Bulan dari created_at
-                                    $bulanOrder = '-';
-                                    if (!empty($item['created_at'])) {
-                                        $date = new DateTime($item['created_at'], new DateTimeZone('UTC'));
-                                        $date->setTimezone(new DateTimeZone('Asia/Makassar'));
-                                        $bulanOrder = $date->format('F Y'); // Contoh: April 2025
-                                    }
+                                // Format Bulan dari created_at
+                                $bulanOrder = '-';
+                                if (!empty($item['created_at'])) {
+                                    $date = new DateTime($item['created_at'], new DateTimeZone('UTC'));
+                                    $date->setTimezone(new DateTimeZone('Asia/Makassar'));
+                                    $bulanOrder = $date->format('F Y'); // Contoh: April 2025
+                                }
                                 ?>
                                 <tr class="text-center align-middle">
                                     <td><?= $no++; ?></td>
                                     <td><?= $bulanOrder; ?></td>
                                     <td class="text-start"><?= esc($item['nama_produk']); ?></td>
-                                    <td><?= esc($item['total_jumlah']); ?> buah</td>
+                                    <td><?= esc($item['total_jumlah']); ?> pcs</td>
                                     <td>Rp <?= number_format($item['harga'], 0, ',', '.'); ?></td>
                                     <td>Rp <?= number_format($item['total_penjualan'], 0, ',', '.'); ?></td>
                                 </tr>
@@ -59,7 +78,7 @@
                         <tfoot>
                             <tr>
                                 <th colspan="3" class="text-end">Total Keseluruhan Jumlah Terjual</th>
-                                <th class="text-center"><?= $totalJumlahTerjual; ?> buah</th>
+                                <th class="text-center"><?= $totalJumlahTerjual; ?> pcs</th>
                                 <th class="text-center"></th>
                                 <th class="text-center">Rp <?= number_format($totalKeseluruhan, 0, ',', '.'); ?></th>
                             </tr>

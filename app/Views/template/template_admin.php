@@ -310,7 +310,7 @@
 
                     <li class="nav-item">
                         <a href="/admin/kategori" class="nav-link">
-                            <i class="fas fa-shopping-cart"></i>
+                            <i class="fas fa-th-list"></i>
                             <p>Kategori</p>
                         </a>
                     </li>
@@ -324,7 +324,7 @@
 
                     <li class="nav-item">
                         <a href="/admin/arsip_laporan/arsip_laporan_perhari" class="nav-link">
-                            <i class="fas fa-file-alt"></i>
+                            <i class="fas fa-archive"></i>
                             <p>Arsip Laporan</p>
                         </a>
                     </li>

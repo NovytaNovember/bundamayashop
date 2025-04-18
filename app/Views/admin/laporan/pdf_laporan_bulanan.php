@@ -86,7 +86,7 @@
                         <td class="text-center"><?= $no++; ?></td>
                         <td class="text-center"><?= $tanggalOrder; ?></td>
                         <td class="text-start"><?= esc($item['nama_produk']); ?></td>
-                        <td class="text-center"><?= esc($item['jumlah']); ?> buah</td>
+                        <td class="text-center"><?= esc($item['jumlah']); ?> pcs</td>
                         <td class="text-end">Rp <?= number_format($item['total_harga'] / $item['jumlah'], 0, ',', '.'); ?></td>
                         <td class="text-end">Rp <?= number_format($item['total_harga'], 0, ',', '.'); ?></td>
                     </tr>
@@ -96,7 +96,7 @@
         <tfoot>
             <tr>
                 <th colspan="3" class="text-start">Total Penjualan</th>
-                <th class="text-center"><?= $totalJumlahTerjual; ?> buah</th>
+                <th class="text-center"><?= $totalJumlahTerjual; ?> pcs</th>
                 <th></th>
                 <th class="text-end">Rp <?= number_format($totalKeseluruhan, 0, ',', '.'); ?></th>
             </tr>
