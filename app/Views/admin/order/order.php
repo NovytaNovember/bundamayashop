@@ -48,6 +48,10 @@
                                         <td class="text-start"><?= $produkString; ?></td>
                                         <td>Rp <?= number_format($totalHarga, 0, ',', '.'); ?></td>
                                         <td>
+                                            <a href="<?= base_url('admin/order/edit/' . $order['id_order']) ?>" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+
                                             <a href="<?= base_url('admin/order/delete/' . $order['id_order']); ?>"
                                                 onclick="return confirm('Yakin ingin menghapus order ini?');"
                                                 class="btn btn-danger btn-sm">

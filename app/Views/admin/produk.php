@@ -19,12 +19,13 @@
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                     </div>
                 <?php endif ?>
-
                 <!-- Tombol Tambah Data Produk -->
                 <div class="card-header">
-                    <button type="button" class="btn btn-green" data-toggle="modal" data-target="#addModal">Tambah
-                        Produk</button>
+                    <button type="button" class="btn btn-green" data-toggle="modal" data-target="#addModal">
+                        <i class="fas fa-plus me-1"></i> Tambah Produk
+                    </button>
                 </div>
+
 
                 <!-- Tabel Data Produk -->
                 <table class="table table-bordered mt-3">
@@ -50,21 +51,19 @@
                                 <td>Rp<?= number_format($data['harga'], 0, ',', '.') ?></td>
                                 <td><img src="<?= base_url('uploads/' . $data['gambar']) ?>" width="100" /></td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm edit-btn" data-toggle="modal"
-                                        data-target="#editModal"
-                                        data-id="<?= $data['id_produk'] ?>"
-                                        data-nama="<?= $data['nama_produk'] ?>"
-                                        data-deskripsi="<?= $data['deskripsi'] ?>"
-                                        data-kategori-id="<?= $data['id_kategori'] ?>"
-                                        data-harga="<?= $data['harga'] ?>"
-                                        data-gambar="<?= $data['gambar'] ?>">
-                                        <i class="fa fa-edit"></i> Edit
+                                    <button class="btn btn-sm btn-warning edit-btn" data-toggle="modal" data-target="#editModal"
+                                        data-id="<?= $data['id_produk'] ?>" data-nama="<?= $data['nama_produk'] ?>"
+                                        data-deskripsi="<?= $data['deskripsi'] ?>" data-kategori-id="<?= $data['id_kategori'] ?>"
+                                        data-harga="<?= $data['harga'] ?>" data-gambar="<?= $data['gambar'] ?>">
+                                        <i class="fas fa-edit"></i> Edit
                                     </button>
 
-                                    <button class="btn btn-danger btn-sm delete-btn" data-id="<?= $data['id_produk'] ?>">
-                                        <i class="fa fa-trash"></i> Hapus
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="<?= $data['id_produk'] ?>"
+                                        onclick="return confirm('Yakin ingin menghapus produk ini?');">
+                                        <i class="fas fa-trash-alt"></i> Hapus
                                     </button>
                                 </td>
+
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -196,11 +195,11 @@
 
 <!-- Script -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Edit Produk
         const editBtns = document.querySelectorAll('.edit-btn');
         editBtns.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
                 const nama = this.getAttribute('data-nama');
                 const deskripsi = this.getAttribute('data-deskripsi');
@@ -220,10 +219,10 @@
         // Hapus Produk
         const deleteBtns = document.querySelectorAll('.delete-btn');
         deleteBtns.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
                 const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-                confirmDeleteBtn.onclick = function () {
+                confirmDeleteBtn.onclick = function() {
                     window.location.href = `<?= base_url('admin/produk/delete/') ?>/${id}`;
                 };
                 $('#deleteModal').modal('show');

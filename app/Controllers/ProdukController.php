@@ -32,7 +32,7 @@ class ProdukController extends BaseController
             'nama_produk' => $this->request->getPost('nama_produk'),
             'deskripsi'   => $this->request->getPost('deskripsi'),
             'id_kategori' => $this->request->getPost('id_kategori'),
-            'harga'       => $this->request->getPost('harga'), // <-- Tambahkan ini
+            'harga'       => $this->request->getPost('harga'), 
         ];
     
         // Proses upload gambar
@@ -146,13 +146,4 @@ class ProdukController extends BaseController
         return redirect()->to('/admin/produk');
     }
 
-    public function produkForUser()
-    {
-        $model = new ProdukModel();
-        $data = [
-            'title' => 'Daftar Produk',
-            'produk' => $model->findAll() // Ambil semua data produk
-        ];
-        return view('free_user/produk', $data); // Pastikan ini memanggil free_user/produk.php
-    }
 }

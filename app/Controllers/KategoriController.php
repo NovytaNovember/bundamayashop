@@ -14,11 +14,11 @@ class KategoriController extends BaseController
         $this->kategoriModel = new KategoriModel();
     }
 
-    public function index()
+    public function kategori()
     {
         $data['kategori'] = $this->kategoriModel->findAll();
         $data['judul'] = 'Data Kategori';
-        return view('admin/kategori/index', $data);
+        return view('admin/kategori/kategori', $data);
     }
 
     public function store()

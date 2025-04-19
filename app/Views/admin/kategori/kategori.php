@@ -11,8 +11,10 @@
                         <div class="alert alert-success"><?= session()->getFlashdata('pesan'); ?></div>
                     <?php endif; ?>
 
-                    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addModal">Tambah
-                        Kategori</button>
+                    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addModal">
+                        <i class="fas fa-plus me-1"></i> Tambah Kategori
+                    </button>
+
 
                     <table class="table table-bordered">
                         <thead>
@@ -29,13 +31,17 @@
                                     <td><?= $no++ ?></td>
                                     <td><?= $k['nama_kategori'] ?></td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal"
-                                            data-id="<?= $k['id_kategori'] ?>"
-                                            data-nama="<?= $k['nama_kategori'] ?>">Edit</button>
+                                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal"
+                                            data-id="<?= $k['id_kategori'] ?>" data-nama="<?= $k['nama_kategori'] ?>">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+
                                         <a href="<?= base_url('admin/kategori/delete/' . $k['id_kategori']) ?>"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
+                                            class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
+                                            <i class="fas fa-trash-alt"></i> Hapus
+                                        </a>
                                     </td>
+
                                 </tr>
                             <?php endforeach ?>
                         </tbody>

@@ -20,7 +20,7 @@ class LaporanController extends BaseController
     }
 
     // Menampilkan halaman laporan harian
-    public function index()
+    public function laporan_harian()
     {
         // Ambil data order item yang ada
         $orders = $this->orderModel
@@ -123,24 +123,27 @@ class LaporanController extends BaseController
     }
 
     // Fungsi kirim laporan bulanan
-
     public function kirim_laporan_bulanan()
     {
-        $orders = $this->orderModel
-            ->orderBy('created_at', 'DESC')
+        $orderItems = $this->orderItemModel
+            ->select('
+                produk.nama_produk, 
+                produk.harga, 
+                SUM(order_item.jumlah) AS total_jumlah, 
+                SUM(order_item.total_harga) AS total_penjualan,
+                MAX(order_item.created_at) AS created_at
+            ')
+            ->join('produk', 'produk.id_produk = order_item.id_produk')
+            ->groupBy('order_item.id_produk, produk.nama_produk, produk.harga')
+            ->orderBy('produk.nama_produk', 'ASC')
             ->findAll();
     
-        foreach ($orders as &$order) {
-            $order['items'] = $this->orderItemModel
-                ->select('order_item.*, produk.nama_produk, produk.harga')
-                ->join('produk', 'produk.id_produk = order_item.id_produk')
-                ->where('order_item.id_order', $order['id_order'])
-                ->findAll();
-        }
+        $totalKeseluruhan = array_sum(array_column($orderItems, 'total_penjualan'));
     
         $data = [
-            'judul' => 'Laporan',
-            'laporan' => $orders,
+            'judul' => 'Laporan Penjualan Bulanan',
+            'laporan' => $orderItems,
+            'totalKeseluruhan' => $totalKeseluruhan,
         ];
     
         $view_laporan = view('admin/laporan/pdf_laporan_bulanan', $data);
@@ -152,7 +155,6 @@ class LaporanController extends BaseController
     
         $output = $dompdf->output();
     
-        // Simpan PDF ke folder public/laporan/
         $path = WRITEPATH . '../public/laporan/';
         if (!is_dir($path)) {
             mkdir($path, 0777, true);
@@ -161,13 +163,10 @@ class LaporanController extends BaseController
         $filename = 'laporan_bulanan_' . date('Ymd_His') . '.pdf';
         file_put_contents($path . $filename, $output);
     
-        // Stream ke user (download)
         return $this->response
             ->setHeader('Content-Type', 'application/pdf')
             ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
             ->setBody($output);
     }
-    
-
     
 }

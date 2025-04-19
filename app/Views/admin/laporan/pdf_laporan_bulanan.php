@@ -71,26 +71,23 @@
             $totalKeseluruhan = 0;
             $totalJumlahTerjual = 0;
             ?>
-            <?php foreach ($laporan as $order): ?>
+            <?php foreach ($laporan as $item): ?>
                 <?php
-                $date = new DateTime($order['created_at'], new DateTimeZone('UTC'));
+                $date = new DateTime($item['created_at'], new DateTimeZone('UTC'));
                 $date->setTimezone(new DateTimeZone('Asia/Makassar'));
                 $tanggalOrder = $date->format('F Y');
+
+                $totalKeseluruhan += $item['total_penjualan'];
+                $totalJumlahTerjual += $item['total_jumlah'];
                 ?>
-                <?php foreach ($order['items'] as $item): ?>
-                    <?php
-                    $totalKeseluruhan += $item['total_harga'];
-                    $totalJumlahTerjual += $item['jumlah'];
-                    ?>
-                    <tr>
-                        <td class="text-center"><?= $no++; ?></td>
-                        <td class="text-center"><?= $tanggalOrder; ?></td>
-                        <td class="text-start"><?= esc($item['nama_produk']); ?></td>
-                        <td class="text-center"><?= esc($item['jumlah']); ?> pcs</td>
-                        <td class="text-end">Rp <?= number_format($item['total_harga'] / $item['jumlah'], 0, ',', '.'); ?></td>
-                        <td class="text-end">Rp <?= number_format($item['total_harga'], 0, ',', '.'); ?></td>
-                    </tr>
-                <?php endforeach; ?>
+                <tr>
+                    <td class="text-center"><?= $no++; ?></td>
+                    <td class="text-center"><?= $tanggalOrder; ?></td>
+                    <td class="text-start"><?= esc($item['nama_produk']); ?></td>
+                    <td class="text-center"><?= esc($item['total_jumlah']); ?> pcs</td>
+                    <td class="text-end">Rp <?= number_format($item['harga'], 0, ',', '.'); ?></td>
+                    <td class="text-end">Rp <?= number_format($item['total_penjualan'], 0, ',', '.'); ?></td>
+                </tr>
             <?php endforeach; ?>
         </tbody>
         <tfoot>

@@ -10,11 +10,14 @@
             <div class="paper mt-4">
                 <div class="d-flex justify-content-between mb-3">
                     <!-- Tombol Perhari dan Perbulan -->
-                    <div class="btn-group">
-                        <a class="btn btn-default" href="<?= base_url('admin/arsip_laporan/arsip_laporan_perhari'); ?>"> Perhari </a>
-                        <a class="btn btn-default" href="<?= base_url('admin/arsip_laporan/arsip_laporan_perbulan'); ?>"> Perbulan </a>
+                   <div class="btn-group">
+                        <a class="btn btn-info text-white" href="<?= base_url('admin/arsip_laporan/arsip_laporan_perhari'); ?>">
+                            <i class="fas fa-calendar-day"></i> Perhari
+                        </a>
+                        <a class="btn btn-warning text-dark" href="<?= base_url('admin/arsip_laporan/arsip_laporan_perbulan'); ?>">
+                            <i class="fas fa-calendar-alt"></i> Perbulan
+                        </a>
                     </div>
-
                    
                 </div>
 

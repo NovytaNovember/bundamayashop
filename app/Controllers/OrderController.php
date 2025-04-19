@@ -19,7 +19,7 @@ class OrderController extends BaseController
         $this->produkModel     = new ProdukModel();
     }
 
-    public function index()
+    public function order()
     {
         $orders = $this->orderModel
             ->orderBy('created_at', 'DESC')
@@ -41,7 +41,7 @@ class OrderController extends BaseController
             'orders' => $orders,
         ];
 
-        return view('admin/order/index', $data);
+        return view('admin/order/order', $data);
     }
 
 
@@ -55,55 +55,81 @@ class OrderController extends BaseController
         return view('admin/order/tambah', $data);
     }
 
-    public function konfirmasi()
+
+
+    public function konfirmasi($orderId = null)
     {
         $produkDipilih = $this->request->getPost('produk');
         $jumlahProduk  = $this->request->getPost('jumlah');
 
-        if (empty($produkDipilih)) {
-            return redirect()->to(base_url('admin/order'))->with('error', 'Tidak ada produk yang dipilih.');
-        }
-
+        // Cek apakah ini adalah form edit
         $produkTerpilih = [];
 
-        foreach ($produkDipilih as $idProduk) {
-            $produk = $this->produkModel->find($idProduk);
-            if ($produk) {
-                $jumlah = isset($jumlahProduk[$idProduk]) ? (int)$jumlahProduk[$idProduk] : 1;
-                $produk['jumlah'] = $jumlah;
-                $produk['subtotal'] = $jumlah * $produk['harga'];
-                $produkTerpilih[] = $produk;
+        if (!empty($produkDipilih)) {
+            foreach ($produkDipilih as $idProduk) {
+                $produk = $this->produkModel->find($idProduk);
+                if ($produk) {
+                    $jumlah = isset($jumlahProduk[$idProduk]) ? (int)$jumlahProduk[$idProduk] : 1;
+                    $produk['jumlah'] = $jumlah;
+                    $produk['subtotal'] = $jumlah * $produk['harga'];
+                    $produkTerpilih[] = $produk;
+                }
+            }
+        }
+
+        // Jika orderId ada, berarti kita sedang mengedit
+        if ($orderId) {
+            // Ambil data order berdasarkan order_id
+            $order = $this->orderModel->find($orderId);
+            if ($order) {
+                // Ambil produk yang sudah ada di order
+                $produkItems = $this->orderItemModel->where('id_order', $orderId)->findAll();
+                // Gabungkan produk yang sudah ada dengan produk yang dipilih
+                $produkTerpilih = array_merge($produkItems, $produkTerpilih);
             }
         }
 
         return view('admin/order/konfirmasi', [
             'judul' => 'Konfirmasi Order',
-            'produk_terpilih' => $produkTerpilih
+            'produk_terpilih' => $produkTerpilih,
+            'order_id' => $orderId // Kirimkan order_id jika mengedit
         ]);
     }
 
     public function simpan()
     {
+        $orderId = $this->request->getPost('order_id');
         $produk = $this->request->getPost('produk');
 
-        $idOrder = $this->orderModel->insert([
-            'total_harga' => $this->request->getPost('total_harga'),
-        ]);
+        // Jika order_id ada, maka kita lakukan update
+        if ($orderId) {
+            // Update data order
+            $this->orderModel->update($orderId, [
+                'total_harga' => $this->request->getPost('total_harga'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
 
-        // Ambil ID yang baru saja di-insert
-        $idOrder = $this->orderModel->getInsertID();
+            // Hapus data order item lama
+            $this->orderItemModel->where('id_order', $orderId)->delete();
+        } else {
+            // Jika order_id tidak ada, berarti menambah order baru
+            $orderId = $this->orderModel->insert([
+                'total_harga' => $this->request->getPost('total_harga'),
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+        }
 
-
-
+        // Insert atau update item produk
         foreach ($produk as $item) {
             $subtotal = $item['jumlah'] * $item['harga'];
             $data = [
-                'id_order'    => $idOrder,
+                'id_order'    => $orderId,
                 'jumlah'      => $item['jumlah'],
-                'total_harga'       => $subtotal,
+                'total_harga' => $subtotal,
                 'id_produk'   => $item['id_produk'],
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at'  => date('Y-m-d H:i:s'),
+                'updated_at'  => date('Y-m-d H:i:s')
             ];
 
             $this->orderItemModel->insert($data);
@@ -111,6 +137,7 @@ class OrderController extends BaseController
 
         return redirect()->to(base_url('admin/order'))->with('success', 'Order berhasil disimpan!');
     }
+
 
 
     public function store()
@@ -122,10 +149,10 @@ class OrderController extends BaseController
             $totalHarga = 0;
             $items = [];
 
-            foreach ($produkIDs as $index => $id_produk) {
+            foreach ($produkIDs as $order => $id_produk) {
                 $produk = $this->produkModel->find($id_produk);
                 if ($produk) {
-                    $jumlah = (int) $jumlahs[$index];
+                    $jumlah = (int) $jumlahs[$order];
                     $subtotal = $jumlah * $produk['harga'];
                     $totalHarga += $subtotal;
 
@@ -178,18 +205,108 @@ class OrderController extends BaseController
         ]);
     }
 
+
+
+    public function edit($id_order)
+    {
+        $order = $this->orderModel->find($id_order);
+        $orderItems = $this->orderItemModel->where('id_order', $id_order)->findAll();
+    
+        return view('admin/order/edit', [
+            'order' => $order,
+            'orderItems' => $orderItems,
+            'produkModel' => $this->produkModel,
+            'judul' => 'Edit Order'
+        ]);
+    }
+    
+    public function konfirmasi_edit($orderId)
+    {
+        $produkDipilih = $this->request->getPost('produk');
+        $jumlahProduk  = $this->request->getPost('jumlah');
+    
+        $produkTerpilih = [];
+    
+        // Ambil produk dari input POST (jika ada perubahan)
+        if (!empty($produkDipilih)) {
+            foreach ($produkDipilih as $idProduk) {
+                $produk = $this->produkModel->find($idProduk);
+                if ($produk) {
+                    $jumlah = isset($jumlahProduk[$idProduk]) ? (int)$jumlahProduk[$idProduk] : 1;
+                    $produk['jumlah'] = $jumlah;
+                    $produk['subtotal'] = $jumlah * $produk['harga'];
+                    $produkTerpilih[] = $produk;
+                }
+            }
+        }
+    
+        // Tambahkan data order sebelumnya jika belum ada perubahan dari form
+        if (empty($produkTerpilih)) {
+            $produkItems = $this->orderItemModel
+                ->select('order_item.*, produk.nama_produk, produk.harga')
+                ->join('produk', 'produk.id_produk = order_item.id_produk')
+                ->where('order_item.id_order', $orderId)
+                ->findAll();
+    
+            $produkTerpilih = $produkItems;
+        }
+    
+        return view('admin/order/konfirmasi_edit', [
+            'judul' => 'Konfirmasi Edit Order',
+            'produk_terpilih' => $produkTerpilih,
+            'order_id' => $orderId
+        ]);
+    }
+    
+    public function update($orderId)
+    {
+        $produk = $this->request->getPost('produk');
+        $totalHarga = 0;
+    
+        if (!empty($produk)) {
+            // Hapus order item lama
+            $this->orderItemModel->where('id_order', $orderId)->delete();
+    
+            foreach ($produk as $item) {
+                $jumlah = $item['jumlah'];
+                $harga = $item['harga'];
+                $subtotal = $jumlah * $harga;
+    
+                $totalHarga += $subtotal;
+    
+                $data = [
+                    'id_order' => $orderId,
+                    'id_produk' => $item['id_produk'],
+                    'jumlah' => $jumlah,
+                    'total_harga' => $subtotal,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
+    
+                $this->orderItemModel->insert($data);
+            }
+    
+            // Update total order
+            $this->orderModel->update($orderId, [
+                'total_harga' => $totalHarga,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+        }
+    
+        return redirect()->to(base_url('admin/order'))->with('success', 'Order berhasil diperbarui.');
+    }
+    
+
     public function delete($id_order)
     {
         // Hapus data item order terlebih dahulu
         $this->orderItemModel->where('id_order', $id_order)->delete();
-    
+
         // Hapus data utama order
         $this->orderModel->delete($id_order);
-    
+
         // Set pesan berhasil dan redirect ke halaman utama order
         session()->setFlashdata('success', 'Order berhasil dihapus.');
         return redirect()->to(base_url('admin/order'));
     }
-    
-    
 }

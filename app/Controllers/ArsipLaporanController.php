@@ -20,8 +20,8 @@ class ArsipLaporanController extends BaseController
         $this->laporanModel = new LaporanModel();
     }
 
-    // Halaman awal arsip laporan per hari
-    public function index()
+    // Halaman arsip laporan per hari
+    public function arsipLaporanPerHari()
     {
         $data['judul'] = 'Arsip Laporan Penjualan PerHari';
         $laporan = $this->laporanModel->where('kategori', 'perhari')->findAll();
@@ -33,12 +33,11 @@ class ArsipLaporanController extends BaseController
 
         $data['laporan'] = $laporan;
 
-
         return view('admin/arsip_laporan/arsip_laporan_perhari', $data);
     }
 
-
-    public function perbulan()
+    // Halaman arsip laporan per bulan
+    public function arsipLaporanPerBulan()
     {
         $data['judul'] = 'Arsip Laporan Penjualan PerBulan';
         $laporan = $this->laporanModel->where('kategori', 'perbulan')->findAll();
@@ -49,7 +48,6 @@ class ArsipLaporanController extends BaseController
         }
 
         $data['laporan'] = $laporan;
-
 
         return view('admin/arsip_laporan/arsip_laporan_perbulan', $data);
     }

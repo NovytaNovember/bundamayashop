@@ -6,7 +6,7 @@
         <div class="content">
             <div class="container-fluid my-4">
                 <div class="paper p-4 shadow-sm bg-white rounded">
-                    <h4 class="mb-4"><?= $judul ?? 'Konfirmasi Order'; ?></h4>
+                    <h4 class="mb-4"><?= $judul ?? 'Konfirmasi Edit Order'; ?></h4>
 
                     <?php if (!empty($produk_terpilih)) : ?>
                         <div class="table-responsive">
@@ -31,7 +31,9 @@
                                         <tr class="text-center align-middle">
                                             <td><?= $no++; ?></td>
                                             <td><?= esc($pr['nama_produk']); ?></td>
-                                            <td><?= esc($pr['jumlah']); ?></td>
+                                            <td>
+                                                <input type="number" name="jumlah[<?= $pr['id_produk']; ?>]" value="<?= esc($pr['jumlah']); ?>" min="1" required>
+                                            </td>
                                             <td>Rp <?= number_format($pr['harga'], 0, ',', '.'); ?></td>
                                             <td>Rp <?= number_format($subtotal, 0, ',', '.'); ?></td>
                                         </tr>
@@ -49,7 +51,7 @@
                             <a href="<?= base_url('admin/order') ?>" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i> Kembali
                             </a>
-                            <form action="<?= base_url('admin/order/simpan') ?>" method="post">
+                            <form action="<?= base_url('admin/order/update/' . $order_id) ?>" method="post">
                                 <?= csrf_field(); ?>
                                 <input type="hidden" name="order_id" value="<?= $order_id ?>">
                                 <?php foreach ($produk_terpilih as $i => $pr): ?>
@@ -60,14 +62,14 @@
                                 <input type="hidden" name="total_harga" value="<?= array_sum(array_column($produk_terpilih, 'subtotal')); ?>">
 
                                 <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-check me-1"></i> Simpan Order
+                                    <i class="fas fa-check me-1"></i> Simpan Perubahan
                                 </button>
                             </form>
                         </div>
 
                     <?php else : ?>
                         <div class="alert alert-warning text-center">
-                            Tidak ada produk yang dipilih.
+                            Tidak ada produk yang dipilih untuk diubah.
                         </div>
                         <div class="mt-3">
                             <a href="<?= base_url('admin/order') ?>" class="btn btn-secondary">

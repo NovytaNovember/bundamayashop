@@ -295,6 +295,13 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="/admin/kategori" class="nav-link">
+                            <i class="fas fa-th-list"></i>
+                            <p>Kategori</p>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
                         <a href="/admin/produk" class="nav-link">
                             <i class="fas fa-birthday-cake"></i>
                             <p>Produk</p>
@@ -305,13 +312,6 @@
                         <a href="/admin/order" class="nav-link">
                             <i class="fas fa-shopping-cart"></i>
                             <p>Order</p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="/admin/kategori" class="nav-link">
-                            <i class="fas fa-th-list"></i>
-                            <p>Kategori</p>
                         </a>
                     </li>
 
