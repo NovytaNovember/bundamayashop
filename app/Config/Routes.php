@@ -35,9 +35,8 @@ $routes->group('admin', function ($routes) {
     $routes->post('order/store', 'OrderController::store'); // Simpan order
     $routes->get('order/edit/(:num)', 'OrderController::edit/$1'); // Halaman edit order
 
-    //$routes->post('order/update', 'OrderController::update'); // Update order
-    //$routes->post('order/update/(:num)', 'OrderController::update/$1');
-    $routes->get('order/konfirmasi_edit/(:num)', 'OrderController::konfirmasi_edit/$1');
+
+    $routes->post('order/konfirmasi_edit/(:num)', 'OrderController::konfirmasi_edit/$1');
     $routes->post('order/update/(:num)', 'OrderController::update/$1');
 
     $routes->get('order/delete/(:num)', 'OrderController::delete/$1'); // Hapus order
@@ -45,8 +44,10 @@ $routes->group('admin', function ($routes) {
     // Routes untuk Laporan
     $routes->get('laporan/laporan_harian', 'LaporanController::laporan_harian');
     $routes->get('laporan/laporan_bulanan', 'LaporanController::laporan_bulanan');
-    $routes->get('laporan/kirim_laporan_harian', 'LaporanController::kirim_laporan_harian');
-    $routes->get('laporan/kirim_laporan_bulanan', 'LaporanController::kirim_laporan_bulanan');
+    $routes->get('laporan/download_laporan_harian', 'LaporanController::download_laporan_harian');
+    $routes->get('laporan/download_laporan_bulanan', 'LaporanController::download_laporan_bulanan');
+
+    $routes->post('laporan/kirim_laporan_harian', 'LaporanController::kirim_laporan_harian');
 
     // Routes untuk Arsip Laporan
     $routes->get('arsip_laporan/arsip_laporan_perhari', 'ArsipLaporanController::arsipLaporanPerHari');

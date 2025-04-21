@@ -44,7 +44,7 @@
             <div class="container-fluid my-4">
                 <div class="paper p-4 shadow-sm bg-white rounded">
 
-                    <form action="<?= base_url('admin/order/update/' . $order['id_order']); ?>" method="POST">
+                    <form action="<?= base_url('admin/order/konfirmasi_edit/' . $order['id_order']); ?>" method="POST">
                         <input type="hidden" name="id_order" value="<?= $order['id_order']; ?>">
 
                         <div class="form-group mb-3">
@@ -124,9 +124,10 @@
                             <a href="<?= base_url('order/index'); ?>" class="btn btn-secondary">Kembali</a>
 
                             <!-- Tombol Lanjut Update -->
-                            <!-- Tombol Lanjut Update -->
-                            <a href="<?= base_url('admin/order/konfirmasi_edit/' . $order['id_order']); ?>" class="btn btn-primary">Lanjut Update</a>
 
+                            <button type="submit" class="btn btn-primary">
+                                Lanjut Update<i class="fas fa-arrow-right ms-1"></i>
+                            </button>
                         </div>
 
                     </form>

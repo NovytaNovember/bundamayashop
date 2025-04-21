@@ -25,7 +25,7 @@ class Laporan extends Migration
             'tahun' => [
                 'type'       => 'YEAR',
             ],
-            'total_penjualan_bulanan' => [
+            'total_penjualan' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
             ],

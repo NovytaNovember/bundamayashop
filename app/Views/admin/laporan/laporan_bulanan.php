@@ -18,19 +18,19 @@
                     </div>
 
                     <div class="d-flex gap-2">
-                            <!-- Tombol Download Laporan Bulanan -->
-                            <a href="<?= base_url('admin/laporan/kirim_laporan_bulanan'); ?>" class="btn btn-primary">
-                                <i class="fas fa-download"></i> Download Laporan Bulanan
-                            </a>
+                        <!-- Tombol Download Laporan Bulanan -->
+                        <a href="<?= base_url('admin/laporan/download_laporan_bulanan'); ?>" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Download Laporan Bulanan
+                        </a>
 
-                            <!-- Tombol Kirim Laporan Bulanan -->
-                            <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_bulanan'); ?>" method="post">
-                                <button type="submit" class="btn btn-success" id="submitButton">
-                                    <i class="fab fa-whatsapp"></i> Kirim Laporan Bulanan
-                                </button>
-                            </form>
+                        <!-- Tombol Kirim Laporan Bulanan -->
+                        <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_bulanan'); ?>" method="post">
+                            <button type="submit" class="btn btn-success" id="submitButton">
+                                <i class="fab fa-whatsapp"></i> Kirim Laporan Bulanan
+                            </button>
+                        </form>
 
-                        </div>
+                    </div>
 
 
                 </div>

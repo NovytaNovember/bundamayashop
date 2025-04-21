@@ -38,7 +38,7 @@
                                 <tr>
                                     <td><?= $no++ ?></td>
                                     <td><?= $item['created_at'] ?></td>
-                                    <td>Rp. <?= $item['total_penjualan_bulanan'] ?></td>
+                                    <td>Rp. <?= $item['total_penjualan'] ?></td>
                                     <td>
                                         <a href="#" class="btn btn-primary"><i class="fas fa-download"></i> Download</a>
                                         <a href="#" class="btn btn-info"><i class="fas fa-info"></i> Detail</a>

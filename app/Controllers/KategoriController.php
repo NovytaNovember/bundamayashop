@@ -24,7 +24,10 @@ class KategoriController extends BaseController
     public function store()
     {
         $this->kategoriModel->save([
-            'nama_kategori' => $this->request->getPost('nama_kategori')
+            'nama_kategori' => $this->request->getPost('nama_kategori'),
+            'created_at'  => date('Y-m-d H:i:s'),
+            'updated_at'  => date('Y-m-d H:i:s'),
+
         ]);
 
         return redirect()->to('/admin/kategori')->with('pesan', 'Data kategori berhasil ditambahkan.');
@@ -33,7 +36,9 @@ class KategoriController extends BaseController
     public function update()
     {
         $this->kategoriModel->update($this->request->getPost('id_kategori'), [
-            'nama_kategori' => $this->request->getPost('nama_kategori')
+            'nama_kategori' => $this->request->getPost('nama_kategori'),
+            'created_at'  => date('Y-m-d H:i:s'),
+            'updated_at'  => date('Y-m-d H:i:s'),
         ]);
 
         return redirect()->to('/admin/kategori')->with('pesan', 'Data kategori berhasil diupdate.');

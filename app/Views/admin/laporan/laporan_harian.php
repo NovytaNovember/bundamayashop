@@ -4,6 +4,12 @@
 <div class="content-wrapper">
     <div class="content">
         <div class="container-fluid">
+            <?php if (session()->getFlashdata('success')) : ?>
+                <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
+            <?php endif; ?>
+            <?php if (session()->getFlashdata('error')) : ?>
+                <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
+            <?php endif; ?>
 
             <!-- Tabel Laporan Penjualan -->
             <?php if (isset($laporan)) : ?>
@@ -22,7 +28,7 @@
 
                         <div class="d-flex gap-2">
                             <!-- Tombol Download Laporan Harian -->
-                            <a href="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" class="btn btn-primary">
+                            <a href="<?= base_url('admin/laporan/download_laporan_harian'); ?>" class="btn btn-primary">
                                 <i class="fas fa-download"></i> Download Laporan Harian
                             </a>
 

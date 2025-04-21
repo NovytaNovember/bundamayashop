@@ -8,5 +8,5 @@ class KategoriModel extends Model
 {
     protected $table = 'kategori';
     protected $primaryKey = 'id_kategori';
-    protected $allowedFields = ['nama_kategori'];
+    protected $allowedFields = ['nama_kategori', 'created_at', 'updated_at'];
 }

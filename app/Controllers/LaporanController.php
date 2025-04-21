@@ -7,16 +7,19 @@ use App\Models\OrderModel;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\LaporanModel;
 
 class LaporanController extends BaseController
 {
     protected $orderItemModel;
     protected $orderModel;
+    protected $laporanModel;
 
     public function __construct()
     {
         $this->orderItemModel = new OrderItemModel();
         $this->orderModel = new OrderModel();
+        $this->laporanModel = new LaporanModel();
     }
 
     // Menampilkan halaman laporan harian
@@ -46,13 +49,13 @@ class LaporanController extends BaseController
         return view('admin/laporan/laporan_harian', $data);
     }
 
-    // Fungsi kirim laporan harian
-    public function kirim_laporan_harian()
+    // Fungsi download laporan harian
+    public function download_laporan_harian()
     {
         $orders = $this->orderModel
             ->orderBy('created_at', 'DESC')
             ->findAll();
-    
+
         foreach ($orders as &$order) {
             $order['items'] = $this->orderItemModel
                 ->select('order_item.*, produk.nama_produk, produk.harga')
@@ -60,40 +63,172 @@ class LaporanController extends BaseController
                 ->where('order_item.id_order', $order['id_order'])
                 ->findAll();
         }
-    
+
+        $laporan = $this->laporanModel->where('kategori', 'perhari')->findAll();
+
         $data = [
             'judul' => 'Laporan',
             'laporan' => $orders,
         ];
-    
+
+        // Logika untuk menghitung total
+        $total = 0;
+
+        foreach ($orders as $order) {
+            $total += $order['total_harga'];
+        }
+
         // Render HTML dari view
         $view_laporan = view('admin/laporan/pdf_laporan_harian', $data);
-    
+
         // Inisialisasi Dompdf
         $dompdf = new Dompdf();
         $dompdf->loadHtml($view_laporan);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-    
+
         // Ambil output PDF-nya
         $output = $dompdf->output();
-    
+
         // Tentukan path penyimpanan (misalnya: public/laporan/laporan_harian.pdf)
         $path = WRITEPATH . '../public/laporan/';
         if (!is_dir($path)) {
             mkdir($path, 0777, true); // buat folder jika belum ada
         }
-    
+
         $filename = 'laporan_harian_' . date('Ymd_His') . '.pdf';
         file_put_contents($path . $filename, $output);
-    
+
+
+
+        $found = false;
+        $currentDate = date('Y-m-d'); // ambil tanggal hari ini
+        $currentTime = date('Y-m-d H:i:s');
+
+        foreach ($laporan as $data) {
+            // Ambil hanya bagian tanggal dari created_at
+            $laporanDate = date('Y-m-d', strtotime($data['created_at']));
+
+            if ($laporanDate == $currentDate) {
+                // Jika ditemukan laporan yang dibuat hari ini
+                $this->laporanModel->update($data['id_laporan'], [
+                    'file_laporan'     => $filename,
+                    'kategori'         => 'perhari',
+                    'total_penjualan'  => $total,
+                    'updated_at'       => $currentTime,
+                ]);
+                $found = true;
+                break;
+            }
+        }
+
+        if (!$found) {
+            // Jika belum ada laporan yang dibuat hari ini
+            $this->laporanModel->insert([
+                'file_laporan'     => $filename,
+                'kategori'         => 'perhari',
+                'total_penjualan'  => $total,
+                'created_at'       => $currentTime,
+                'updated_at'       => $currentTime,
+            ]);
+        }
+
+
         // Stream ke user (download)
         return $this->response
             ->setHeader('Content-Type', 'application/pdf')
             ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
             ->setBody($output);
     }
-    
+
+    // Fungsi kirim laporan harian
+    public function kirim_laporan_harian()
+    {
+        // Ambil tanggal hari ini tanpa waktu
+        $currentDate = date('Y-m-d');
+
+        $orders = $this->orderModel
+            ->where('DATE(created_at)', $currentDate)
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
+
+        $orderItemModel = new \App\Models\OrderItemModel();
+
+        // Loop order dan ambil item-order-nya
+        foreach ($orders as &$order) {
+            $order['items'] = $orderItemModel
+                ->select('order_item.*, produk.nama_produk, produk.harga')
+                ->join('produk', 'produk.id_produk = order_item.id_produk')
+                ->where('order_item.id_order', $order['id_order'])
+                ->findAll();
+        }
+
+        $token = 'Abi67U9qby5SpVoEYU9H'; // token kunci fonnte
+        $no_wa = '6282256893105'; // tanpa tanda +, awali dengan 62
+        $tanggal = date('d F Y');
+
+        // Mulai pesan
+        $pesan = "📊 *Laporan Penjualan " . $tanggal . "*\n\n";
+
+        // Inisialisasi variabel
+        $totalPendapatan = 0;
+        $totalOrder = 0;
+
+        foreach ($orders as $order) {
+            $totalOrder++;
+            foreach ($order['items'] as $item) {
+                $pesan .= "- *" . $item['nama_produk'] . "*: Rp " . number_format($item['total_harga'], 0, ',', '.') . "\n";
+                $totalPendapatan += $item['total_harga'];
+            }
+        }
+
+        $pesan .= "\nTotal Order: " . $totalOrder . "\n";
+        $pesan .= "Total Pendapatan: Rp " . number_format($totalPendapatan, 0, ',', '.') . "\n";
+        $pesan .= "\n\nTerima kasih atas kerja keras tim 🙌";
+
+        // Kirim ke API Fonnte
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => array(
+                'target' => $no_wa,
+                'message' => $pesan,
+                'countryCode' => '62'
+            ),
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: $token"
+            )
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) {
+            // cURL error
+            return redirect()->to(base_url('admin/laporan/laporan_harian'))
+                ->with('error', 'Laporan gagal dikirim. Error: ' . $err);
+        } else {
+            // Decode response dari Fonnte
+            $result = json_decode($response, true);
+
+            // Cek status Fonnte
+            if (isset($result['status']) && $result['status'] === true) {
+                return redirect()->to(base_url('admin/laporan/laporan_harian'))
+                    ->with('success', 'Laporan berhasil dikirim.');
+            } else {
+                $message = $result['message'] ?? '';
+                return redirect()->to(base_url('admin/laporan/laporan_harian'))
+                    ->with('error', 'Laporan gagal dikirim. ' . $message);
+            }
+        }
+    }
+
+
+
 
     // Menampilkan halaman laporan bulanan
     public function laporan_bulanan()
@@ -122,8 +257,8 @@ class LaporanController extends BaseController
         return view('admin/laporan/laporan_bulanan', $data);
     }
 
-    // Fungsi kirim laporan bulanan
-    public function kirim_laporan_bulanan()
+    // Fungsi download laporan bulanan
+    public function download_laporan_bulanan()
     {
         $orderItems = $this->orderItemModel
             ->select('
@@ -137,36 +272,71 @@ class LaporanController extends BaseController
             ->groupBy('order_item.id_produk, produk.nama_produk, produk.harga')
             ->orderBy('produk.nama_produk', 'ASC')
             ->findAll();
-    
-        $totalKeseluruhan = array_sum(array_column($orderItems, 'total_penjualan'));
-    
+        $laporan = $this->laporanModel->where('kategori', 'perbulan')->findAll();
+
+        $total = array_sum(array_column($orderItems, 'total_penjualan'));
+
         $data = [
             'judul' => 'Laporan Penjualan Bulanan',
             'laporan' => $orderItems,
-            'totalKeseluruhan' => $totalKeseluruhan,
+            'totalKeseluruhan' => $total,
         ];
-    
+
         $view_laporan = view('admin/laporan/pdf_laporan_bulanan', $data);
-    
+
         $dompdf = new Dompdf();
         $dompdf->loadHtml($view_laporan);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-    
+
         $output = $dompdf->output();
-    
+
         $path = WRITEPATH . '../public/laporan/';
         if (!is_dir($path)) {
             mkdir($path, 0777, true);
         }
-    
+
         $filename = 'laporan_bulanan_' . date('Ymd_His') . '.pdf';
         file_put_contents($path . $filename, $output);
-    
+
+        $found = false;
+        $currentMonth = date('m');
+        $currentYear  = date('Y');
+
+        foreach ($laporan as $data) {
+            if ($data['bulan'] == $currentMonth && $data['tahun'] == $currentYear) {
+                // Jika ditemukan data laporan bulan dan tahun yang sama
+                $this->laporanModel->update($data['id_laporan'], [
+                    'file_laporan'     => $filename,
+                    'bulan'            => $currentMonth,
+                    'tahun'            => $currentYear,
+                    'kategori'         => 'perbulan',
+                    'total_penjualan'  => $total,
+                    'updated_at'       => date('Y-m-d H:i:s'),
+                ]);
+                $found = true;
+                break; // berhenti setelah ketemu
+            }
+        }
+
+        if (!$found) {
+            // Jika tidak ada data yang cocok, lakukan insert
+            $this->laporanModel->insert([
+                'file_laporan'     => $filename,
+                'bulan'            => $currentMonth,
+                'tahun'            => $currentYear,
+                'kategori'         => 'perbulan',
+                'total_penjualan'  => $total,
+                'created_at'       => date('Y-m-d H:i:s'),
+                'updated_at'       => date('Y-m-d H:i:s'),
+            ]);
+        }
+
+
+
         return $this->response
             ->setHeader('Content-Type', 'application/pdf')
             ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
             ->setBody($output);
     }
-    
 }
