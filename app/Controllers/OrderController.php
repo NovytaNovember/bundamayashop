@@ -55,8 +55,6 @@ class OrderController extends BaseController
         return view('admin/order/tambah', $data);
     }
 
-
-
     public function konfirmasi($orderId = null)
     {
         $produkDipilih = $this->request->getPost('produk');
@@ -137,7 +135,6 @@ class OrderController extends BaseController
 
         return redirect()->to(base_url('admin/order'))->with('success', 'Order berhasil disimpan!');
     }
-
 
 
     public function store()

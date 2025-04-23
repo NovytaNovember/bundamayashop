@@ -3,6 +3,7 @@
 
 <div class="content-wrapper">
     <div class="content">
+        
         <div class="container-fluid">
             <?php if (session()->getFlashdata('success')) : ?>
                 <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>

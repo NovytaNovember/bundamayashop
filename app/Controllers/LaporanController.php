@@ -228,8 +228,6 @@ class LaporanController extends BaseController
     }
 
 
-
-
     // Menampilkan halaman laporan bulanan
     public function laporan_bulanan()
     {
@@ -338,5 +336,80 @@ class LaporanController extends BaseController
             ->setHeader('Content-Type', 'application/pdf')
             ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
             ->setBody($output);
+    }
+    public function kirim_laporan_bulanan()
+    {
+        // Ambil bulan dan tahun saat ini
+        $currentMonth = date('m');
+        $currentYear = date('Y');
+        $bulanTahun = date('F Y'); // Contoh: April 2025
+
+        $orderItemModel = new \App\Models\OrderItemModel();
+
+        // Ambil data order item yang terhubung dengan order pada bulan ini
+        $items = $orderItemModel
+            ->select('order_item.id_produk, produk.nama_produk, produk.harga, SUM(order_item.jumlah) as total_jumlah, SUM(order_item.total_harga) as total_pendapatan')
+            ->join('produk', 'produk.id_produk = order_item.id_produk')
+            ->join('order', 'order.id_order = order_item.id_order')
+            ->where("MONTH(order.created_at)", $currentMonth)
+            ->where("YEAR(order.created_at)", $currentYear)
+            ->groupBy('order_item.id_produk, produk.nama_produk, produk.harga')
+            ->orderBy('produk.nama_produk', 'ASC')
+            ->findAll();
+
+
+        $token = 'Abi67U9qby5SpVoEYU9H'; // Token Fonnte
+        $no_wa = '6282256893105'; // Nomor WhatsApp tujuan
+
+        $pesan = "📦 *Laporan Penjualan Bulanan - $bulanTahun*\n\n";
+
+        $totalPendapatan = 0;
+        $totalItem = 0;
+
+        foreach ($items as $item) {
+            $pesan .= "- *" . $item['nama_produk'] . "*: " . $item['total_jumlah'] . " item | Rp " . number_format($item['total_pendapatan'], 0, ',', '.') . "\n";
+            $totalPendapatan += $item['total_pendapatan'];
+            $totalItem += $item['total_jumlah'];
+        }
+
+        $pesan .= "\nTotal Item Terjual: " . $totalItem . "\n";
+        $pesan .= "Total Pendapatan: Rp " . number_format($totalPendapatan, 0, ',', '.') . "\n";
+        $pesan .= "\nTerima kasih atas kerja keras tim! 💪";
+
+        // Kirim ke API Fonnte
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => array(
+                'target' => $no_wa,
+                'message' => $pesan,
+                'countryCode' => '62'
+            ),
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: $token"
+            )
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) {
+            return redirect()->to(base_url('admin/laporan/laporan_bulanan'))
+                ->with('error', 'Laporan gagal dikirim. Error: ' . $err);
+        } else {
+            $result = json_decode($response, true);
+            if (isset($result['status']) && $result['status'] === true) {
+                return redirect()->to(base_url('admin/laporan/laporan_bulanan'))
+                    ->with('success', 'Laporan bulanan berhasil dikirim.');
+            } else {
+                $message = $result['message'] ?? '';
+                return redirect()->to(base_url('admin/laporan/laporan_bulanan'))
+                    ->with('error', 'Laporan gagal dikirim. ' . $message);
+            }
+        }
     }
 }

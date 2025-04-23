@@ -79,8 +79,6 @@ class ProdukController extends BaseController
         }
     }
 
-
-
     public function update()
     {
         $id = $this->request->getPost('id_produk');
@@ -134,8 +132,6 @@ class ProdukController extends BaseController
 
         return redirect()->to('/admin/produk');
     }
-
-
 
     public function delete($id)
     {

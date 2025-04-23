@@ -4,6 +4,12 @@
 <div class="content-wrapper">
     <div class="content">
         <div class="container-fluid">
+        <?php if (session()->getFlashdata('success')) : ?>
+                <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
+            <?php endif; ?>
+            <?php if (session()->getFlashdata('error')) : ?>
+                <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
+            <?php endif; ?>
 
             <div class="paper mt-4">
                 <div class="d-flex justify-content-between mb-3">

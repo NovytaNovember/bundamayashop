@@ -46,8 +46,8 @@ $routes->group('admin', function ($routes) {
     $routes->get('laporan/laporan_bulanan', 'LaporanController::laporan_bulanan');
     $routes->get('laporan/download_laporan_harian', 'LaporanController::download_laporan_harian');
     $routes->get('laporan/download_laporan_bulanan', 'LaporanController::download_laporan_bulanan');
-
     $routes->post('laporan/kirim_laporan_harian', 'LaporanController::kirim_laporan_harian');
+    $routes->post('laporan/kirim_laporan_bulanan', 'LaporanController::kirim_laporan_bulanan');
 
     // Routes untuk Arsip Laporan
     $routes->get('arsip_laporan/arsip_laporan_perhari', 'ArsipLaporanController::arsipLaporanPerHari');
