@@ -6,9 +6,8 @@
 
         <div class="container-fluid">
 
-
             <!-- Tabel Laporan Penjualan -->
-            <?php if (isset($laporan)) : ?>
+            <?php if (isset($laporan) && count($laporan) > 0) : ?>
                 <div class="paper mt-4">
                     <?php if (session()->getFlashdata('success')) : ?>
                         <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
@@ -27,13 +26,11 @@
                             </a>
                         </div>
 
-
                         <div class="d-flex gap-2">
                             <!-- Tombol Download Laporan Harian -->
                             <a href="<?= base_url('admin/laporan/download_laporan_harian?tanggal=' . ($tanggal ?? date('Y-m-d'))); ?>" class="btn btn-primary">
                                 <i class="fas fa-download"></i> Arsip / Download Laporan Harian
                             </a>
-
 
                             <!-- Tombol Kirim Laporan Harian -->
                             <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" method="post">
@@ -41,10 +38,9 @@
                                     <i class="fab fa-whatsapp"></i> Kirim Laporan Harian
                                 </button>
                             </form>
-
                         </div>
-
                     </div>
+
                     <form method="get" action="<?= base_url('admin/laporan/laporan_harian'); ?>" class="mb-3 d-flex gap-2 align-items-end">
                         <div>
                             <label for="tanggal" class="form-label mb-1">Filter Tanggal:</label>
@@ -56,8 +52,6 @@
                             </button>
                         </div>
                     </form>
-
-
 
                     <div class="card-body">
                         <table class="table table-bordered table-hover">
@@ -114,31 +108,14 @@
                         </table>
                     </div>
                 </div>
+            <?php else: ?>
+                <!-- Pesan jika tidak ada laporan yang ditemukan -->
+                <div class="alert alert-warning">
+                    Tidak ada data penjualan untuk tanggal yang dipilih.
+                </div>
             <?php endif; ?>
         </div>
     </div>
 </div>
-
-<!-- <script>
-    // Menggunakan JavaScript untuk mencegah reload halaman
-    document.getElementById("laporanForm").addEventListener("submit", function(e) {
-        e.preventDefault(); // Mencegah form submit secara default
-        
-        // Mengirim form menggunakan AJAX
-        fetch("<?= base_url('laporan/kirim_laporan_harian'); ?>", {
-            method: "POST",
-            body: new FormData(this),
-        })
-        .then(response => {
-            if (response.ok) {
-                // Jika sukses, tampilkan notifikasi
-                alert("Laporan berhasil dikirim dan diunduh.");
-                location.reload(); // Reload halaman agar tampilkan pesan baru
-            } else {
-                alert("Terjadi kesalahan saat mengirim laporan.");
-            }
-        });
-    });
-</script> -->
 
 <?= $this->endSection(); ?>

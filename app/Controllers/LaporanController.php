@@ -25,9 +25,11 @@ class LaporanController extends BaseController
     // Menampilkan halaman laporan harian
     public function laporan_harian()
     {
-        // Ambil data order item yang ada
+        $tanggal = $this->request->getGet('tanggal') ?? date('Y-m-d'); // Mengambil tanggal dari form atau defaultkan ke hari ini
+
+        // Ambil data order item berdasarkan tanggal yang dipilih
         $orders = $this->orderModel
-            ->where('DATE(created_at)', date('Y-m-d'))
+            ->where('DATE(created_at)', $tanggal) // Filter berdasarkan tanggal
             ->orderBy('created_at', 'DESC')
             ->findAll();
 
@@ -45,175 +47,140 @@ class LaporanController extends BaseController
         $data = [
             'judul' => 'Laporan',
             'laporan' => $orders,
+            'tanggal' => $tanggal, // Mengirimkan tanggal ke view
         ];
 
         return view('admin/laporan/laporan_harian', $data);
     }
 
+
     // Fungsi download laporan harian
     public function download_laporan_harian()
     {
-        $orderItemModel = new \App\Models\OrderItemModel();
+        $tanggal = $this->request->getGet('tanggal') ?? date('Y-m-d');
+    
         $orders = $this->orderModel
-            ->where('DATE(created_at)', date('Y-m-d'))
+            ->where('DATE(created_at)', $tanggal)
             ->orderBy('created_at', 'DESC')
             ->findAll();
-
-
+    
+        $orderItemModel = new \App\Models\OrderItemModel();
+        $total = 0;
+    
         foreach ($orders as &$order) {
             $order['items'] = $orderItemModel
                 ->select('order_item.*, produk.nama_produk, produk.harga')
                 ->join('produk', 'produk.id_produk = order_item.id_produk')
                 ->where('order_item.id_order', $order['id_order'])
                 ->findAll();
+    
+            // Hitung total untuk hari itu
+            foreach ($order['items'] as $item) {
+                $total += $item['total_harga'];
+            }
         }
-
-        $laporan = $this->laporanModel->where('kategori', 'perhari')->findAll();
-
+    
         $data = [
-            'judul' => 'Laporan',
+            'judul' => 'Laporan Penjualan Harian',
             'laporan' => $orders,
+            'tanggal' => $tanggal,
+            'totalKeseluruhan' => $total,
         ];
-
-        // Logika untuk menghitung total
-        $total = 0;
-
-        foreach ($orders as $order) {
-            $total += $order['total_harga'];
-        }
-
-        // Render HTML dari view
+    
         $view_laporan = view('admin/laporan/pdf_laporan_harian', $data);
-
-        // Inisialisasi Dompdf
-        $dompdf = new Dompdf();
+    
+        $dompdf = new \Dompdf\Dompdf();
         $dompdf->loadHtml($view_laporan);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-
-        // Ambil output PDF-nya
+    
         $output = $dompdf->output();
-
-        // Tentukan path penyimpanan (misalnya: public/laporan/laporan_harian.pdf)
+    
         $path = WRITEPATH . '../public/laporan/';
         if (!is_dir($path)) {
-            mkdir($path, 0777, true); // buat folder jika belum ada
+            mkdir($path, 0777, true);
         }
-
+    
         $filename = 'laporan_harian_' . date('Ymd_His') . '.pdf';
         file_put_contents($path . $filename, $output);
+    
+       // Kode untuk penyimpanan laporan di database
+       $laporan = $this->laporanModel->where('kategori', 'perhari')->findAll();
+       $found = false;
+       $currentDate = date('Y-m-d'); // ambil tanggal hari ini
+       $currentTime = $orders[0]['created_at'];
 
+       foreach ($laporan as $data) {
+           // Ambil hanya bagian tanggal dari created_at
+           $laporanDate = date('Y-m-d', strtotime($data['created_at']));
 
+           if ($laporanDate == $currentDate) {
+               // Jika ditemukan laporan yang dibuat hari ini
+               $this->laporanModel->update($data['id_laporan'], [
+                   'file_laporan'     => $filename,
+                   'kategori'         => 'perhari',
+                   'total_penjualan'  => $total,
+                   'updated_at'       => $currentTime,
+               ]);
+               $found = true;
+               break;
+           }
+       }
 
-        $found = false;
-        $currentDate = date('Y-m-d'); // ambil tanggal hari ini
-        $currentTime = $orders[0]['created_at'];
-
-        foreach ($laporan as $data) {
-            // Ambil hanya bagian tanggal dari created_at
-            $laporanDate = date('Y-m-d', strtotime($data['created_at']));
-
-            if ($laporanDate == $currentDate) {
-                // Jika ditemukan laporan yang dibuat hari ini
-                $this->laporanModel->update($data['id_laporan'], [
-                    'file_laporan'     => $filename,
-                    'kategori'         => 'perhari',
-                    'total_penjualan'  => $total,
-                    'updated_at'       => $currentTime,
-                ]);
-                $found = true;
-                break;
-            }
-        }
-
-        if (!$found) {
-            // Jika belum ada laporan yang dibuat hari ini
-            $this->laporanModel->insert([
-                'file_laporan'     => $filename,
-                'kategori'         => 'perhari',
-                'total_penjualan'  => $total,
-                'created_at'       => $currentTime,
-                'updated_at'       => $currentTime,
-            ]);
-        }
-
-
-        // Stream ke user (download)
+       if (!$found) {
+           // Jika belum ada laporan yang dibuat hari ini
+           $this->laporanModel->insert([
+               'file_laporan'     => $filename,
+               'kategori'         => 'perhari',
+               'total_penjualan'  => $total,
+               'created_at'       => $currentTime,
+               'updated_at'       => $currentTime,
+           ]);
+       }
+    
         return $this->response
             ->setHeader('Content-Type', 'application/pdf')
             ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
             ->setBody($output);
     }
-
-    // Fungsi kirim laporan harian
+    
     public function kirim_laporan_harian()
     {
-        // Ambil tanggal hari ini tanpa waktu
         $currentDate = date('Y-m-d');
-
-        $orders = $this->orderModel
-            ->where('DATE(created_at)', $currentDate)
-            ->orderBy('created_at', 'DESC')
-            ->findAll();
+        $tanggalFormat = date('d F Y');
 
         $orderItemModel = new \App\Models\OrderItemModel();
 
-        // Loop order dan ambil item-order-nya
-        foreach ($orders as &$order) {
-            $order['items'] = $orderItemModel
-                ->select('order_item.*, produk.nama_produk, produk.harga')
-                ->join('produk', 'produk.id_produk = order_item.id_produk')
-                ->where('order_item.id_order', $order['id_order'])
-                ->findAll();
-        }
+        // Ambil data order item yang terhubung dengan order pada hari ini
+        $items = $orderItemModel
+            ->select('order_item.id_produk, produk.nama_produk, produk.harga, SUM(order_item.jumlah) as total_jumlah, SUM(order_item.total_harga) as total_pendapatan')
+            ->join('produk', 'produk.id_produk = order_item.id_produk')
+            ->join('order', 'order.id_order = order_item.id_order')
+            ->where("DATE(order.created_at)", $currentDate)
+            ->groupBy('order_item.id_produk, produk.nama_produk, produk.harga')
+            ->orderBy('produk.nama_produk', 'ASC')
+            ->findAll();
 
-        $token = 'Abi67U9qby5SpVoEYU9H'; // token kunci fonnte
-        $no_wa = '6282256893105'; // tanpa tanda +, awali dengan 62
-        $tanggal = date('d F Y');
+        $token = 'Abi67U9qby5SpVoEYU9H';
+        $no_wa = '6282256893105';
 
-        // Mulai pesan
-        $pesan = "📊 *Laporan Penjualan $tanggal*\n\n";
+        $pesan = "📊 *Laporan Penjualan $tanggalFormat*\n\n";
 
-        // Inisialisasi variabel
         $totalPendapatan = 0;
-        $totalOrder = 0;
-        $totalItemTerjual = 0;
+        $totalItem = 0;
 
-        foreach ($orders as $order) {
-            $totalOrder++;
-            $produk_counter = [];
-
-            foreach ($order['items'] as $item) {
-                $nama_produk = $item['nama_produk'];
-
-                if (!isset($produk_counter[$nama_produk])) {
-                    $produk_counter[$nama_produk] = [
-                        'jumlah' => 0,
-                        'total_harga' => 0,
-                    ];
-                }
-
-                $produk_counter[$nama_produk]['jumlah'] += $item['jumlah'];
-                $produk_counter[$nama_produk]['total_harga'] += $item['total_harga'];
-            }
-
-            foreach ($produk_counter as $nama_produk => $info) {
-                $pesan .= "- *$nama_produk* (" . $info['jumlah'] . " item): Rp " . number_format($info['total_harga'], 0, ',', '.') . "\n";
-                $totalPendapatan += $info['total_harga'];
-                $totalItemTerjual += $info['jumlah'];
-            }
+        foreach ($items as $item) {
+            $pesan .= "- *" . $item['nama_produk'] . "*: " . $item['total_jumlah'] . " item | Rp " . number_format($item['total_pendapatan'], 0, ',', '.') . "\n";
+            $totalPendapatan += $item['total_pendapatan'];
+            $totalItem += $item['total_jumlah'];
         }
 
-
-
-        $pesan .= "\nTotal Order: $totalOrder\n";
-        $pesan .= "Total Item Terjual: $totalItemTerjual\n";
+        $pesan .= "\nTotal Item Terjual: " . $totalItem . "\n";
         $pesan .= "Total Pendapatan: Rp " . number_format($totalPendapatan, 0, ',', '.') . "\n";
-        $pesan .= "\n\nTerima kasih atas kerja keras tim 🙌";
+        $pesan .= "\nTerima kasih atas kerja keras tim! 🙌";
 
-        // Kirim ke API Fonnte
+        // Kirim ke Fonnte
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.fonnte.com/send',
             CURLOPT_RETURNTRANSFER => true,
@@ -247,7 +214,6 @@ class LaporanController extends BaseController
             }
         }
     }
-
 
 
     // Menampilkan halaman laporan bulanan
