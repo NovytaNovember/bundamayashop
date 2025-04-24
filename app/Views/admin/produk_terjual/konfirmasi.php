@@ -6,7 +6,7 @@
         <div class="content">
             <div class="container-fluid my-4">
                 <div class="paper p-4 shadow-sm bg-white rounded">
-                    <h4 class="mb-4"><?= $judul ?? 'Konfirmasi Order'; ?></h4>
+                    <h4 class="mb-4"><?= $judul ?? 'Konfirmasi Produk Terjual'; ?></h4>
 
                     <?php if (!empty($produk_terpilih)) : ?>
                         <div class="table-responsive">

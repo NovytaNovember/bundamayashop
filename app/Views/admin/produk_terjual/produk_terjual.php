@@ -12,7 +12,7 @@
                     <?php if (session()->getFlashdata('error')) : ?>
                         <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
                     <?php endif; ?>
-                    <!-- Tombol Tambah Order -->
+                    <!-- Tombol Tambah Produk Terjual -->
                     <div class="d-flex justify-content-start align-items-center mb-4">
                         <a href="<?= base_url('admin/produk_terjual/tambah') ?>" class="btn btn-success">
                             <i class="fas fa-plus me-1"></i> Tambah Produk Terjual

@@ -44,15 +44,15 @@
             <div class="container-fluid my-4">
                 <div class="paper p-4 shadow-sm bg-white rounded">
 
-                    <form action="<?= base_url('admin/order/konfirmasi_edit/' . $order['id_order']); ?>" method="POST">
+                    <form action="<?= base_url('admin/produk_terjual/konfirmasi_edit/' . $order['id_order']); ?>" method="POST">
                         <input type="hidden" name="id_order" value="<?= $order['id_order']; ?>">
 
                         <div class="form-group mb-3">
-                            <label for="tanggal_order">Tanggal Order</label>
+                            <label for="tanggal_order">Tanggal Produk Terjual</label>
                             <input type="date" name="tanggal_order" id="tanggal_order" class="form-control" value="<?= date('Y-m-d', strtotime($order['created_at'])); ?>" required>
                         </div>
 
-                        <h5>Produk Order yang Dipilih:</h5>
+                        <h5>Produk Produk Terjual yang Dipilih:</h5>
                         <div class="row">
                             <?php foreach ($orderItems as $item): ?>
                                 <div class="col-md-4">
@@ -84,7 +84,7 @@
                             <?php endforeach; ?>
                         </div>
 
-                        <h5>Tambah Produk Order Baru:</h5>
+                        <h5>Tambah Produk Terjual Baru:</h5>
                         <div class="row">
                             <?php foreach ($produkModel->findAll() as $produk): ?>
                                 <div class="col-md-4">

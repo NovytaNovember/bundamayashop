@@ -6,7 +6,7 @@ use App\Models\OrderModel;
 use App\Models\OrderItemModel;
 use App\Models\ProdukModel;
 
-class OrderController extends BaseController
+class ProdukTerjualController extends BaseController
 {
     protected $orderModel;
     protected $orderItemModel;
@@ -19,7 +19,7 @@ class OrderController extends BaseController
         $this->produkModel     = new ProdukModel();
     }
 
-    public function order()
+    public function index()
     {
         $orders = $this->orderModel
             ->orderBy('created_at', 'DESC')
@@ -41,7 +41,7 @@ class OrderController extends BaseController
             'orders' => $orders,
         ];
 
-        return view('admin/order/order', $data);
+        return view('admin/produk_terjual/produk_terjual', $data);
     }
 
 
@@ -52,7 +52,7 @@ class OrderController extends BaseController
             'produk' => $this->produkModel->findAll()
         ];
 
-        return view('admin/order/tambah', $data);
+        return view('admin/produk_terjual/tambah', $data);
     }
 
     public function konfirmasi($orderId = null)
@@ -87,7 +87,7 @@ class OrderController extends BaseController
             }
         }
 
-        return view('admin/order/konfirmasi', [
+        return view('admin/produk_terjual/konfirmasi', [
             'judul' => 'Konfirmasi Produk Terjual',
             'produk_terpilih' => $produkTerpilih,
             'order_id' => $orderId // Kirimkan order_id jika mengedit

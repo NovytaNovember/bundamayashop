@@ -21,25 +21,24 @@ $routes->group('admin', function ($routes) {
     $routes->get('produk/delete/(:num)', 'ProdukController::delete/$1'); // Menghapus produk berdasarkan ID produk
 
     // Routes untuk Kategori
-    $routes->get('kategori', 'KategoriController::kategori');
+    $routes->get('kategori', 'KategoriController::index');
     $routes->post('kategori/store', 'KategoriController::store');
     $routes->post('kategori/update', 'KategoriController::update');
     $routes->get('kategori/delete/(:num)', 'KategoriController::delete/$1');
 
 
     // Routes untuk Order
-    $routes->get('produk_terjual', 'OrderController::order'); // Menampilkan daftar order
-    $routes->get('produk_terjual/tambah', 'OrderController::tambah'); // Halaman tambah order
-    $routes->post('produk_terjual/konfirmasi', 'OrderController::konfirmasi'); // Konfirmasi sebelum simpan
-    $routes->post('produk_terjual/simpan', 'OrderController::simpan');
-    $routes->post('produk_terjual/store', 'OrderController::store'); // Simpan order
-    $routes->get('produk_terjual/edit/(:num)', 'OrderController::edit/$1'); // Halaman edit order
+    $routes->get('produk_terjual', 'ProdukTerjualController::index'); // Menampilkan daftar produk terjual
+    $routes->get('produk_terjual/tambah', 'ProdukTerjualController::tambah'); // Halaman tambah produk terjual
+    $routes->post('produk_terjual/konfirmasi', 'ProdukTerjualController::konfirmasi'); // Konfirmasi sebelum simpan
+    $routes->post('produk_terjual/simpan', 'ProdukTerjualController::simpan');
+    $routes->post('produk_terjual/store', 'ProdukTerjualController::store'); // Simpan produk terjual
+    $routes->get('produk_terjual/edit/(:num)', 'ProdukTerjualController::edit/$1'); // Halaman edit produk terjual
 
+    $routes->post('produk_terjual/konfirmasi_edit/(:num)', 'ProdukTerjualController::konfirmasi_edit/$1');
+    $routes->post('produk_terjual/update/(:num)', 'ProdukTerjualController::update/$1');
 
-    $routes->post('produk_terjual/konfirmasi_edit/(:num)', 'OrderController::konfirmasi_edit/$1');
-    $routes->post('produk_terjual/update/(:num)', 'OrderController::update/$1');
-
-    $routes->get('produk_terjual/delete/(:num)', 'OrderController::delete/$1'); // Hapus order
+    $routes->get('produk_terjual/delete/(:num)', 'ProdukTerjualController::delete/$1'); // Hapus produk terjual
 
     // Routes untuk Laporan
     $routes->get('laporan/laporan_harian', 'LaporanController::laporan_harian');

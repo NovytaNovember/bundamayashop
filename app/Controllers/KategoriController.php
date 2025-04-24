@@ -14,7 +14,7 @@ class KategoriController extends BaseController
         $this->kategoriModel = new KategoriModel();
     }
 
-    public function kategori()
+    public function index()
     {
         $data['kategori'] = $this->kategoriModel->findAll();
         $data['judul'] = 'Data Kategori';
