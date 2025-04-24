@@ -28,18 +28,18 @@ $routes->group('admin', function ($routes) {
 
 
     // Routes untuk Order
-    $routes->get('order', 'OrderController::order'); // Menampilkan daftar order
-    $routes->get('order/tambah', 'OrderController::tambah'); // Halaman tambah order
-    $routes->post('order/konfirmasi', 'OrderController::konfirmasi'); // Konfirmasi sebelum simpan
-    $routes->post('order/simpan', 'OrderController::simpan');
-    $routes->post('order/store', 'OrderController::store'); // Simpan order
-    $routes->get('order/edit/(:num)', 'OrderController::edit/$1'); // Halaman edit order
+    $routes->get('produk_terjual', 'OrderController::order'); // Menampilkan daftar order
+    $routes->get('produk_terjual/tambah', 'OrderController::tambah'); // Halaman tambah order
+    $routes->post('produk_terjual/konfirmasi', 'OrderController::konfirmasi'); // Konfirmasi sebelum simpan
+    $routes->post('produk_terjual/simpan', 'OrderController::simpan');
+    $routes->post('produk_terjual/store', 'OrderController::store'); // Simpan order
+    $routes->get('produk_terjual/edit/(:num)', 'OrderController::edit/$1'); // Halaman edit order
 
 
-    $routes->post('order/konfirmasi_edit/(:num)', 'OrderController::konfirmasi_edit/$1');
-    $routes->post('order/update/(:num)', 'OrderController::update/$1');
+    $routes->post('produk_terjual/konfirmasi_edit/(:num)', 'OrderController::konfirmasi_edit/$1');
+    $routes->post('produk_terjual/update/(:num)', 'OrderController::update/$1');
 
-    $routes->get('order/delete/(:num)', 'OrderController::delete/$1'); // Hapus order
+    $routes->get('produk_terjual/delete/(:num)', 'OrderController::delete/$1'); // Hapus order
 
     // Routes untuk Laporan
     $routes->get('laporan/laporan_harian', 'LaporanController::laporan_harian');
@@ -53,4 +53,6 @@ $routes->group('admin', function ($routes) {
     $routes->get('arsip_laporan/arsip_laporan_perhari', 'ArsipLaporanController::arsipLaporanPerHari');
     $routes->get('arsip_laporan/arsip_laporan_perbulan', 'ArsipLaporanController::arsipLaporanPerBulan');
     $routes->post('arsip_laporan/generateLaporan', 'ArsipLaporanController::generateLaporan');
+    $routes->get('arsip_laporan/arsip_laporan_perhari/download/(:num)', 'ArsipLaporanController::downloadLaporanPerHari/$1');
+    $routes->get('arsip_laporan/arsip_laporan_perbulan/download/(:num)', 'ArsipLaporanController::downloadLaporanPerBulan/$1');
 });

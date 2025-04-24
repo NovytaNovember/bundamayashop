@@ -6,11 +6,16 @@
         <div class="content">
             <div class="container-fluid my-4">
                 <div class="paper p-4 shadow-sm bg-white rounded">
-
+                    <?php if (session()->getFlashdata('success')) : ?>
+                        <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
+                    <?php endif; ?>
+                    <?php if (session()->getFlashdata('error')) : ?>
+                        <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
+                    <?php endif; ?>
                     <!-- Tombol Tambah Order -->
                     <div class="d-flex justify-content-start align-items-center mb-4">
-                        <a href="<?= base_url('admin/order/tambah') ?>" class="btn btn-success">
-                            <i class="fas fa-plus me-1"></i> Tambah Order
+                        <a href="<?= base_url('admin/produk_terjual/tambah') ?>" class="btn btn-success">
+                            <i class="fas fa-plus me-1"></i> Tambah Produk Terjual
                         </a>
                     </div>
 
@@ -19,7 +24,7 @@
                             <thead class="table-light text-center align-middle">
                                 <tr>
                                     <th>No</th>
-                                    <th>Tanggal Order</th>
+                                    <th>Tanggal Produk Terjual</th>
                                     <th>Produk yang Dibeli</th>
                                     <th>Total Harga</th>
                                     <th>Aksi</th>
@@ -48,11 +53,11 @@
                                         <td class="text-start"><?= $produkString; ?></td>
                                         <td>Rp <?= number_format($totalHarga, 0, ',', '.'); ?></td>
                                         <td>
-                                            <a href="<?= base_url('admin/order/edit/' . $order['id_order']) ?>" class="btn btn-sm btn-warning">
+                                            <a href="<?= base_url('admin/produk_terjual/edit/' . $order['id_order']) ?>" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
 
-                                            <a href="<?= base_url('admin/order/delete/' . $order['id_order']); ?>"
+                                            <a href="<?= base_url('admin/produk_terjual/delete/' . $order['id_order']); ?>"
                                                 onclick="return confirm('Yakin ingin menghapus order ini?');"
                                                 class="btn btn-danger btn-sm">
                                                 <i class="fas fa-trash-alt"></i> Hapus

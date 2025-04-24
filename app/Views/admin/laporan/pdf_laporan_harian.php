@@ -66,7 +66,9 @@
             </tr>
         </thead>
         <tbody>
-            <?php $no = 1; $totalKeseluruhan = 0; $totalJumlahTerjual = 0; ?>
+            <?php $no = 1;
+            $totalKeseluruhan = 0;
+            $totalJumlahTerjual = 0; ?>
             <?php foreach ($laporan as $order): ?>
                 <?php
                 $date = new DateTime($order['created_at'], new DateTimeZone('UTC'));

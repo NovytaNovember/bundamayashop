@@ -37,7 +37,7 @@ class OrderController extends BaseController
         }
 
         $data = [
-            'judul' => 'Data Order',
+            'judul' => 'Data Produk Terjual',
             'orders' => $orders,
         ];
 
@@ -48,7 +48,7 @@ class OrderController extends BaseController
     public function tambah()
     {
         $data = [
-            'judul' => 'Tambah Order',
+            'judul' => 'Tambah Produk Terjual',
             'produk' => $this->produkModel->findAll()
         ];
 
@@ -88,7 +88,7 @@ class OrderController extends BaseController
         }
 
         return view('admin/order/konfirmasi', [
-            'judul' => 'Konfirmasi Order',
+            'judul' => 'Konfirmasi Produk Terjual',
             'produk_terpilih' => $produkTerpilih,
             'order_id' => $orderId // Kirimkan order_id jika mengedit
         ]);
@@ -133,7 +133,7 @@ class OrderController extends BaseController
             $this->orderItemModel->insert($data);
         }
 
-        return redirect()->to(base_url('admin/order'))->with('success', 'Order berhasil disimpan!');
+        return redirect()->to(base_url('admin/produk_terjual'))->with('success', 'Produk Terjual berhasil disimpan!');
     }
 
 
@@ -174,12 +174,12 @@ class OrderController extends BaseController
                 $this->orderItemModel->insert($item);
             }
 
-            session()->setFlashdata('pesan', 'Order berhasil disimpan!');
+            session()->setFlashdata('pesan', 'Produk Terjual berhasil disimpan!');
         } else {
-            session()->setFlashdata('error', 'Tidak ada data order yang disimpan.');
+            session()->setFlashdata('error', 'Tidak ada data produk terjual yang disimpan.');
         }
 
-        return redirect()->to('/admin/order');
+        return redirect()->to('/admin/produk_terjual');
     }
 
     public function detail($id)
@@ -195,8 +195,8 @@ class OrderController extends BaseController
             ->where('id_order', $id)
             ->findAll();
 
-        return view('admin/order/detail', [
-            'judul' => 'Detail Order',
+        return view('admin/produk_terjual/detail', [
+            'judul' => 'Detail Produk Terjual',
             'order' => $order,
             'items' => $items
         ]);
@@ -209,11 +209,11 @@ class OrderController extends BaseController
         $order = $this->orderModel->find($id_order);
         $orderItems = $this->orderItemModel->where('id_order', $id_order)->findAll();
 
-        return view('admin/order/edit', [
+        return view('admin/produk_terjual/edit', [
             'order' => $order,
             'orderItems' => $orderItems,
             'produkModel' => $this->produkModel,
-            'judul' => 'Edit Order'
+            'judul' => 'Edit Produk Terjual'
         ]);
     }
 
@@ -247,8 +247,8 @@ class OrderController extends BaseController
             $produkTerpilih = $produkItems;
         }
 
-        return view('admin/order/konfirmasi_edit', [
-            'judul' => 'Konfirmasi Edit Order',
+        return view('admin/produk_terjual/konfirmasi_edit', [
+            'judul' => 'Konfirmasi Edit Produk Terjual',
             'produk_terpilih' => $produkTerpilih,
             'order_id' => $orderId
         ]);
@@ -289,7 +289,7 @@ class OrderController extends BaseController
             ]);
         }
 
-        return redirect()->to(base_url('admin/order'))->with('success', 'Order berhasil diperbarui.');
+        return redirect()->to(base_url('admin/produk_terjual'))->with('success', 'Produk Terjual berhasil diperbarui.');
     }
 
 
@@ -302,7 +302,7 @@ class OrderController extends BaseController
         $this->orderModel->delete($id_order);
 
         // Set pesan berhasil dan redirect ke halaman utama order
-        session()->setFlashdata('success', 'Order berhasil dihapus.');
-        return redirect()->to(base_url('admin/order'));
+        session()->setFlashdata('success', 'Produk Terjual berhasil dihapus.');
+        return redirect()->to(base_url('admin/produk_terjual'));
     }
 }

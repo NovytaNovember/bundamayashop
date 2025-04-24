@@ -27,6 +27,7 @@ class LaporanController extends BaseController
     {
         // Ambil data order item yang ada
         $orders = $this->orderModel
+            ->where('DATE(created_at)', date('Y-m-d'))
             ->orderBy('created_at', 'DESC')
             ->findAll();
 
@@ -52,12 +53,15 @@ class LaporanController extends BaseController
     // Fungsi download laporan harian
     public function download_laporan_harian()
     {
+        $orderItemModel = new \App\Models\OrderItemModel();
         $orders = $this->orderModel
+            ->where('DATE(created_at)', date('Y-m-d'))
             ->orderBy('created_at', 'DESC')
             ->findAll();
 
+
         foreach ($orders as &$order) {
-            $order['items'] = $this->orderItemModel
+            $order['items'] = $orderItemModel
                 ->select('order_item.*, produk.nama_produk, produk.harga')
                 ->join('produk', 'produk.id_produk = order_item.id_produk')
                 ->where('order_item.id_order', $order['id_order'])
@@ -103,7 +107,7 @@ class LaporanController extends BaseController
 
         $found = false;
         $currentDate = date('Y-m-d'); // ambil tanggal hari ini
-        $currentTime = date('Y-m-d H:i:s');
+        $currentTime = $orders[0]['created_at'];
 
         foreach ($laporan as $data) {
             // Ambil hanya bagian tanggal dari created_at
@@ -168,21 +172,42 @@ class LaporanController extends BaseController
         $tanggal = date('d F Y');
 
         // Mulai pesan
-        $pesan = "📊 *Laporan Penjualan " . $tanggal . "*\n\n";
+        $pesan = "📊 *Laporan Penjualan $tanggal*\n\n";
 
         // Inisialisasi variabel
         $totalPendapatan = 0;
         $totalOrder = 0;
+        $totalItemTerjual = 0;
 
         foreach ($orders as $order) {
             $totalOrder++;
+            $produk_counter = [];
+
             foreach ($order['items'] as $item) {
-                $pesan .= "- *" . $item['nama_produk'] . "*: Rp " . number_format($item['total_harga'], 0, ',', '.') . "\n";
-                $totalPendapatan += $item['total_harga'];
+                $nama_produk = $item['nama_produk'];
+
+                if (!isset($produk_counter[$nama_produk])) {
+                    $produk_counter[$nama_produk] = [
+                        'jumlah' => 0,
+                        'total_harga' => 0,
+                    ];
+                }
+
+                $produk_counter[$nama_produk]['jumlah'] += $item['jumlah'];
+                $produk_counter[$nama_produk]['total_harga'] += $item['total_harga'];
+            }
+
+            foreach ($produk_counter as $nama_produk => $info) {
+                $pesan .= "- *$nama_produk* (" . $info['jumlah'] . " item): Rp " . number_format($info['total_harga'], 0, ',', '.') . "\n";
+                $totalPendapatan += $info['total_harga'];
+                $totalItemTerjual += $info['jumlah'];
             }
         }
 
-        $pesan .= "\nTotal Order: " . $totalOrder . "\n";
+
+
+        $pesan .= "\nTotal Order: $totalOrder\n";
+        $pesan .= "Total Item Terjual: $totalItemTerjual\n";
         $pesan .= "Total Pendapatan: Rp " . number_format($totalPendapatan, 0, ',', '.') . "\n";
         $pesan .= "\n\nTerima kasih atas kerja keras tim 🙌";
 
@@ -208,14 +233,10 @@ class LaporanController extends BaseController
         curl_close($curl);
 
         if ($err) {
-            // cURL error
             return redirect()->to(base_url('admin/laporan/laporan_harian'))
                 ->with('error', 'Laporan gagal dikirim. Error: ' . $err);
         } else {
-            // Decode response dari Fonnte
             $result = json_decode($response, true);
-
-            // Cek status Fonnte
             if (isset($result['status']) && $result['status'] === true) {
                 return redirect()->to(base_url('admin/laporan/laporan_harian'))
                     ->with('success', 'Laporan berhasil dikirim.');
@@ -226,6 +247,7 @@ class LaporanController extends BaseController
             }
         }
     }
+
 
 
     // Menampilkan halaman laporan bulanan

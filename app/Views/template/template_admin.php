@@ -309,9 +309,9 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="/admin/order" class="nav-link">
+                        <a href="/admin/produk_terjual" class="nav-link">
                             <i class="fas fa-shopping-cart"></i>
-                            <p>Order</p>
+                            <p>Produk Terjual</p>
                         </a>
                     </li>
 

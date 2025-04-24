@@ -38,10 +38,9 @@
                                 <tr>
                                     <td><?= $no++ ?></td>
                                     <td><?= $item['created_at'] ?></td>
-                                    <td>Rp. <?= $item['total_penjualan'] ?></td>
+                                    <td> Rp <?= number_format($item['total_penjualan'], 0, ',', '.'); ?></td>
                                     <td>
-                                        <a href="#" class="btn btn-primary"><i class="fas fa-download"></i> Download</a>
-                                        <a href="#" class="btn btn-info"><i class="fas fa-info"></i> Detail</a>
+                                        <a href="/admin/arsip_laporan/arsip_laporan_perbulan/download/<?= $item['id_laporan'] ?>" class="btn btn-primary"><i class="fas fa-download"></i> Download</a>
                                     </td>
                                 </tr>
                             <?php endforeach ?>

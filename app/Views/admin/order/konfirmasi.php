@@ -46,10 +46,10 @@
 
                         <!-- Form Simpan Order -->
                         <div class="mt-4 d-flex justify-content-between">
-                            <a href="<?= base_url('admin/order') ?>" class="btn btn-secondary">
+                            <a href="<?= base_url('admin/produk_terjual') ?>" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i> Kembali
                             </a>
-                            <form action="<?= base_url('admin/order/simpan') ?>" method="post">
+                            <form action="<?= base_url('admin/produk_terjual/simpan') ?>" method="post">
                                 <?= csrf_field(); ?>
                                 <input type="hidden" name="order_id" value="<?= $order_id ?>">
                                 <?php foreach ($produk_terpilih as $i => $pr): ?>
@@ -60,7 +60,7 @@
                                 <input type="hidden" name="total_harga" value="<?= array_sum(array_column($produk_terpilih, 'subtotal')); ?>">
 
                                 <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-check me-1"></i> Simpan Order
+                                    <i class="fas fa-check me-1"></i> Simpan
                                 </button>
                             </form>
                         </div>
@@ -70,7 +70,7 @@
                             Tidak ada produk yang dipilih.
                         </div>
                         <div class="mt-3">
-                            <a href="<?= base_url('admin/order') ?>" class="btn btn-secondary">
+                            <a href="<?= base_url('admin/produk_terjual') ?>" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i> Kembali
                             </a>
                         </div>

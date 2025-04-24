@@ -3,18 +3,19 @@
 
 <div class="content-wrapper">
     <div class="content">
-        
+
         <div class="container-fluid">
-            <?php if (session()->getFlashdata('success')) : ?>
-                <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
-            <?php endif; ?>
-            <?php if (session()->getFlashdata('error')) : ?>
-                <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
-            <?php endif; ?>
+
 
             <!-- Tabel Laporan Penjualan -->
             <?php if (isset($laporan)) : ?>
                 <div class="paper mt-4">
+                    <?php if (session()->getFlashdata('success')) : ?>
+                        <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
+                    <?php endif; ?>
+                    <?php if (session()->getFlashdata('error')) : ?>
+                        <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
+                    <?php endif; ?>
                     <div class="d-flex justify-content-between mb-3">
                         <!-- Tombol Perhari dan Perbulan -->
                         <div class="btn-group">
@@ -29,9 +30,10 @@
 
                         <div class="d-flex gap-2">
                             <!-- Tombol Download Laporan Harian -->
-                            <a href="<?= base_url('admin/laporan/download_laporan_harian'); ?>" class="btn btn-primary">
-                                <i class="fas fa-download"></i> Download Laporan Harian
+                            <a href="<?= base_url('admin/laporan/download_laporan_harian?tanggal=' . ($tanggal ?? date('Y-m-d'))); ?>" class="btn btn-primary">
+                                <i class="fas fa-download"></i> Arsip / Download Laporan Harian
                             </a>
+
 
                             <!-- Tombol Kirim Laporan Harian -->
                             <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" method="post">
@@ -41,7 +43,20 @@
                             </form>
 
                         </div>
+
                     </div>
+                    <form method="get" action="<?= base_url('admin/laporan/laporan_harian'); ?>" class="mb-3 d-flex gap-2 align-items-end">
+                        <div>
+                            <label for="tanggal" class="form-label mb-1">Filter Tanggal:</label>
+                            <input type="date" id="tanggal" name="tanggal" class="form-control" value="<?= esc($_GET['tanggal'] ?? date('Y-m-d')) ?>">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-secondary">
+                                <i class="fas fa-filter"></i> Tampilkan
+                            </button>
+                        </div>
+                    </form>
+
 
 
                     <div class="card-body">
@@ -49,7 +64,7 @@
                             <thead class="table-light text-center align-middle">
                                 <tr>
                                     <th>No</th>
-                                    <th>Tanggal Order</th>
+                                    <th>Tanggal Produk Terjual</th>
                                     <th>Nama Produk</th>
                                     <th>Jumlah Terjual</th>
                                     <th>Harga Satuan</th>

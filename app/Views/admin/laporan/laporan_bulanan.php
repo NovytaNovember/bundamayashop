@@ -4,14 +4,17 @@
 <div class="content-wrapper">
     <div class="content">
         <div class="container-fluid">
-        <?php if (session()->getFlashdata('success')) : ?>
-                <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
-            <?php endif; ?>
-            <?php if (session()->getFlashdata('error')) : ?>
-                <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
-            <?php endif; ?>
+
 
             <div class="paper mt-4">
+                <?php if (session()->getFlashdata('success')) : ?>
+                    <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
+                <?php endif; ?>
+                <?php if (session()->getFlashdata('error')) : ?>
+                    <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
+                <?php endif; ?>
+
+      
                 <div class="d-flex justify-content-between mb-3">
                     <!-- Tombol Perhari dan Perbulan -->
                     <div class="btn-group">
@@ -26,7 +29,7 @@
                     <div class="d-flex gap-2">
                         <!-- Tombol Download Laporan Bulanan -->
                         <a href="<?= base_url('admin/laporan/download_laporan_bulanan'); ?>" class="btn btn-primary">
-                            <i class="fas fa-download"></i> Download Laporan Bulanan
+                            <i class="fas fa-download"></i> Arsip / Download Laporan Bulanan
                         </a>
 
                         <!-- Tombol Kirim Laporan Bulanan -->
@@ -46,7 +49,7 @@
                         <thead class="table-light text-center align-middle">
                             <tr>
                                 <th>No</th>
-                                <th>Bulan Order</th>
+                                <th>Bulan Produk Terjual</th>
                                 <th>Nama Produk</th>
                                 <th>Jumlah Terjual</th>
                                 <th>Harga Satuan</th>

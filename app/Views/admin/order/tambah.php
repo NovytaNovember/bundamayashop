@@ -45,9 +45,9 @@
             <div class="container-fluid mt-4 mb-4">
                 <div class="paper p-4 shadow-sm bg-white rounded">
 
-                    <h4 class="mb-4">Pilih Produk untuk Order</h4>
+                    <h4 class="mb-4">Pilih Produk untuk Produk Terjual :</h4>
 
-                    <form action="<?= base_url('admin/order/konfirmasi') ?>" method="post">
+                    <form action="<?= base_url('admin/produk_terjual/konfirmasi') ?>" method="post">
                         <?= csrf_field(); ?>
 
                         <div class="row">
@@ -85,7 +85,7 @@
 
                        <!-- Tombol Kembali & Lanjut -->
                        <div class="mt-4 d-flex justify-content-between">
-                            <a href="<?= base_url('admin/order') ?>" class="btn btn-secondary">
+                            <a href="<?= base_url('admin/produk_terjual') ?>" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i> Kembali
                             </a>
                             <button type="submit" class="btn btn-primary">

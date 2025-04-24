@@ -121,7 +121,7 @@
 
                         <div class="d-flex justify-content-between mt-4">
                             <!-- Tombol Kembali -->
-                            <a href="<?= base_url('order/index'); ?>" class="btn btn-secondary">Kembali</a>
+                            <a href="<?= base_url('produk_terjual/index'); ?>" class="btn btn-secondary">Kembali</a>
 
                             <!-- Tombol Lanjut Update -->
 
@@ -167,7 +167,7 @@
 
 <?php if (session()->getFlashdata('update_success')): ?>
     <script>
-        window.location.href = "<?= base_url('admin/order/konfirmasi'); ?>";
+        window.location.href = "<?= base_url('admin/produk_terjual/konfirmasi'); ?>";
     </script>
 <?php endif; ?>
 
