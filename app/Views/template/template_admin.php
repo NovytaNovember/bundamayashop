@@ -300,7 +300,7 @@
                             <p>Kategori</p>
                         </a>
                     </li>
-                    
+
                     <li class="nav-item">
                         <a href="/admin/produk" class="nav-link">
                             <i class="fas fa-birthday-cake"></i>
@@ -326,6 +326,13 @@
                         <a href="/admin/arsip_laporan/arsip_laporan_perhari" class="nav-link">
                             <i class="fas fa-archive"></i>
                             <p>Arsip Laporan</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/admin/setting/" class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <p>Setting</p>
                         </a>
                     </li>
 

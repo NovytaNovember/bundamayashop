@@ -161,8 +161,8 @@ class LaporanController extends BaseController
             ->orderBy('produk.nama_produk', 'ASC')
             ->findAll();
 
-        $token = 'Abi67U9qby5SpVoEYU9H';
-        $no_wa = '6282256893105';
+        $token = 'Abi67U9qby5SpVoEYU9H'; // Token Fonnte
+        $no_wa = '6282256893105'; // Nomor WhatsApp tujuan
 
         $pesan = "📊 *Laporan Penjualan $tanggalFormat*\n\n";
 

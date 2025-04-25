@@ -54,4 +54,11 @@ $routes->group('admin', function ($routes) {
     $routes->post('arsip_laporan/generateLaporan', 'ArsipLaporanController::generateLaporan');
     $routes->get('arsip_laporan/arsip_laporan_perhari/download/(:num)', 'ArsipLaporanController::downloadLaporanPerHari/$1');
     $routes->get('arsip_laporan/arsip_laporan_perbulan/download/(:num)', 'ArsipLaporanController::downloadLaporanPerBulan/$1');
+
+    // Routes untuk Setting
+    $routes->get('setting', 'SettingController::index');
+    $routes->post('setting/store', 'SettingController::store');
+    $routes->post('setting/update', 'SettingController::update');
+    $routes->get('setting/delete/(:num)', 'SettingController::delete/$1');
+    
 });
