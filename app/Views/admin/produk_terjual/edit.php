@@ -36,6 +36,87 @@
         font-size: 16px;
         margin-left: 20px;
     }
+
+    .card {
+        position: relative;
+        text-align: center;
+    }
+
+    /* Styling harga produk */
+    .product-price {
+        font-size: 16px;
+        color: #28a745;
+        /* Warna hijau untuk penekanan harga */
+        font-weight: bold;
+        margin-top: 10px;
+        background-color: #f0f8ff;
+        /* Latar belakang agar harga lebih menonjol */
+        padding: 8px 15px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .product-price::before {
+        content: "Rp ";
+        font-weight: normal;
+    }
+
+    .product-info {
+        padding: 15px;
+    }
+
+    .product-title {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: center;
+        /* Menambahkan ini untuk memastikan teks berada di tengah */
+    }
+
+    .jumlah-wrapper {
+        margin-top: 10px;
+    }
+
+    .jumlah-group-kustom button {
+        padding: 2px 6px;
+        font-size: 20px;
+        width: 30px;
+    }
+
+    .input-jumlah-kecil {
+        width: 40px;
+        padding: 2px;
+        font-size: 13px;
+    }
+
+    .checkbox-kustom {
+        width: 50px;
+        height: 18px;
+        margin-right: 8px;
+        margin-top: 2px;
+    }
+
+    .form-check-label {
+        font-size: 16px;
+        margin-left: 20px;
+    }
+
+    .card {
+        position: relative;
+        text-align: center;
+    }
+
+    /* Styling untuk gambar produk */
+    .card img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .jumlah-wrapper {
+        margin-top: 10px;
+    }
 </style>
 
 <div class="content-wrapper">
@@ -43,8 +124,7 @@
         <div class="content">
             <div class="container-fluid my-4">
                 <div class="paper p-4 shadow-sm bg-white rounded">
-
-                    <form action="<?= base_url('admin/produk_terjual/konfirmasi_edit/' . $order['id_order']); ?>" method="POST">
+                    <form action="<?= base_url('admin/produk_terjual/update/' . $order['id_order']); ?>" method="POST">
                         <input type="hidden" name="id_order" value="<?= $order['id_order']; ?>">
 
                         <div class="form-group mb-3">
@@ -54,77 +134,56 @@
 
                         <h5>Produk Produk Terjual yang Dipilih:</h5>
                         <div class="row">
-                            <?php foreach ($orderItems as $item): ?>
+                            <?php foreach ($orderItems as $item):
+                                // Ambil data produk berdasarkan ID produk
+                                $produk = $produkModel->find($item['id_produk']);
+                            ?>
                                 <div class="col-md-4">
                                     <div class="card mb-4 shadow-sm text-center p-2">
-                                        <div class="d-flex justify-content-start align-items-center mb-2">
-                                            <label class="form-check-label fw-semibold">
-                                                <?= esc($produkModel->find($item['id_produk'])['nama_produk']); ?>
-                                            </label>
-                                        </div>
+                                        <div class="product-info">
+                                            <div class="d-flex justify-content-center">
+                                                <img src="<?= base_url('uploads/' . $produk['gambar']) ?>"
+                                                    class="img-thumbnail mb-2"
+                                                    style="width: 200px; height: 200px; object-fit: cover;"
+                                                    alt="<?= esc($produk['nama_produk']) ?>">
+                                            </div>
 
-                                        <div class="d-flex justify-content-center">
-                                            <img src="<?= base_url('uploads/' . $produkModel->find($item['id_produk'])['gambar']) ?>"
-                                                class="img-thumbnail mb-2"
-                                                style="width: 200px; height: 200px; object-fit: cover;"
-                                                alt="<?= esc($produkModel->find($item['id_produk'])['nama_produk']) ?>">
-                                        </div>
+                                            <!-- Nama produk ditengah -->
+                                            <div class="d-flex justify-content-center mb-2">
+                                                <label class="form-check-label fw-semibold product-title">
+                                                    <?= esc($produk['nama_produk']); ?>
+                                                </label>
+                                            </div>
 
-                                        <div class="jumlah-wrapper mt-1">
-                                            <label for="jumlah<?= $item['id_produk'] ?>">Jumlah:</label>
-                                            <div class="d-flex justify-content-center align-items-center jumlah-group-kustom mt-1">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="ubahJumlah('jumlah<?= $item['id_produk'] ?>', -1)">-</button>
-                                                <input type="number" id="jumlah<?= $item['id_produk'] ?>" name="jumlah[]" class="form-control text-center mx-2 input-jumlah-kecil no-arrow" min="1" value="<?= $item['jumlah']; ?>" required>
-                                                <input type="hidden" name="produk_id[]" value="<?= $item['id_produk']; ?>">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="ubahJumlah('jumlah<?= $item['id_produk'] ?>', 1)">+</button>
+                                            <!-- Harga Produk di bawah gambar -->
+                                            <div class="product-price">
+                                                Rp <?= number_format($produk['harga'], 0, ',', '.'); ?>/pcs
+                                            </div>
+
+                                            <!-- Jumlah Produk -->
+                                            <div class="jumlah-wrapper mt-1">
+                                                <label for="jumlah<?= $produk['id_produk'] ?>">Jumlah:</label>
+                                                <div class="d-flex justify-content-center align-items-center jumlah-group-kustom mt-1">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="ubahJumlah('jumlah<?= $produk['id_produk'] ?>', -1)">-</button>
+                                                    <input type="number" id="jumlah<?= $produk['id_produk'] ?>" name="jumlah[]" class="form-control text-center mx-2 input-jumlah-kecil no-arrow" min="1" value="<?= $item['jumlah']; ?>" required>
+                                                    <input type="hidden" name="produk_id[]" value="<?= $produk['id_produk']; ?>">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="ubahJumlah('jumlah<?= $produk['id_produk'] ?>', 1)">+</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             <?php endforeach; ?>
                         </div>
 
-                        <h5>Tambah Produk Terjual Baru:</h5>
-                        <div class="row">
-                            <?php foreach ($produkModel->findAll() as $produk): ?>
-                                <div class="col-md-4">
-                                    <div class="card mb-4 shadow-sm text-center p-2">
-
-                                        <div class="d-flex justify-content-start align-items-center mb-2">
-                                            <input class="form-check-input checkbox-kustom" type="checkbox" name="produk_id[]" value="<?= $produk['id_produk'] ?>" id="produk<?= $produk['id_produk'] ?>" onchange="toggleJumlah(this)">
-                                            <label class="form-check-label fw-semibold" for="produk<?= $produk['id_produk'] ?>">Pilih Produk</label>
-                                        </div>
-
-                                        <div class="d-flex justify-content-center">
-                                            <img src="<?= base_url('uploads/' . $produk['gambar']) ?>"
-                                                class="img-thumbnail mb-2"
-                                                style="width: 200px; height: 200px; object-fit: cover;"
-                                                alt="<?= esc($produk['nama_produk']) ?>">
-                                        </div>
-
-                                        <h5 class="card-title text-center mb-3"><?= esc($produk['nama_produk']) ?></h5>
-
-                                        <div class="jumlah-wrapper d-none">
-                                            <label for="jumlah<?= $produk['id_produk'] ?>">Jumlah:</label>
-                                            <div class="d-flex justify-content-center align-items-center jumlah-group-kustom mt-1">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="ubahJumlah('jumlah<?= $produk['id_produk'] ?>', -1)">-</button>
-                                                <input type="number" id="jumlah<?= $produk['id_produk'] ?>" name="jumlah[]" class="form-control text-center mx-2 input-jumlah-kecil no-arrow" min="1" value="1">
-                                                <input type="hidden" name="produk_id[]" value="<?= $produk['id_produk']; ?>">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="ubahJumlah('jumlah<?= $produk['id_produk'] ?>', 1)">+</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
+                        <!-- Tambahkan produk baru jika perlu -->
 
                         <div class="d-flex justify-content-between mt-4">
                             <!-- Tombol Kembali -->
-                            <a href="<?= base_url('produk_terjual/index'); ?>" class="btn btn-secondary">Kembali</a>
+                            <a href="<?= base_url('admin/produk_terjual'); ?>" class="btn btn-secondary">Kembali</a>
 
                             <!-- Tombol Lanjut Update -->
-
                             <button type="submit" class="btn btn-primary">
                                 Lanjut Update<i class="fas fa-arrow-right ms-1"></i>
                             </button>
@@ -138,7 +197,6 @@
     </div>
 </div>
 
-<!-- SCRIPT -->
 <script>
     function toggleJumlah(checkbox) {
         const wrapper = checkbox.closest('.card').querySelector('.jumlah-wrapper');
@@ -164,11 +222,5 @@
         input.value = nilai;
     }
 </script>
-
-<?php if (session()->getFlashdata('update_success')): ?>
-    <script>
-        window.location.href = "<?= base_url('admin/produk_terjual/konfirmasi'); ?>";
-    </script>
-<?php endif; ?>
 
 <?= $this->endSection(); ?>

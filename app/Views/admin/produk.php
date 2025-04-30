@@ -58,8 +58,7 @@
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
 
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="<?= $data['id_produk'] ?>"
-                                        onclick="return confirm('Yakin ingin menghapus produk ini?');">
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="<?= $data['id_produk'] ?>" data-toggle="modal" data-target="#deleteModal">
                                         <i class="fas fa-trash-alt"></i> Hapus
                                     </button>
                                 </td>
@@ -113,7 +112,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
@@ -183,10 +182,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                Apakah Anda yakin ingin menghapus data ini?
+                Apakah anda yakin ingin menghapus data produk?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Hapus</button>
             </div>
         </div>

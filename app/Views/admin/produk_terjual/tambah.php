@@ -36,6 +36,28 @@
         font-size: 16px;
         margin-left: 20px;
     }
+
+    /* Styling harga produk */
+.product-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2a9d8f;
+    background-color: #f0f8ff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.product-price::before {
+    content: "Rp ";
+    font-weight: normal;
+}
+
+.jumlah-wrapper {
+    margin-top: 10px;
+}
+
 </style>
 
 <div class="content-wrapper">
@@ -68,6 +90,10 @@
                                         </div>
 
                                         <h5 class="card-title text-center mb-3"><?= esc($pr['nama_produk']) ?></h5>
+                                         <!-- Harga produk -->
+                                         <div class="product-price">
+                                                Rp <?= number_format($pr['harga'], 0, ',', '.'); ?>/pcs
+                                            </div>
 
                                         <div class="jumlah-wrapper d-none">
                                             <label for="jumlah<?= $pr['id_produk'] ?>">Jumlah:</label>

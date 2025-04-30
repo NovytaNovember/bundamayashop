@@ -5,7 +5,6 @@
     <div class="content">
         <div class="container-fluid">
 
-
             <div class="paper mt-4">
                 <?php if (session()->getFlashdata('success')) : ?>
                     <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
@@ -14,7 +13,11 @@
                     <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
                 <?php endif; ?>
 
-      
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong> Catatan:</strong> Saat Anda mendownload laporan bulanan, file juga secara otomatis akan masuk ke dalam arsip sistem.
+                </div>
+
                 <div class="d-flex justify-content-between mb-3">
                     <!-- Tombol Perhari dan Perbulan -->
                     <div class="btn-group">
@@ -29,7 +32,7 @@
                     <div class="d-flex gap-2">
                         <!-- Tombol Download Laporan Bulanan -->
                         <a href="<?= base_url('admin/laporan/download_laporan_bulanan'); ?>" class="btn btn-primary">
-                            <i class="fas fa-download"></i> Arsip / Download Laporan Bulanan
+                            <i class="fas fa-download"></i> Download Laporan Bulanan
                         </a>
 
                         <!-- Tombol Kirim Laporan Bulanan -->
@@ -40,7 +43,6 @@
                         </form>
 
                     </div>
-
 
                 </div>
 
@@ -86,7 +88,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="3" class="text-end">Total Keseluruhan Jumlah Terjual</th>
+                                <th colspan="3" class="text-start">Total Keseluruhan Jumlah Terjual</th> <!-- Changed text-end to text-start -->
                                 <th class="text-center"><?= $totalJumlahTerjual; ?> pcs</th>
                                 <th class="text-center"></th>
                                 <th class="text-center">Rp <?= number_format($totalKeseluruhan, 0, ',', '.'); ?></th>

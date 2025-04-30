@@ -5,8 +5,7 @@
     <div class="container-fluid">
         <div class="content">
             <div class="container-fluid my-4">
-                <div class="paper my-4">
-
+                <div class="paper p-4 shadow-sm bg-white rounded">
                     <?php if (session()->getFlashdata('pesan')) : ?>
                         <div class="alert alert-success"><?= session()->getFlashdata('pesan'); ?></div>
                     <?php endif; ?>
@@ -14,7 +13,6 @@
                     <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addModal">
                         <i class="fas fa-plus me-1"></i> Tambah Kategori
                     </button>
-
 
                     <table class="table table-bordered">
                         <thead>
@@ -36,12 +34,12 @@
                                             <i class="fas fa-edit"></i> Edit
                                         </button>
 
-                                        <a href="<?= base_url('admin/kategori/delete/' . $k['id_kategori']) ?>"
-                                            class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
+                                        <!-- Tombol Hapus -->
+                                        <button class="btn btn-sm btn-danger delete-btn" data-toggle="modal" data-target="#deleteModal"
+                                            data-id="<?= $k['id_kategori'] ?>" data-nama="<?= $k['nama_kategori'] ?>">
                                             <i class="fas fa-trash-alt"></i> Hapus
-                                        </a>
+                                        </button>
                                     </td>
-
                                 </tr>
                             <?php endforeach ?>
                         </tbody>
@@ -91,10 +89,32 @@
         </div>
     </div>
 
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus Kategori</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Apakah anda yakin ingin menghapus data kategori ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Edit Produk
         const editButtons = document.querySelectorAll('[data-target="#editModal"]');
         editButtons.forEach(btn => {
             btn.addEventListener('click', function() {
@@ -103,6 +123,27 @@
 
                 document.getElementById('edit-id').value = id;
                 document.getElementById('edit-nama').value = nama;
+            });
+        });
+
+        // Hapus Produk - Tampilkan Modal Konfirmasi
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const nama = this.getAttribute('data-nama');
+                
+                // Tampilkan nama kategori yang akan dihapus di modal
+
+                // Saat tombol hapus diklik, proses penghapusan kategori
+                const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+                confirmDeleteBtn.onclick = function() {
+                    // Arahkan ke URL penghapusan
+                    window.location.href = `<?= base_url('admin/kategori/delete/') ?>/${id}`;
+                };
+
+                // Tampilkan modal
+                $('#deleteModal').modal('show');
             });
         });
     });

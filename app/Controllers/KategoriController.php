@@ -41,7 +41,7 @@ class KategoriController extends BaseController
             'updated_at'  => date('Y-m-d H:i:s'),
         ]);
 
-        return redirect()->to('/admin/kategori')->with('pesan', 'Data kategori berhasil diupdate.');
+        return redirect()->to('/admin/kategori')->with('pesan', 'Data kategori berhasil diperbarui!');
     }
 
     public function delete($id)

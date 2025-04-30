@@ -139,47 +139,59 @@ class ProdukTerjualController extends BaseController
 
     public function store()
     {
-        $produkIDs = $this->request->getPost('id_produk');
-        $jumlahs   = $this->request->getPost('jumlah');
+        // Ambil produk yang dipilih dan jumlah dari form
+        $produkIDs = $this->request->getPost('produk');  // Produk yang dipilih
+        $jumlahs   = $this->request->getPost('jumlah');  // Jumlah produk yang dipilih
 
-        if ($produkIDs && $jumlahs) {
-            $totalHarga = 0;
-            $items = [];
+        $totalHarga = 0;
+        $items = [];
 
-            foreach ($produkIDs as $order => $id_produk) {
-                $produk = $this->produkModel->find($id_produk);
-                if ($produk) {
-                    $jumlah = (int) $jumlahs[$order];
+        if (!empty($produkIDs) && !empty($jumlahs)) {
+            // Simpan order terlebih dahulu
+            $orderData = [
+                'total_harga' => 0, // Set total harga sementara dulu
+                'created_at'  => date('Y-m-d H:i:s'),
+                'updated_at'  => date('Y-m-d H:i:s')
+            ];
+            $orderId = $this->orderModel->insert($orderData);  // Simpan order dan ambil ID order
+
+            // Loop untuk memasukkan data produk yang dipilih
+            foreach ($produkIDs as $index => $idProduk) {
+                $jumlah = isset($jumlahs[$index]) ? (int) $jumlahs[$index] : 1;  // Ambil jumlah produk
+                $produk = $this->produkModel->find($idProduk);  // Ambil data produk dari database
+
+                if ($produk && $jumlah > 0) {
+                    // Hitung subtotal per produk (jumlah * harga per produk)
                     $subtotal = $jumlah * $produk['harga'];
-                    $totalHarga += $subtotal;
+                    $totalHarga += $subtotal; // Update total harga order
 
-                    $items[] = [
-                        'id_produk'   => $id_produk,
+                    // Simpan item order yang baru
+                    $data = [
+                        'id_order'    => $orderId,
+                        'id_produk'   => $idProduk,
                         'jumlah'      => $jumlah,
-                        'total_harga' => $subtotal
+                        'total_harga' => $subtotal,
+                        'created_at'  => date('Y-m-d H:i:s'),
+                        'updated_at'  => date('Y-m-d H:i:s')
                     ];
+
+                    // Insert data ke order_item
+                    $this->orderItemModel->insert($data);
                 }
             }
 
-            // Simpan ke tabel order
-            $orderData = [
-                'total_harga' => $totalHarga
-            ];
-            $this->orderModel->insert($orderData);
-            $orderId = $this->orderModel->getInsertID();
+            // Update total harga untuk order setelah semua item diproses
+            $this->orderModel->update($orderId, [
+                'total_harga' => $totalHarga,
+                'updated_at'  => date('Y-m-d H:i:s')
+            ]);
 
-            // Simpan item order
-            foreach ($items as $item) {
-                $item['id_order'] = $orderId;
-                $this->orderItemModel->insert($item);
-            }
-
-            session()->setFlashdata('pesan', 'Produk Terjual berhasil disimpan!');
+            // Redirect kembali ke halaman daftar produk terjual dengan pesan sukses
+            return redirect()->to(base_url('admin/produk_terjual'))->with('success', 'Produk Terjual berhasil disimpan.');
         } else {
-            session()->setFlashdata('error', 'Tidak ada data produk terjual yang disimpan.');
+            // Jika tidak ada produk yang dipilih
+            return redirect()->to(base_url('admin/produk_terjual'))->with('error', 'Tidak ada produk yang dipilih untuk disimpan.');
         }
-
-        return redirect()->to('/admin/produk_terjual');
     }
 
     public function detail($id)
@@ -218,79 +230,100 @@ class ProdukTerjualController extends BaseController
     }
 
     public function konfirmasi_edit($orderId)
-    {
-        $produkDipilih = $this->request->getPost('produk_id');
-        $jumlahProduk  = $this->request->getPost('jumlah');
-        $produkTerpilih = [];
-
-        // Ambil produk dari input POST (jika ada perubahan)
-        if (!empty($produkDipilih)) {
-            foreach ($produkDipilih as $idProduk) {
-                $produk = $this->produkModel->find($idProduk);
-                if ($produk) {
-                    $jumlah = isset($jumlahProduk[$idProduk]) ? (int)$jumlahProduk[$idProduk] : 1;
-                    $produk['jumlah'] = $jumlah;
-                    $produk['subtotal'] = $jumlah * $produk['harga'];
-                    $produkTerpilih[] = $produk;
-                }
+{
+    $produkDipilih = $this->request->getPost('produk_id'); // Produk yang dipilih
+    $jumlahProduk  = $this->request->getPost('jumlah');  // Jumlah produk yang dipilih
+    $produkTerpilih = [];
+    
+    // Ambil produk yang dipilih dari input POST
+    if (!empty($produkDipilih)) {
+        foreach ($produkDipilih as $idProduk) {
+            $produk = $this->produkModel->find($idProduk);
+            if ($produk) {
+                $jumlah = isset($jumlahProduk[$idProduk]) ? (int)$jumlahProduk[$idProduk] : 1;
+                $produk['jumlah'] = $jumlah;
+                $produk['subtotal'] = $jumlah * $produk['harga'];
+                $produkTerpilih[] = $produk;
             }
         }
-
-        // Tambahkan data order sebelumnya jika belum ada perubahan dari form
-        if (empty($produkTerpilih)) {
-            $produkItems = $this->orderItemModel
-                ->select('order_item.*, produk.nama_produk, produk.harga')
-                ->join('produk', 'produk.id_produk = order_item.id_produk')
-                ->where('order_item.id_order', $orderId)
-                ->findAll();
-
-            $produkTerpilih = $produkItems;
-        }
-
-        return view('admin/produk_terjual/konfirmasi_edit', [
-            'judul' => 'Konfirmasi Edit Produk Terjual',
-            'produk_terpilih' => $produkTerpilih,
-            'order_id' => $orderId
-        ]);
+    }
+    
+    // Cek jika tidak ada produk yang dipilih, maka ambil produk dari order sebelumnya
+    if (empty($produkTerpilih)) {
+        $produkItems = $this->orderItemModel
+            ->select('order_item.*, produk.nama_produk, produk.harga')
+            ->join('produk', 'produk.id_produk = order_item.id_produk')
+            ->where('order_item.id_order', $orderId)
+            ->findAll();
+    
+        // Gabungkan hanya produk yang dipilih
+        $produkTerpilih = array_filter($produkItems, function($item) use ($produkDipilih) {
+            return in_array($item['id_produk'], $produkDipilih); // Pastikan hanya produk yang dipilih yang dimasukkan
+        });
     }
 
-    public function update($orderId)
-    {
-        $produk = $this->request->getPost('produk');
-        $totalHarga = 0;
+    return view('admin/produk_terjual/konfirmasi_edit', [
+        'judul' => 'Konfirmasi Edit Produk Terjual',
+        'produk_terpilih' => $produkTerpilih,
+        'order_id' => $orderId
+    ]);
+}
 
-        if (!empty($produk)) {
-            // Hapus order item lama
-            $this->orderItemModel->where('id_order', $orderId)->delete();
+public function update($orderId)
+{
+    // Ambil produk dan jumlah yang dipilih dari form
+    $produkIDs = $this->request->getPost('produk_id');  // Produk yang dipilih
+    $jumlahs   = $this->request->getPost('jumlah');     // Jumlah produk yang dipilih
+    $totalHarga = 0;
 
-            foreach ($produk as $item) {
-                $jumlah = $item['jumlah'];
-                $harga = $item['harga'];
-                $subtotal = $jumlah * $harga;
+    // Debugging: Cek produk yang diterima
+    log_message('debug', 'Produk yang diterima: ' . print_r($produkIDs, true));
+    log_message('debug', 'Jumlah produk yang diterima: ' . print_r($jumlahs, true));
 
+    // Jika ada produk yang dipilih dan jumlahnya
+    if (!empty($produkIDs) && !empty($jumlahs)) {
+        // Hapus item order yang lama sebelum menyimpan yang baru
+        $this->orderItemModel->where('id_order', $orderId)->delete();
+
+        // Loop untuk memasukkan data baru
+        foreach ($produkIDs as $index => $idProduk) {
+            $jumlah = isset($jumlahs[$index]) ? (int) $jumlahs[$index] : 1;  // Ambil jumlah produk
+            $produk = $this->produkModel->find($idProduk);  // Ambil data produk dari database
+
+            if ($produk && $jumlah > 0) {
+                // Hitung subtotal
+                $subtotal = $jumlah * $produk['harga'];
                 $totalHarga += $subtotal;
 
+                // Simpan item order yang baru
                 $data = [
-                    'id_order' => $orderId,
-                    'id_produk' => $item['id_produk'],
-                    'jumlah' => $jumlah,
+                    'id_order'    => $orderId,
+                    'id_produk'   => $idProduk,
+                    'jumlah'      => $jumlah,
                     'total_harga' => $subtotal,
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'created_at'  => date('Y-m-d H:i:s'),
+                    'updated_at'  => date('Y-m-d H:i:s')
                 ];
 
+                // Insert data ke order_item
                 $this->orderItemModel->insert($data);
             }
-
-            // Update total order
-            $this->orderModel->update($orderId, [
-                'total_harga' => $totalHarga,
-                'updated_at' => date('Y-m-d H:i:s')
-            ]);
         }
 
+        // Update total harga untuk order
+        $this->orderModel->update($orderId, [
+            'total_harga' => $totalHarga,
+            'updated_at'  => date('Y-m-d H:i:s')
+        ]);
+
+        // Redirect kembali ke halaman daftar produk terjual dengan pesan sukses
         return redirect()->to(base_url('admin/produk_terjual'))->with('success', 'Produk Terjual berhasil diperbarui.');
+    } else {
+        // Jika tidak ada produk atau jumlah yang dipilih
+        return redirect()->to(base_url('admin/produk_terjual/edit/' . $orderId))->with('error', 'Tidak ada produk yang dipilih untuk diupdate.');
     }
+}
+
 
 
     public function delete($id_order)

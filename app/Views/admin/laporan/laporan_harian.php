@@ -7,76 +7,83 @@
         <div class="container-fluid">
 
             <!-- Tabel Laporan Penjualan -->
-            <?php if (isset($laporan) && count($laporan) > 0) : ?>
-                <div class="paper mt-4">
-                    <?php if (session()->getFlashdata('success')) : ?>
-                        <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
-                    <?php endif; ?>
-                    <?php if (session()->getFlashdata('error')) : ?>
-                        <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
-                    <?php endif; ?>
-                    <div class="d-flex justify-content-between mb-3">
-                        <!-- Tombol Perhari dan Perbulan -->
-                        <div class="btn-group">
-                            <a class="btn btn-info text-white" href="<?= base_url('admin/laporan/laporan_harian'); ?>">
-                                <i class="fas fa-calendar-day"></i> Perhari
-                            </a>
-                            <a class="btn btn-warning text-dark" href="<?= base_url('admin/laporan/laporan_bulanan'); ?>">
-                                <i class="fas fa-calendar-alt"></i> Perbulan
-                            </a>
-                        </div>
+            <div class="paper mt-4">
+                <?php if (session()->getFlashdata('success')) : ?>
+                    <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
+                <?php endif; ?>
+                <?php if (session()->getFlashdata('error')) : ?>
+                    <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
+                <?php endif; ?>
 
-                        <div class="d-flex gap-2">
-                            <!-- Tombol Download Laporan Harian -->
-                            <a href="<?= base_url('admin/laporan/download_laporan_harian?tanggal=' . ($tanggal ?? date('Y-m-d'))); ?>" class="btn btn-primary">
-                                <i class="fas fa-download"></i> Arsip / Download Laporan Harian
-                            </a>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong> Catatan:</strong> Saat Anda mendownload laporan harian, file juga secara otomatis akan masuk ke dalam arsip sistem.
+                </div>
 
-                            <!-- Tombol Kirim Laporan Harian -->
-                            <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" method="post">
-                                <button type="submit" class="btn btn-success" id="submitButton">
-                                    <i class="fab fa-whatsapp"></i> Kirim Laporan Harian
-                                </button>
-                            </form>
-                        </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <!-- Tombol Perhari dan Perbulan -->
+                    <div class="btn-group">
+                        <a class="btn btn-info text-white" href="<?= base_url('admin/laporan/laporan_harian'); ?>">
+                            <i class="fas fa-calendar-day"></i> Perhari
+                        </a>
+                        <a class="btn btn-warning text-dark" href="<?= base_url('admin/laporan/laporan_bulanan'); ?>">
+                            <i class="fas fa-calendar-alt"></i> Perbulan
+                        </a>
                     </div>
 
-                    <form method="get" action="<?= base_url('admin/laporan/laporan_harian'); ?>" class="mb-3 d-flex gap-2 align-items-end">
-                        <div>
-                            <label for="tanggal" class="form-label mb-1">Filter Tanggal:</label>
-                            <input type="date" id="tanggal" name="tanggal" class="form-control" value="<?= esc($_GET['tanggal'] ?? date('Y-m-d')) ?>">
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-secondary">
-                                <i class="fas fa-filter"></i> Tampilkan
-                            </button>
-                        </div>
-                    </form>
+                    <div class="d-flex gap-2">
+                        <!-- Tombol Download Laporan Harian -->
+                        <a href="<?= base_url('admin/laporan/download_laporan_harian?tanggal=' . ($tanggal ?? date('Y-m-d'))); ?>" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Download Laporan Harian
+                        </a>
 
-                    <div class="card-body">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-light text-center align-middle">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Tanggal Produk Terjual</th>
-                                    <th>Nama Produk</th>
-                                    <th>Jumlah Terjual</th>
-                                    <th>Harga Satuan</th>
-                                    <th>Total Penjualan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $no = 1;
-                                $totalKeseluruhan = 0;
-                                $totalJumlahTerjual = 0;
-                                $totalHargaSatuan = 0; ?>
-                                <?php foreach ($laporan as $order): ?>
-                                    <?php
+                        <!-- Tombol Kirim Laporan Harian -->
+                        <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" method="post">
+                            <button type="submit" class="btn btn-success" id="submitButton">
+                                <i class="fab fa-whatsapp"></i> Kirim Laporan Harian
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <form method="get" action="<?= base_url('admin/laporan/laporan_harian'); ?>" class="mb-3 d-flex gap-2 align-items-end">
+                    <div>
+                        <label for="tanggal" class="form-label mb-1">Filter Tanggal:</label>
+                        <input type="date" id="tanggal" name="tanggal" class="form-control" value="<?= esc($_GET['tanggal'] ?? date('Y-m-d')) ?>">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-secondary">
+                            <i class="fas fa-filter"></i> Tampilkan
+                        </button>
+                    </div>
+                </form>
+
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light text-center align-middle">
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal Produk Terjual</th>
+                                <th>Nama Produk</th>
+                                <th>Jumlah Terjual</th>
+                                <th>Harga Satuan</th>
+                                <th>Total Penjualan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $totalKeseluruhan = 0;
+                            $totalJumlahTerjual = 0;
+                            $totalHargaSatuan = 0;
+
+                            if (count($laporan) > 0):
+                                $no = 1;
+                                foreach ($laporan as $order):
                                     // Format tanggal order
                                     $date = new DateTime($order['created_at'], new DateTimeZone('UTC'));
                                     $date->setTimezone(new DateTimeZone('Asia/Makassar'));
                                     $tanggalOrder = $date->format('d F Y H:i');
-                                    ?>
+                            ?>
 
                                     <?php foreach ($order['items'] as $item): ?>
                                         <?php
@@ -96,24 +103,23 @@
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php endforeach; ?>
-                            </tbody>
-                            <tfoot>
+                            <?php else: ?>
                                 <tr>
-                                    <th colspan="3" class="text-end">Total Keseluruhan</th>
-                                    <th class="text-center"><?= $totalJumlahTerjual; ?> pcs</th>
-                                    <th class="text-center"></th> <!-- Kolom Harga Satuan dikosongkan -->
-                                    <th class="text-center">Rp <?= number_format($totalKeseluruhan, 0, ',', '.'); ?></th>
+                                    <td colspan="6" class="text-center">Data Belum Ada</td>
                                 </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                            <?php endif; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3" class="text-start">Total Keseluruhan</th> <!-- Change from text-end to text-start -->
+                                <th class="text-center"><?= $totalJumlahTerjual; ?> pcs</th>
+                                <th class="text-center"></th> <!-- Kolom Harga Satuan dikosongkan -->
+                                <th class="text-center">Rp <?= number_format($totalKeseluruhan, 0, ',', '.'); ?></th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-            <?php else: ?>
-                <!-- Pesan jika tidak ada laporan yang ditemukan -->
-                <div class="alert alert-warning">
-                    Tidak ada data penjualan untuk tanggal yang dipilih.
-                </div>
-            <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
