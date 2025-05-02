@@ -85,7 +85,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Apakah Anda yakin ingin menghapus data produk terjual ?
+                Apakah anda yakin ingin menghapus data produk terjual ?
                 <br>
                 <strong id="produk-nama"></strong> <!-- Tampilkan nama produk yang relevan -->
             </div>

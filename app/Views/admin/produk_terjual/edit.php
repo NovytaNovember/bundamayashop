@@ -57,7 +57,7 @@
     }
 
     .product-price::before {
-        content: "Rp ";
+        content: " ";
         font-weight: normal;
     }
 
@@ -127,12 +127,12 @@
                     <form action="<?= base_url('admin/produk_terjual/update/' . $order['id_order']); ?>" method="POST">
                         <input type="hidden" name="id_order" value="<?= $order['id_order']; ?>">
 
-                        <div class="form-group mb-3">
+                       <!-- <div class="form-group mb-3">
                             <label for="tanggal_order">Tanggal Produk Terjual</label>
                             <input type="date" name="tanggal_order" id="tanggal_order" class="form-control" value="<?= date('Y-m-d', strtotime($order['created_at'])); ?>" required>
-                        </div>
+                        </div> -->
 
-                        <h5>Produk Produk Terjual yang Dipilih:</h5>
+                        <h5> Produk Terjual yang Dipilih:</h5>
                         <div class="row">
                             <?php foreach ($orderItems as $item):
                                 // Ambil data produk berdasarkan ID produk
@@ -181,11 +181,11 @@
 
                         <div class="d-flex justify-content-between mt-4">
                             <!-- Tombol Kembali -->
-                            <a href="<?= base_url('admin/produk_terjual'); ?>" class="btn btn-secondary">Kembali</a>
+                            <a href="<?= base_url('admin/produk_terjual'); ?>" class="btn btn-secondary">Batal</a>
 
                             <!-- Tombol Lanjut Update -->
                             <button type="submit" class="btn btn-primary">
-                                Lanjut Update<i class="fas fa-arrow-right ms-1"></i>
+                                 Simpan 
                             </button>
                         </div>
 

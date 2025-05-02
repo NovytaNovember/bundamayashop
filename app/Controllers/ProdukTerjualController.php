@@ -317,7 +317,7 @@ public function update($orderId)
         ]);
 
         // Redirect kembali ke halaman daftar produk terjual dengan pesan sukses
-        return redirect()->to(base_url('admin/produk_terjual'))->with('success', 'Produk Terjual berhasil diperbarui.');
+        return redirect()->to(base_url('admin/produk_terjual'))->with('success', 'Produk Terjual berhasil diperbarui!');
     } else {
         // Jika tidak ada produk atau jumlah yang dipilih
         return redirect()->to(base_url('admin/produk_terjual/edit/' . $orderId))->with('error', 'Tidak ada produk yang dipilih untuk diupdate.');

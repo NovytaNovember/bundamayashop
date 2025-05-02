@@ -50,7 +50,7 @@
 }
 
 .product-price::before {
-    content: "Rp ";
+    content: " ";
     font-weight: normal;
 }
 

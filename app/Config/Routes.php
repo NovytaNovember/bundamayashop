@@ -26,8 +26,7 @@ $routes->group('admin', function ($routes) {
     $routes->post('kategori/update', 'KategoriController::update');
     $routes->get('kategori/delete/(:num)', 'KategoriController::delete/$1');
 
-
-    // Routes untuk Order
+    // Routes untuk Produk Terjual
     $routes->get('produk_terjual', 'ProdukTerjualController::index'); // Menampilkan daftar produk terjual
     $routes->get('produk_terjual/tambah', 'ProdukTerjualController::tambah'); // Halaman tambah produk terjual
     $routes->post('produk_terjual/konfirmasi', 'ProdukTerjualController::konfirmasi'); // Konfirmasi sebelum simpan
@@ -60,5 +59,19 @@ $routes->group('admin', function ($routes) {
     $routes->post('setting/store', 'SettingController::store');
     $routes->post('setting/update', 'SettingController::update');
     $routes->get('setting/delete/(:num)', 'SettingController::delete/$1');
+
+    // Routes untuk Perhitungan
+    $routes->get('perhitungan', 'PerhitunganController::index'); // Menampilkan halaman perhitungan untuk admin
+    $routes->post('perhitungan/store', 'PerhitunganController::store'); // Menyimpan perhitungan
+    $routes->get('perhitungan/edit/(:num)', 'PerhitunganController::edit/$1'); // Halaman edit perhitungan
+    $routes->post('perhitungan/update', 'PerhitunganController::update'); // Update perhitungan dengan ID perhitungan sebagai parameter
+    $routes->get('perhitungan/delete/(:num)', 'PerhitunganController::delete/$1'); // Menghapus perhitungan berdasarkan ID perhitungan
+    $routes->get('perhitungan/getPendapatan/(:any)', 'PerhitunganController::getPendapatan/$1'); // Mengambil pendapatan per tanggal
+
+    $routes->get('user', 'UserController::index'); // Display list of users
+    $routes->post('user/store', 'UserController::store'); // Store a new user
+    $routes->get('user/edit/(:num)', 'UserController::edit/$1'); // Edit a user
+    $routes->post('user/update', 'UserController::update'); // Update user
+    $routes->get('user/delete/(:num)', 'UserController::delete/$1'); // Delete user
     
 });

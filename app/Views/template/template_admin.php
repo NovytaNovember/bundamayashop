@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/template/AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/template/AdminLTE-3.2.0/docs/assets/css/adminlte.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -265,8 +265,8 @@
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-key mr-2"></i> Level: Admin
                         </a>
-                        <a href="/akun" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> Daftar Akun
+                        <a href="/admin/user" class="dropdown-item">
+                            <i class="fas fa-users mr-2"></i> Daftar User
                         </a>
                         <a href="/logout" class="dropdown-item">
                             <i class="fas fa-sign-out-alt mr-2"></i> Logout
@@ -333,11 +333,12 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="/admin/setting/" class="nav-link">
-                            <i class="fas fa-cogs"></i>
-                            <p>Setting</p>
+                        <a href="/admin/perhitungan/" class="nav-link">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <p>Perhitungan</p>
                         </a>
                     </li>
+
 
                 </ul>
             </nav>
