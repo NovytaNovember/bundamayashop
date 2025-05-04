@@ -41,9 +41,10 @@ $routes->group('admin', function ($routes) {
 
     // Routes untuk Laporan
     $routes->get('laporan/laporan_harian', 'LaporanController::laporan_harian');
+    $routes->get('laporan/download_laporan_harian', 'LaporanController::download_laporan_harian'); // Routes untuk laporan dengan filter bulan dan tahun
     $routes->get('laporan/laporan_bulanan', 'LaporanController::laporan_bulanan');
-    $routes->get('laporan/download_laporan_harian', 'LaporanController::download_laporan_harian');
-    $routes->get('laporan/download_laporan_bulanan', 'LaporanController::download_laporan_bulanan');
+    $routes->get('laporan/laporan_bulanan/(:num)/(:num)', 'LaporanController::laporan_bulanan/$1/$2');
+    $routes->get('laporan/download_laporan_bulanan/(:num)/(:num)', 'LaporanController::download_laporan_bulanan/$1/$2');
     $routes->post('laporan/kirim_laporan_harian', 'LaporanController::kirim_laporan_harian');
     $routes->post('laporan/kirim_laporan_bulanan', 'LaporanController::kirim_laporan_bulanan');
 
@@ -73,5 +74,5 @@ $routes->group('admin', function ($routes) {
     $routes->get('user/edit/(:num)', 'UserController::edit/$1'); // Edit a user
     $routes->post('user/update', 'UserController::update'); // Update user
     $routes->get('user/delete/(:num)', 'UserController::delete/$1'); // Delete user
-    
+
 });

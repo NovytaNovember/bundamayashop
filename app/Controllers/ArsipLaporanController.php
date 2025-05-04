@@ -41,16 +41,35 @@ class ArsipLaporanController extends BaseController
     {
         $data['judul'] = 'Arsip Laporan Penjualan PerBulan';
         $laporan = $this->laporanModel->where('kategori', 'perbulan')->findAll();
-
-        // Format tanggal dengan Carbon
+    
+        // Array untuk mengubah angka bulan menjadi nama bulan
+        $bulanMap = [
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'Novyta m',
+            '12' => 'Desember',
+        ];
+    
+        // Gantilah bulan yang disimpan di database menjadi nama bulan
         foreach ($laporan as &$item) {
-            $item['created_at'] = Carbon::parse($item['created_at'])->locale('id')->isoFormat('MMMM YYYY');
+            if (isset($bulanMap[$item['bulan']])) {
+                $item['bulan'] = $bulanMap[$item['bulan']];
+            }
         }
-
+    
         $data['laporan'] = $laporan;
-
+    
         return view('admin/arsip_laporan/arsip_laporan_perbulan', $data);
     }
+    
 
     public function downloadLaporanPerHari($id)
     {

@@ -15,7 +15,7 @@
                     <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
                 <?php endif; ?>
 
-                <div class="alert alert-info">
+                <div class="alert alert-info" style="background-color: #a7c7e7; color: #3b3b3b; border-color: #8da9c4;">
                     <i class="fas fa-info-circle me-2"></i>
                     <strong> Catatan:</strong> Saat Anda mendownload laporan harian, file juga secara otomatis akan masuk ke dalam arsip sistem.
                 </div>
@@ -39,6 +39,9 @@
 
                         <!-- Tombol Kirim Laporan Harian -->
                         <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" method="post">
+                            <!-- Hidden field untuk tanggal yang difilter -->
+                            <input type="hidden" name="tanggal" value="<?= esc($tanggal) ?>">
+
                             <button type="submit" class="btn btn-success" id="submitButton">
                                 <i class="fab fa-whatsapp"></i> Kirim Laporan Harian
                             </button>
@@ -47,16 +50,33 @@
                 </div>
 
                 <form method="get" action="<?= base_url('admin/laporan/laporan_harian'); ?>" class="mb-3 d-flex gap-2 align-items-end">
-                    <div>
-                        <label for="tanggal" class="form-label mb-1">Filter Tanggal:</label>
-                        <input type="date" id="tanggal" name="tanggal" class="form-control" value="<?= esc($_GET['tanggal'] ?? date('Y-m-d')) ?>">
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-secondary">
-                            <i class="fas fa-filter"></i> Tampilkan
-                        </button>
+                    <div class="card mb-4 w-100">
+                        <div class="card-header bg-light">
+                            <strong>Filter Tanggal untuk Mencari Data yang Ditampilkan:</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <!-- Filter Tanggal (Lebar Dikurangi) -->
+                                <div class="col-md-4 mb-3 mb-md-0"> <!-- Ubah col-md-10 ke col-md-8 -->
+                                    <div class="form-group">
+                                        <label for="tanggal" class="font-weight-bold text-muted">Tanggal</label>
+                                        <input type="date" id="tanggal" name="tanggal" class="form-control" value="<?= esc($_GET['tanggal'] ?? date('Y-m-d')) ?>">
+                                    </div>
+                                </div>
+
+                                <!-- Tombol Cari -->
+                                <div class="col-md-2 d-flex align-items-end"> <!-- Sesuaikan dengan ukuran tombol -->
+                                    <div class="form-group w-100">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-search"></i> Cari
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
+
 
                 <div class="card-body">
                     <table class="table table-bordered table-hover">
@@ -105,7 +125,7 @@
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="6" class="text-center">Data Belum Ada</td>
+                                    <td colspan="6" class="text-center">Data tidak tersedia</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
