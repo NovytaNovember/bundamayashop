@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use CodeIgniter\Controller;
 
-class UserController extends BaseController
+class PenggunaController extends BaseController
 {
     public function index()
     {
@@ -13,11 +13,11 @@ class UserController extends BaseController
 
         // Fetch all users
         $data = [
-            'judul' => 'Data User',
+            'judul' => 'Data Pengguna',
             'users' => $userModel->findAll(),
         ];
 
-        return view('admin/user', $data);
+        return view('admin/pengguna', $data);
     }
 
     public function store()
@@ -33,20 +33,20 @@ class UserController extends BaseController
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-        $userAdmin = $userModel->where('level', 'admin')->first();
+        // $userAdmin = $userModel->where('level', 'admin')->first();
         
-        if ($userAdmin) {
-            return redirect()->to('/admin/user')->with('error', 'Tidak dapat menambahkan user admin.');
-        }
+        // if ($userAdmin) {
+        //     return redirect()->to('/admin/user')->with('error', 'Tidak dapat menambahkan user admin.');
+        // }
 
 
         if ($userModel->insert($data)) {
-            session()->setFlashdata('pesan', 'User berhasil ditambahkan!');
+            session()->setFlashdata('pesan', 'Data pengguna berhasil ditambahkan!');
         } else {
-            session()->setFlashdata('error', 'Gagal menambahkan user.');
+            session()->setFlashdata('error', 'Gagal menambahkan data pengguna.');
         }
 
-        return redirect()->to('/admin/user');
+        return redirect()->to('/admin/pengguna');
     }
 
     public function edit($id)
@@ -62,9 +62,9 @@ class UserController extends BaseController
                 'user' => $user,
             ];
 
-            return view('admin/user_edit', $data);
+            return view('admin/pengguna_edit', $data);
         } else {
-            return redirect()->to('/admin/user')->with('error', 'User tidak ditemukan.');
+            return redirect()->to('/admin/pengguna')->with('error', 'Data pengguna tidak ditemukan.');
         }
     }
 
@@ -85,12 +85,12 @@ class UserController extends BaseController
         }
 
         if ($userModel->update($id, $data)) {
-            session()->setFlashdata('pesan', 'User berhasil diperbarui!');
+            session()->setFlashdata('pesan', 'Data pengguna berhasil diperbarui!');
         } else {
-            session()->setFlashdata('error', 'Gagal memperbarui user.');
+            session()->setFlashdata('error', 'Gagal memperbarui data pengguna.');
         }
 
-        return redirect()->to('/admin/user');
+        return redirect()->to('/admin/pengguna');
     }
 
     public function delete($id)
@@ -98,11 +98,11 @@ class UserController extends BaseController
         $userModel = new UserModel();
 
         if ($userModel->delete($id)) {
-            session()->setFlashdata('pesan', 'User berhasil dihapus!');
+            session()->setFlashdata('pesan', 'Data pengguna berhasil dihapus!');
         } else {
-            session()->setFlashdata('error', 'Gagal menghapus user.');
+            session()->setFlashdata('error', 'Gagal menghapus data pengguna.');
         }
 
-        return redirect()->to('/admin/user');
+        return redirect()->to('/admin/pengguna');
     }
 }

@@ -16,22 +16,20 @@
                         <?= session()->getFlashdata('error'); ?>
                     </div>
                 <?php endif ?>
-                <!-- Tombol Perhari dan Perbulan -->
-                <div class="btn-group">
-                    <a class="btn btn-info text-white" href="<?= base_url('admin/perhitungan_perhari'); ?>">
-                        <i class="fas fa-calendar-day"></i> Perhari
-                    </a>
-                    <a class="btn btn-warning text-dark" href="<?= base_url('admin/perhitungan_perbulan'); ?>">
-                        <i class="fas fa-calendar-alt"></i> Perbulan
-                    </a>
-                </div>
+                <!-- Tombol Perhari, Perbulan, dan Tambah -->
+                <div class="d-flex flex-column align-items-start gap-3 mb-3">
+                    <!-- Tombol Perhari dan Perbulan -->
+                    <div class="btn-group">
+                        <a class="btn btn-info text-white" href="<?= base_url('admin/perhitungan_perhari'); ?>">
+                            <i class="fas fa-calendar-day"></i> Perhari
+                        </a>
+                        <a class="btn btn-warning text-dark" href="<?= base_url('admin/perhitungan_perbulan'); ?>">
+                            <i class="fas fa-calendar-alt"></i> Perbulan
+                        </a>
+                    </div>
 
-
-
-
-                <!-- Tombol Tambah Perhitungan -->
-                <div class="card-header">
-                    <button type="button" class="btn btn-warning text-dark" data-toggle="modal" data-target="#addModalBulanan">
+                    <!-- Tombol Tambah Perhitungan -->
+                    <button type="button" class="btn btn-success text-white mt-2" data-toggle="modal" data-target="#addModalBulanan">
                         <i class="fas fa-plus me-1"></i> Tambah Perhitungan Perbulan
                     </button>
                 </div>
@@ -84,29 +82,32 @@
                                             <input type="hidden" value="<?= $data['id_perhitungan'] ?>" name="id_perhitungan">
                                             <div class="modal-body">
 
-                                                <!-- Bulan Dropdown -->
-                                                <div class="col-md-3 mb-3 mb-md-0">
-                                                    <div class="form-group">
-                                                        <label for="bulan" class="font-weight-bold text-muted">Bulan</label>
-                                                        <select name="bulan" id="bulan" class="form-control form-control-sm">
-                                                            <?php foreach ($listBulan as $key => $value): ?>
-                                                                <option value="<?= $key; ?>" <?= ($bulan == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                <div class="row">
+                                                    <!-- Bulan Dropdown -->
+                                                    <div class="col-md-6 mb-3">
+                                                        <div class="form-group">
+                                                            <label for="bulan" class="font-weight-bold text-muted">Bulan</label>
+                                                            <select name="bulan" id="bulan" class="form-control">
+                                                                <?php foreach ($listBulan as $key => $value): ?>
+                                                                    <option value="<?= $key; ?>" <?= ($bulan == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Tahun Dropdown -->
+                                                    <div class="col-md-6 mb-3">
+                                                        <div class="form-group">
+                                                            <label for="tahun" class="font-weight-bold text-muted">Tahun</label>
+                                                            <select name="tahun" id="tahun" class="form-control">
+                                                                <?php foreach ($listTahun as $key => $value): ?>
+                                                                    <option value="<?= $key; ?>" <?= ($tahun == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Tahun Dropdown -->
-                                                <div class="col-md-3 mb-3 mb-md-0">
-                                                    <div class="form-group">
-                                                        <label for="tahun" class="font-weight-bold text-muted">Tahun</label>
-                                                        <select name="tahun" id="tahun" class="form-control form-control-sm">
-                                                            <?php foreach ($listTahun as $key => $value): ?>
-                                                                <option value="<?= $key; ?>" <?= ($tahun == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
                                                 <div class="form-group">
                                                     <label for="edit-modal">Modal</label>
                                                     <input type="number" value="<?= $data['modal'] ?>" class="form-control" id="edit-modal" name="modal" required>
@@ -121,7 +122,7 @@
                                 </div>
                             </div>
 
-                            <!-- Modal Konfirmasi Hapus -->
+
                             <!-- Modal Hapus Perhitungan -->
                             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -135,7 +136,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                Apakah Anda yakin ingin menghapus data perhitungan ini?
+                                                Apakah anda yakin ingin menghapus data perhitungan ini?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -167,30 +168,31 @@
             </div>
             <form action="<?= base_url('admin/perhitungan_perbulan/store') ?>" method="post" id="formTambahPerhitunganHarian">
                 <div class="modal-body">
-                    <!-- Bulan Dropdown -->
-                    <div class="col-md-3 mb-3 mb-md-0">
-                        <div class="form-group">
-                            <label for="bulan" class="font-weight-bold text-muted">Bulan</label>
-                            <select name="bulan" id="bulan" class="form-control form-control-sm">
-                                <?php foreach ($listBulan as $key => $value): ?>
-                                    <option value="<?= $key; ?>" <?= ($bulan == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                    <div class="row">
+                        <!-- Bulan Dropdown -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="bulan" class="font-weight-bold text-muted">Bulan</label>
+                                <select name="bulan" id="bulan" class="form-control">
+                                    <?php foreach ($listBulan as $key => $value): ?>
+                                        <option value="<?= $key; ?>" <?= ($bulan == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tahun Dropdown -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="tahun" class="font-weight-bold text-muted">Tahun</label>
+                                <select name="tahun" id="tahun" class="form-control">
+                                    <?php foreach ($listTahun as $key => $value): ?>
+                                        <option value="<?= $key; ?>" <?= ($tahun == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Tahun Dropdown -->
-                    <div class="col-md-3 mb-3 mb-md-0">
-                        <div class="form-group">
-                            <label for="tahun" class="font-weight-bold text-muted">Tahun</label>
-                            <select name="tahun" id="tahun" class="form-control form-control-sm">
-                                <?php foreach ($listTahun as $key => $value): ?>
-                                    <option value="<?= $key; ?>" <?= ($tahun == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-
 
 
                     <div class="form-group">
@@ -206,9 +208,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 
 

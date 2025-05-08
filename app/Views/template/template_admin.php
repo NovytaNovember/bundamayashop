@@ -333,18 +333,20 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="/admin/perhitungan_perhari/" class="nav-link">
-                            <i class="fas fa-file-invoice-dollar"></i>
-                            <p>Perhitungan</p>
+                        <a href="/admin/perhitungan_perhari/" class="nav-link d-flex align-items-center">
+                            <i class="fas fa-file-invoice-dollar mr-2" style="font-size: 16px;"></i>
+                            <p class="mb-0">Perhitungan</p>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/admin/user" class="nav-link">
-                        <i class="fas fa-users mr-2"></i>
-                            <p>Data Pengguna</p>
+                        <a href="/admin/pengguna" class="nav-link d-flex align-items-center">
+                            <i class="fas fa-user mr-2" style="font-size: 14px;"></i>
+                            <p class="mb-0">Data Pengguna</p>
                         </a>
                     </li>
+
+
 
 
 

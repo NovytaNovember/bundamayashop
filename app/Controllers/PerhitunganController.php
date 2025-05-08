@@ -35,7 +35,7 @@ class PerhitunganController extends BaseController
         // Data lainnya
         $data['produk'] = $produkModel->findAll();
         $data['laporan'] = $perhitunganModel->where('type', 'perhari')->getLaporanBulanan('2025-05');
-        $data['judul'] = 'Perhitungan';
+        $data['judul'] = 'Perhitungan Perhari';
         $data['tanggal_terpilih'] = $tanggal;
 
         return view('admin/perhitungan/perhitungan_perhari', $data);
@@ -223,7 +223,7 @@ class PerhitunganController extends BaseController
         // Data lainnya
         $data['produk'] = $produkModel->findAll();
         $data['laporan'] = $perhitunganModel->where('type', 'perbulan')->findAll();
-        $data['judul'] = 'Perhitungan';
+        $data['judul'] = 'Perhitungan Perbulan';
         $data['tanggal_terpilih'] = $tanggal;
         $data['bulan'] = $bulan;
         $data['tahun'] = $tahun;

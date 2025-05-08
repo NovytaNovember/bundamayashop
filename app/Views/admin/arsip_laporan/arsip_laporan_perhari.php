@@ -40,7 +40,6 @@
                                 <tr>
                                     <td><?= $no++ ?></td>
                                     <td><?= $item['created_at'] ?></td>
-
                                     <td> Rp <?= number_format($item['total_penjualan'], 0, ',', '.'); ?></td>
                                     <td>
                                         <a href="/admin/arsip_laporan/arsip_laporan_perhari/download/<?= $item['id_laporan'] ?>" class="btn btn-primary"><i class="fas fa-download"></i> Download</a>

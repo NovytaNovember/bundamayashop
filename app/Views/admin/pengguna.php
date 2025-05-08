@@ -18,14 +18,14 @@
                     </div>
                 <?php endif ?>
 
-                <!-- Tombol Tambah User -->
+                <!-- Tombol Tambah Pengguna -->
                 <div class="card-header">
                     <button type="button" class="btn btn-green" data-toggle="modal" data-target="#addModal">
-                        <i class="fas fa-plus me-1"></i> Tambah User
+                        <i class="fas fa-plus me-1"></i> Tambah Pengguna
                     </button>
                 </div>
 
-                <!-- Tabel Data User -->
+                <!-- Tabel Data Pengguna -->
                 <table class="table table-bordered mt-3">
                     <thead>
                         <tr>
@@ -70,10 +70,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah User</h5>
+                <h5 class="modal-title">Tambah Data Pengguna</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <form action="<?= base_url('admin/user/store') ?>" method="post">
+            <form action="<?= base_url('admin/pengguna/store') ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Username</label>
@@ -110,12 +110,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                <h5 class="modal-title" id="editModalLabel">Edit Data Pengguna</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('admin/user/update') ?>" method="post">
+            <form action="<?= base_url('admin/pengguna/update') ?>" method="post">
                 <?= csrf_field(); ?>
                 <input type="hidden" name="id_user" id="edit-id_user">
                 <div class="modal-body">
@@ -155,13 +155,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus User</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus Data Pengguna</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Apakah anda yakin ingin menghapus user ini?
+                Apakah anda yakin ingin menghapus data pengguna ini?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -197,7 +197,7 @@
                 const id = this.getAttribute('data-id');
                 const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
                 confirmDeleteBtn.onclick = function() {
-                    window.location.href = `<?= base_url('admin/user/delete/') ?>/${id}`;
+                    window.location.href = `<?= base_url('admin/pengguna/delete/') ?>/${id}`;
                 };
                 $('#deleteModal').modal('show');
             });

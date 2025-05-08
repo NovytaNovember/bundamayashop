@@ -63,16 +63,11 @@ $routes->group('admin', function ($routes) {
     $routes->post('perhitungan_perbulan/update', 'PerhitunganController::update_perbulan'); // Update perhitungan dengan ID perhitungan sebagai parameter
     $routes->post('perhitungan_perbulan/delete/(:num)', 'PerhitunganController::delete_perbulan/$1'); // Menghapus perhitungan berdasarkan ID perhitungan
 
+    // Routes untuk Pengguna
+    $routes->get('pengguna', 'PenggunaController::index'); // Display list of users
+    $routes->post('pengguna/store', 'PenggunaController::store'); // Store a new user
+    $routes->get('pengguna/edit/(:num)', 'PenggunaController::edit/$1'); // Edit a user
+    $routes->post('pengguna/update', 'PenggunaController::update'); // Update user
+    $routes->get('pengguna/delete/(:num)', 'PenggunaController::delete/$1'); // Delete user
 
-    $routes->get('user', 'UserController::index'); // Display list of users
-    $routes->post('user/store', 'UserController::store'); // Store a new user
-    $routes->get('user/edit/(:num)', 'UserController::edit/$1'); // Edit a user
-    $routes->post('user/update', 'UserController::update'); // Update user
-    $routes->get('user/delete/(:num)', 'UserController::delete/$1'); // Delete user
-
-    // Routes untuk Setting
-    $routes->get('setting', 'SettingController::index');
-    $routes->post('setting/store', 'SettingController::store');
-    $routes->post('setting/update', 'SettingController::update');
-    $routes->get('setting/delete/(:num)', 'SettingController::delete/$1');
 });
