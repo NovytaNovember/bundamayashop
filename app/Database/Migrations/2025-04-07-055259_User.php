@@ -4,12 +4,12 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class User extends Migration
+class Pengguna extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'id_user' => [
+            'id_pengguna' => [
                 'type'           => 'INT',
                 'unsigned'       => true,
                 'auto_increment' => true,
@@ -25,7 +25,7 @@ class User extends Migration
             ],
             'password' => [
                 'type'       => 'VARCHAR',
-                'constraint' => '255',
+                'constraint' => '20',
             ],
             'level' => [
                 'type'       => 'ENUM',
@@ -41,12 +41,12 @@ class User extends Migration
             ]
         ]);
 
-        $this->forge->addKey('id_user', true); // primary key
-        $this->forge->createTable('user');
+        $this->forge->addKey('id_pengguna', true); // primary key
+        $this->forge->createTable('pengguna');
     }
 
     public function down()
     {
-        $this->forge->dropTable('user');
+        $this->forge->dropTable('pengguna');
     }
 }

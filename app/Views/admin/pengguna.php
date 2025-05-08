@@ -38,7 +38,7 @@
                     </thead>
                     <tbody>
                         <?php $no = 1; ?>
-                        <?php foreach ($users as $user) : ?>
+                        <?php foreach ($pengguna as $user) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td><?= $user['username'] ?></td>
@@ -46,12 +46,12 @@
                                 <td><?= $user['level'] ?></td>
                                 <td>
                                     <button class="btn btn-sm btn-warning edit-btn" data-toggle="modal" data-target="#editModal"
-                                        data-id="<?= $user['id_user'] ?>" data-username="<?= $user['username'] ?>"
+                                        data-id="<?= $user['id_pengguna'] ?>" data-username="<?= $user['username'] ?>"
                                         data-email="<?= $user['email'] ?>" data-level="<?= $user['level'] ?>">
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
 
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="<?= $user['id_user'] ?>" data-toggle="modal" data-target="#deleteModal">
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="<?= $user['id_pengguna'] ?>" data-toggle="modal" data-target="#deleteModal">
                                         <i class="fas fa-trash-alt"></i> Hapus
                                     </button>
                                 </td>
@@ -65,7 +65,7 @@
     </div>
 </div>
 
-<!-- Modal Tambah User -->
+<!-- Modal Tambah Pengguna -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -105,7 +105,7 @@
     </div>
 </div>
 
-<!-- Modal Edit User -->
+<!-- Modal Edit Pengguna -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -117,7 +117,7 @@
             </div>
             <form action="<?= base_url('admin/pengguna/update') ?>" method="post">
                 <?= csrf_field(); ?>
-                <input type="hidden" name="id_user" id="edit-id_user">
+                <input type="hidden" name="id_pengguna" id="edit-id_pengguna">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Username</label>
@@ -174,7 +174,7 @@
 <!-- Script -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Edit User
+        // Edit Pengguna
         const editBtns = document.querySelectorAll('.edit-btn');
         editBtns.forEach(button => {
             button.addEventListener('click', function() {
@@ -183,14 +183,14 @@
                 const email = this.getAttribute('data-email');
                 const level = this.getAttribute('data-level');
 
-                document.getElementById('edit-id_user').value = id;
+                document.getElementById('edit-id_pengguna').value = id;
                 document.getElementById('edit-username').value = username;
                 document.getElementById('edit-email').value = email;
                 document.getElementById('edit-level').value = level;
             });
         });
 
-        // Hapus User
+        // Hapus Pengguna
         const deleteBtns = document.querySelectorAll('.delete-btn');
         deleteBtns.forEach(button => {
             button.addEventListener('click', function() {

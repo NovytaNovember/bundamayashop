@@ -2,19 +2,19 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
+use App\Models\PenggunaModel;
 use CodeIgniter\Controller;
 
 class PenggunaController extends BaseController
 {
     public function index()
     {
-        $userModel = new UserModel();
+        $penggunaModel = new PenggunaModel();
 
         // Fetch all users
         $data = [
             'judul' => 'Data Pengguna',
-            'users' => $userModel->findAll(),
+            'pengguna' => $penggunaModel->findAll(),
         ];
 
         return view('admin/pengguna', $data);
@@ -22,7 +22,7 @@ class PenggunaController extends BaseController
 
     public function store()
     {
-        $userModel = new UserModel();
+        $penggunaModel = new PenggunaModel();
 
         $data = [
             'username'  => $this->request->getPost('username'),
@@ -33,14 +33,13 @@ class PenggunaController extends BaseController
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-        // $userAdmin = $userModel->where('level', 'admin')->first();
+        // $userAdmin = $penggunaModel->where('level', 'admin')->first();
         
         // if ($userAdmin) {
-        //     return redirect()->to('/admin/user')->with('error', 'Tidak dapat menambahkan user admin.');
+        //     return redirect()->to('/admin/pengguna')->with('error', 'Tidak dapat menambahkan user admin.');
         // }
 
-
-        if ($userModel->insert($data)) {
+        if ($penggunaModel->insert($data)) {
             session()->setFlashdata('pesan', 'Data pengguna berhasil ditambahkan!');
         } else {
             session()->setFlashdata('error', 'Gagal menambahkan data pengguna.');
@@ -51,15 +50,15 @@ class PenggunaController extends BaseController
 
     public function edit($id)
     {
-        $userModel = new UserModel();
+        $penggunaModel = new PenggunaModel();
 
         // Fetch user data by ID
-        $user = $userModel->find($id);
+        $pengguna = $penggunaModel->find($id);
 
-        if ($user) {
+        if ($pengguna) {
             $data = [
-                'judul' => 'Edit User',
-                'user' => $user,
+                'judul' => 'Edit Pengguna',
+                'pengguna' => $pengguna,
             ];
 
             return view('admin/pengguna_edit', $data);
@@ -70,9 +69,9 @@ class PenggunaController extends BaseController
 
     public function update()
     {
-        $userModel = new UserModel();
+        $penggunaModel = new PenggunaModel();
 
-        $id = $this->request->getPost('id_user');
+        $id = $this->request->getPost('id_pengguna');
         $data = [
             'username'  => $this->request->getPost('username'),
             'email'     => $this->request->getPost('email'),
@@ -84,7 +83,7 @@ class PenggunaController extends BaseController
             $data['password'] = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
         }
 
-        if ($userModel->update($id, $data)) {
+        if ($penggunaModel->update($id, $data)) {
             session()->setFlashdata('pesan', 'Data pengguna berhasil diperbarui!');
         } else {
             session()->setFlashdata('error', 'Gagal memperbarui data pengguna.');
@@ -95,9 +94,9 @@ class PenggunaController extends BaseController
 
     public function delete($id)
     {
-        $userModel = new UserModel();
+        $penggunaModel = new PenggunaModel();
 
-        if ($userModel->delete($id)) {
+        if ($penggunaModel->delete($id)) {
             session()->setFlashdata('pesan', 'Data pengguna berhasil dihapus!');
         } else {
             session()->setFlashdata('error', 'Gagal menghapus data pengguna.');
