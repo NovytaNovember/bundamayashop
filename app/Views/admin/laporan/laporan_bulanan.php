@@ -51,7 +51,7 @@
                 <form method="get" action="<?= base_url('admin/laporan/laporan_bulanan'); ?>">
                     <div class="card mb-4">
                         <div class="card-header bg-light">
-                            <strong>Silakan pilih bulan dan tahun untuk menampilkan data yang diinginkan:</strong>
+                            <strong>Filter Bulan dan Tahun untuk Mencari Data yang diinginkan:</strong>
                         </div>
                         <div class="card-body">
 

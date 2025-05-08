@@ -24,7 +24,7 @@
                         <thead class="table-light text-center align-middle">
                             <tr>
                                 <th>No</th>
-                                <th>Nama File</th>
+                                <th>File Laporan</th>
                                 <th>Bulan</th>
                                 <th>Tahun</th>
                                 <th>Total Pendapatan</th>

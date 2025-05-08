@@ -45,7 +45,7 @@ class LaporanController extends BaseController
         }
 
         $data = [
-            'judul' => 'Laporan',
+            'judul' => 'Laporan Penjualan Harian',
             'laporan' => $orders,
             'tanggal' => $tanggal, // Mengirimkan tanggal ke view
         ];

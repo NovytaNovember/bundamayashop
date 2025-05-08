@@ -8,7 +8,7 @@ class PerhitunganModel extends Model
 {
     protected $table      = 'perhitungan';
     protected $primaryKey = 'id_perhitungan';
-    protected $allowedFields = ['id_produk', 'tanggal', 'pendapatan', 'modal', 'keuntungan', 'created_at', 'updated_at'];
+    protected $allowedFields = ['pendapatan_hari_ini', 'tanggal', 'pendapatan', 'modal', 'keuntungan', 'created_at', 'updated_at', 'type'];
 
     // Relasi dengan Produk
     public function produk()
@@ -25,11 +25,11 @@ class PerhitunganModel extends Model
     // Mendapatkan laporan perhitungan bulanan dengan join ke produk
     public function getLaporanBulanan($bulan)
     {
-        return $this->select('perhitungan.*, produk.nama_produk') // Mengambil nama produk
-                    ->join('produk', 'produk.id_produk = perhitungan.id_produk') // Melakukan join dengan tabel produk
-                    ->where('tanggal >=', $bulan . '-01')
-                    ->where('tanggal <=', $bulan . '-31')
-                    ->findAll();
+        return $this // Mengambil nama produk
+
+            ->where('tanggal >=', $bulan . '-01')
+            ->where('tanggal <=', $bulan . '-31')
+            ->findAll();
     }
 
     // Update perhitungan

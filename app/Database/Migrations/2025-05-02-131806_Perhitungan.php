@@ -10,11 +10,11 @@ class Perhitungan extends Migration
     {
         $this->forge->addField([
             'id_perhitungan'    => ['type' => 'INT', 'auto_increment' => true],
-            'id_produk'         => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true], // Pastikan unsigned
+            'pendapatan_hari_ini' => ['type' => 'VARCHAR', 'constraint' => 20],
             'tanggal'           => ['type' => 'DATE'],
-            'pendapatan'        => ['type' => 'DECIMAL', 'constraint' => '15,2'],
-            'modal'             => ['type' => 'DECIMAL', 'constraint' => '15,2'],
-            'keuntungan'        => ['type' => 'DECIMAL', 'constraint' => '15,2'],
+            'pendapatan'        => ['type' => 'VARCHAR', 'constraint' => 20],
+            'modal'             => ['type' => 'VARCHAR', 'constraint' => 20],
+            'keuntungan'        => ['type' => 'VARCHAR', 'constraint' => 20],
             'created_at'        => ['type' => 'DATETIME', 'null' => true],
             'updated_at'        => ['type' => 'DATETIME', 'null' => true],
         ]);

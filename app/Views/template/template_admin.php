@@ -265,9 +265,9 @@
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-key mr-2"></i> Level: Admin
                         </a>
-                        <a href="/admin/user" class="dropdown-item">
+                        <!-- <a href="/admin/user" class="dropdown-item">
                             <i class="fas fa-users mr-2"></i> Daftar User
-                        </a>
+                        </a> -->
                         <a href="/logout" class="dropdown-item">
                             <i class="fas fa-sign-out-alt mr-2"></i> Logout
                         </a>
@@ -333,11 +333,19 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="/admin/perhitungan/" class="nav-link">
+                        <a href="/admin/perhitungan_perhari/" class="nav-link">
                             <i class="fas fa-file-invoice-dollar"></i>
                             <p>Perhitungan</p>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="/admin/user" class="nav-link">
+                        <i class="fas fa-users mr-2"></i>
+                            <p>Data Pengguna</p>
+                        </a>
+                    </li>
+
 
 
                 </ul>

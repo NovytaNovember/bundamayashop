@@ -26,7 +26,8 @@ class CreateOrderItem extends Migration
                 'type' => 'INT',
             ],
             'total_harga' => [
-                'type' => 'INT',
+               'type'       => 'VARCHAR',
+                'constraint' => '20',
             ],
             'created_at' => [
                 'type' => 'DATETIME',

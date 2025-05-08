@@ -10,7 +10,7 @@ class UserController extends BaseController
     public function index()
     {
         $userModel = new UserModel();
-        
+
         // Fetch all users
         $data = [
             'judul' => 'Data User',
@@ -32,6 +32,13 @@ class UserController extends BaseController
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
+
+        $userAdmin = $userModel->where('level', 'admin')->first();
+        
+        if ($userAdmin) {
+            return redirect()->to('/admin/user')->with('error', 'Tidak dapat menambahkan user admin.');
+        }
+
 
         if ($userModel->insert($data)) {
             session()->setFlashdata('pesan', 'User berhasil ditambahkan!');

@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\M_akun;
 
-class Validasi extends BaseController
+class ValidasiController extends BaseController
 {
     protected $akun;
 

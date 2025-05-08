@@ -2,21 +2,18 @@
 
 namespace App\Controllers;
 
-use App\Models\OrderModel;
-use App\Models\OrderItemModel;
+
 use App\Models\LaporanModel;
 use Carbon\Carbon;
 
 class ArsipLaporanController extends BaseController
 {
-    protected $orderModel;
-    protected $orderItemModel;
+
     protected $laporanModel;
 
     public function __construct()
     {
-        $this->orderModel = new OrderModel();
-        $this->orderItemModel = new OrderItemModel();
+        
         $this->laporanModel = new LaporanModel();
     }
 
@@ -54,7 +51,7 @@ class ArsipLaporanController extends BaseController
             '08' => 'Agustus',
             '09' => 'September',
             '10' => 'Oktober',
-            '11' => 'Novyta m',
+            '11' => 'November',
             '12' => 'Desember',
         ];
     

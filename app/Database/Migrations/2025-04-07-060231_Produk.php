@@ -32,7 +32,8 @@ class Produk extends Migration
                 'null'       => true,
             ],
             'harga' => [
-                'type' => 'INT',
+                'type'       => 'VARCHAR',
+                'constraint' => '20',
             ],
             'created_at' => [
                 'type'    => 'DATETIME',

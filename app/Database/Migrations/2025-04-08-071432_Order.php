@@ -16,7 +16,7 @@ class Order extends Migration
             ],
             'total_harga' => [
                 'type'       => 'VARCHAR',
-                'constraint' => '255',
+                'constraint' => '20',
                 'null'       => true,
             ],
             'created_at' => [

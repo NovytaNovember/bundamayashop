@@ -52,7 +52,7 @@
                 <form method="get" action="<?= base_url('admin/laporan/laporan_harian'); ?>" class="mb-3 d-flex gap-2 align-items-end">
                     <div class="card mb-4 w-100">
                         <div class="card-header bg-light">
-                            <strong>Filter Tanggal untuk Mencari Data yang Ditampilkan:</strong>
+                            <strong>Filter Tanggal untuk Mencari Data yang diinginkan:</strong>
                         </div>
                         <div class="card-body">
                             <div class="row mb-3">

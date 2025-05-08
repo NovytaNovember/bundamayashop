@@ -90,7 +90,7 @@
                     <div class="form-group">
                         <label>Level</label>
                         <select class="form-control" name="level" required>
-                            <option value="dmin">Admin</option>
+                            <option value="admin">Admin</option>
                             <option value="petugas">Petugas</option>
                             <option value="owner">Owner</option>
                         </select>

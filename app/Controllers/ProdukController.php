@@ -54,30 +54,7 @@ class ProdukController extends BaseController
         return redirect()->to('/admin/produk');
     }
 
-    public function edit($id)
-    {
-        $model = new ProdukModel();
-        $modelKategori = new \App\Models\KategoriModel();
-
-        // Ambil data produk yang akan diedit
-        $produkEdit = $model->find($id);
-
-        if ($produkEdit) {
-            // Ambil semua produk dan kategori untuk ditampilkan di view
-            $data = [
-                'judul' => 'Data Produk',
-                'produk' => $model->join('kategori', 'produk.id_kategori = kategori.id_kategori')->findAll(),
-                'kategori' => $modelKategori->findAll(),
-                'edit_produk' => $produkEdit,
-                'created_at'  => date('Y-m-d H:i:s'),
-                'updated_at'  => date('Y-m-d H:i:s'),
-            ];
-
-            return view('admin/produk', $data);
-        } else {
-            return redirect()->to('/admin/produk')->with('error', 'Produk tidak ditemukan.');
-        }
-    }
+  
 
     public function update()
     {
