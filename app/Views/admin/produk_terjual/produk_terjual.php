@@ -33,32 +33,32 @@
                             <tbody>
                                 <?php
                                 $no = 1;
-                                foreach ($orders as $order):
+                                foreach ($produkTerjual as $produkTerjualItem):
                                     $produkList = [];
                                     $totalHarga = 0;
-                                    foreach ($order['items'] as $item) {
+                                    foreach ($produkTerjualItem['rincian'] as $item) {
                                         $produkList[] = $item['nama_produk'] . ' (' . $item['jumlah'] . ' pcs )  = ' . ' (Rp ' . number_format($item['total_harga'], 0, ',', '.') . ')';
                                         $totalHarga += $item['total_harga'];
                                     }
                                     $produkString = implode('<br>', $produkList);
 
                                     // Format tanggal + jam dengan timezone Asia/Makassar
-                                    $date = new DateTime($order['created_at'], new DateTimeZone('UTC'));
+                                    $date = new DateTime($produkTerjualItem['created_at'], new DateTimeZone('UTC'));
                                     $date->setTimezone(new DateTimeZone('Asia/Makassar'));
-                                    $tanggalOrder = $date->format('d F Y H:i');
+                                    $tanggalProdukTerjual = $date->format('d F Y H:i');
                                 ?>
                                     <tr class="text-center align-middle">
                                         <td><?= $no++; ?></td>
-                                        <td><?= $tanggalOrder; ?></td>
+                                        <td><?= $tanggalProdukTerjual; ?></td>
                                         <td class="text-start"><?= $produkString; ?></td>
                                         <td>Rp <?= number_format($totalHarga, 0, ',', '.'); ?></td>
                                         <td>
-                                            <a href="<?= base_url('admin/produk_terjual/edit/' . $order['id_order']) ?>" class="btn btn-sm btn-warning">
+                                            <a href="<?= base_url('admin/produk_terjual/edit/' . $produkTerjualItem['id_produk_terjual']) ?>" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
 
                                             <!-- Tombol Hapus dengan Modal -->
-                                            <button class="btn btn-sm btn-danger delete-btn" data-id="<?= $order['id_order'] ?>" data-nama="<?= $produkString ?>">
+                                            <button class="btn btn-sm btn-danger delete-btn" data-id="<?= $produkTerjualItem['id_produk_terjual'] ?>" data-nama="<?= $produkString ?>">
                                                 <i class="fas fa-trash-alt"></i> Hapus
                                             </button>
                                         </td>
@@ -106,6 +106,8 @@
                 const id = this.getAttribute('data-id');
                 const produk = this.getAttribute('data-nama');
                 
+                // Update nama produk di modal
+                document.getElementById('produk-nama').textContent = produk;
 
                 // Saat tombol hapus diklik, proses penghapusan produk
                 const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');

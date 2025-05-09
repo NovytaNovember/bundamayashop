@@ -4,17 +4,17 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateOrderItem extends Migration
+class RincianProdukTerjual extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'id_order_item' => [
+            'id_rincian_produk_terjual' => [
                 'type'           => 'INT',
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'id_order' => [
+            'id_produk_terjual' => [
                 'type'       => 'INT',
                 'unsigned'   => true,
             ],
@@ -39,19 +39,20 @@ class CreateOrderItem extends Migration
             ]
         ]);
 
-        $this->forge->addKey('id_order_item', true); // Primary Key
+        $this->forge->addKey('id_rincian_produk_terjual', true); // Primary Key
 
-        // Foreign Key ke tabel order
-        $this->forge->addForeignKey('id_order', 'order', 'id_order', 'CASCADE', 'CASCADE');
+        // Foreign Key ke tabel produk_terjual
+        $this->forge->addForeignKey('id_produk_terjual', 'produk_terjual', 'id_produk_terjual', 'CASCADE', 'CASCADE');
 
         // Foreign Key ke tabel produk
         $this->forge->addForeignKey('id_produk', 'produk', 'id_produk', 'CASCADE', 'CASCADE');
 
-        $this->forge->createTable('order_item');
+        $this->forge->createTable('rincian_produk_terjual');
     }
 
     public function down()
     {
-        $this->forge->dropTable('order_item');
+        $this->forge->dropTable('rincian_produk_terjual');
     }
 }
+

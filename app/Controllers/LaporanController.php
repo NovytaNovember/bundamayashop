@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Models\OrderItemModel;
-use App\Models\OrderModel;
+use App\Models\ProdukTerjualModel;
+use App\Models\RincianProdukTerjualModel;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -11,14 +11,14 @@ use App\Models\LaporanModel;
 
 class LaporanController extends BaseController
 {
-    protected $orderItemModel;
-    protected $orderModel;
+    protected $rincianProdukTerjualModel;
+    protected $produkTerjualModel;
     protected $laporanModel;
 
     public function __construct()
     {
-        $this->orderItemModel = new OrderItemModel();
-        $this->orderModel = new OrderModel();
+        $this->rincianProdukTerjualModel = new RincianProdukTerjualModel();
+        $this->produkTerjualModel = new ProdukTerjualModel();
         $this->laporanModel = new LaporanModel();
     }
 
@@ -27,62 +27,58 @@ class LaporanController extends BaseController
     {
         $tanggal = $this->request->getGet('tanggal') ?? date('Y-m-d'); // Mengambil tanggal dari form atau defaultkan ke hari ini
 
-        // Ambil data order item berdasarkan tanggal yang dipilih
-        $orders = $this->orderModel
+        // Ambil data produk terjual berdasarkan tanggal yang dipilih
+        $produkTerjual = $this->produkTerjualModel
             ->where('DATE(created_at)', $tanggal) // Filter berdasarkan tanggal
             ->orderBy('created_at', 'DESC')
             ->findAll();
 
-        $orderItemModel = new \App\Models\OrderItemModel();
-
-        // Loop order dan ambil item-order-nya
-        foreach ($orders as &$order) {
-            $order['items'] = $orderItemModel
-                ->select('order_item.*, produk.nama_produk, produk.harga')
-                ->join('produk', 'produk.id_produk = order_item.id_produk')
-                ->where('order_item.id_order', $order['id_order'])
+        // Loop produk terjual dan ambil rincian produk
+        foreach ($produkTerjual as &$produk) {
+            $produk['rincian'] = $this->rincianProdukTerjualModel
+                ->select('rincian_produk_terjual.*, produk.nama_produk, produk.harga')
+                ->join('produk', 'produk.id_produk = rincian_produk_terjual.id_produk')
+                ->where('rincian_produk_terjual.id_produk_terjual', $produk['id_produk_terjual'])
                 ->findAll();
         }
 
         $data = [
             'judul' => 'Laporan Penjualan Harian',
-            'laporan' => $orders,
+            'laporan' => $produkTerjual,
             'tanggal' => $tanggal, // Mengirimkan tanggal ke view
         ];
 
         return view('admin/laporan/laporan_harian', $data);
     }
 
-
     // Fungsi download laporan harian
     public function download_laporan_harian()
     {
         $tanggal = $this->request->getGet('tanggal') ?? date('Y-m-d');
 
-        $orders = $this->orderModel
+        $produkTerjual = $this->produkTerjualModel
             ->where('DATE(created_at)', $tanggal)
             ->orderBy('created_at', 'DESC')
             ->findAll();
 
-        $orderItemModel = new \App\Models\OrderItemModel();
         $total = 0;
 
-        foreach ($orders as &$order) {
-            $order['items'] = $orderItemModel
-                ->select('order_item.*, produk.nama_produk, produk.harga')
-                ->join('produk', 'produk.id_produk = order_item.id_produk')
-                ->where('order_item.id_order', $order['id_order'])
+        foreach ($produkTerjual as &$produk) {
+            $produk['rincian'] = $this->rincianProdukTerjualModel
+                ->select('rincian_produk_terjual.*, produk.nama_produk, produk.harga')
+                ->join('produk', 'produk.id_produk = rincian_produk_terjual.id_produk')
+                ->where('rincian_produk_terjual.id_produk_terjual', $produk['id_produk_terjual'])
                 ->findAll();
 
             // Hitung total untuk hari itu
-            foreach ($order['items'] as $item) {
-                $total += $item['total_harga'];
+            foreach ($produk['rincian'] as $rincian) {
+                $total += $rincian['total_harga'];
             }
         }
 
         $data = [
             'judul' => 'Laporan Penjualan Harian',
-            'laporan' => $orders,
+            'laporan' => $produkTerjual,
             'tanggal' => $tanggal,
             'totalKeseluruhan' => $total,
         ];
@@ -108,7 +104,7 @@ class LaporanController extends BaseController
         $laporan = $this->laporanModel->where('kategori', 'perhari')->findAll();
         $found = false;
         $currentDate = date('Y-m-d'); // ambil tanggal hari ini
-        $currentTime = $orders[0]['created_at'];
+        $currentTime = $produkTerjual[0]['created_at'];
 
         foreach ($laporan as $data) {
             // Ambil hanya bagian tanggal dari created_at
@@ -175,29 +171,30 @@ class LaporanController extends BaseController
             $currentYear => $currentYear, // Tahun sekarang
         ];
 
-        // Ambil data order items berdasarkan bulan dan tahun yang dipilih
-        $orderItems = $this->orderItemModel
+        // Ambil data produk terjual berdasarkan bulan dan tahun yang dipilih
+        $produkTerjual = $this->produkTerjualModel
             ->select('
         produk.nama_produk, 
         produk.harga, 
-        SUM(order_item.jumlah) AS total_jumlah, 
-        SUM(order_item.total_harga) AS total_penjualan,
-        MAX(order_item.created_at) AS created_at
+        SUM(rincian_produk_terjual.jumlah) AS total_jumlah, 
+        SUM(rincian_produk_terjual.total_harga) AS total_penjualan,
+        MAX(rincian_produk_terjual.created_at) AS created_at
     ')
-            ->join('produk', 'produk.id_produk = order_item.id_produk')
-            ->where('MONTH(order_item.created_at)', $bulan)  // Filter berdasarkan bulan
-            ->where('YEAR(order_item.created_at)', $tahun)  // Filter berdasarkan tahun
-            ->groupBy('order_item.id_produk, produk.nama_produk, produk.harga')
+            ->join('rincian_produk_terjual', 'rincian_produk_terjual.id_produk_terjual = produk_terjual.id_produk_terjual')
+            ->join('produk', 'produk.id_produk = rincian_produk_terjual.id_produk')
+            ->where('MONTH(rincian_produk_terjual.created_at)', $bulan)  // Filter berdasarkan bulan
+            ->where('YEAR(rincian_produk_terjual.created_at)', $tahun)  // Filter berdasarkan tahun
+            ->groupBy('rincian_produk_terjual.id_produk, produk.nama_produk, produk.harga')
             ->orderBy('produk.nama_produk', 'ASC')
             ->findAll();
 
         // Hitung total keseluruhan penjualan
-        $totalKeseluruhan = array_sum(array_column($orderItems, 'total_penjualan'));
+        $totalKeseluruhan = array_sum(array_column($produkTerjual, 'total_penjualan'));
 
         // Kirim data ke view
         $data = [
             'judul' => 'Laporan Penjualan Bulanan',
-            'laporan' => $orderItems,
+            'laporan' => $produkTerjual,
             'totalKeseluruhan' => $totalKeseluruhan,
             'bulan' => $bulan,
             'tahun' => $tahun,
@@ -208,6 +205,7 @@ class LaporanController extends BaseController
         return view('admin/laporan/laporan_bulanan', $data);
     }
 
+    // Download laporan bulanan
     public function download_laporan_bulanan($bulan = null, $tahun = null)
     {
         // Use default values for bulan and tahun if not set
@@ -238,32 +236,33 @@ class LaporanController extends BaseController
             $currentYear => $currentYear, // Current year
         ];
 
-        // Get order items for the selected month and year
-        $orderItems = $this->orderItemModel
+        // Get produk terjual for the selected month and year
+        $produkTerjual = $this->produkTerjualModel
             ->select('
         produk.nama_produk, 
         produk.harga, 
-        SUM(order_item.jumlah) AS total_jumlah, 
-        SUM(order_item.total_harga) AS total_penjualan,
-        MAX(order_item.created_at) AS created_at
+        SUM(rincian_produk_terjual.jumlah) AS total_jumlah, 
+        SUM(rincian_produk_terjual.total_harga) AS total_penjualan,
+        MAX(rincian_produk_terjual.created_at) AS created_at
     ')
-            ->join('produk', 'produk.id_produk = order_item.id_produk')
-            ->where('MONTH(order_item.created_at)', $bulan)  // Filter by month
-            ->where('YEAR(order_item.created_at)', $tahun)  // Filter by year
-            ->groupBy('order_item.id_produk, produk.nama_produk, produk.harga')
+            ->join('rincian_produk_terjual', 'rincian_produk_terjual.id_produk_terjual = produk_terjual.id_produk_terjual')
+            ->join('produk', 'produk.id_produk = rincian_produk_terjual.id_produk')
+            ->where('MONTH(rincian_produk_terjual.created_at)', $bulan)  // Filter by month
+            ->where('YEAR(rincian_produk_terjual.created_at)', $tahun)  // Filter by year
+            ->groupBy('rincian_produk_terjual.id_produk, produk.nama_produk, produk.harga')
             ->orderBy('produk.nama_produk', 'ASC')
             ->findAll();
 
         // Calculate the total sales for the month
-        $totalKeseluruhan = array_sum(array_column($orderItems, 'total_penjualan'));
+        $totalKeseluruhan = array_sum(array_column($produkTerjual, 'total_penjualan'));
 
         // Generate HTML for PDF
         $data = [
             'judul' => 'Laporan Penjualan Bulanan',
-            'laporan' => $orderItems,
+            'laporan' => $produkTerjual,
             'totalKeseluruhan' => $totalKeseluruhan,
             'bulan' => $bulan,
-            'tahun' => $tahun, 
+            'tahun' => $tahun,
         ];
 
         $view_laporan = view('admin/laporan/pdf_laporan_bulanan', $data);
@@ -332,19 +331,19 @@ class LaporanController extends BaseController
             ->setBody($output);
     }
 
-
+    // Fungsi untuk kirim laporan harian/bulanan via WhatsApp
     public function kirim_laporan_harian()
     {
         // Ambil tanggal yang difilter dari form
         $tanggal = $this->request->getPost('tanggal') ?? date('Y-m-d');
 
-        // Ambil data order item berdasarkan tanggal yang dipilih
-        $items = $this->orderItemModel
-            ->select('order_item.id_produk, produk.nama_produk, produk.harga, SUM(order_item.jumlah) as total_jumlah, SUM(order_item.total_harga) as total_pendapatan')
-            ->join('produk', 'produk.id_produk = order_item.id_produk')
-            ->join('order', 'order.id_order = order_item.id_order')
-            ->where("DATE(order.created_at)", $tanggal) // Filter berdasarkan tanggal yang dipilih
-            ->groupBy('order_item.id_produk, produk.nama_produk, produk.harga')
+        // Ambil data produk terjual berdasarkan tanggal yang dipilih
+        $produkTerjual = $this->produkTerjualModel
+            ->select('produk_terjual.id_produk_terjual, produk.nama_produk, produk.harga, SUM(rincian_produk_terjual.jumlah) as total_jumlah, SUM(rincian_produk_terjual.total_harga) as total_pendapatan')
+            ->join('rincian_produk_terjual', 'rincian_produk_terjual.id_produk_terjual = produk_terjual.id_produk_terjual')
+            ->join('produk', 'produk.id_produk = rincian_produk_terjual.id_produk')
+            ->where("DATE(produk_terjual.created_at)", $tanggal) // Filter berdasarkan tanggal yang dipilih
+            ->groupBy('rincian_produk_terjual.id_produk, produk.nama_produk, produk.harga')
             ->orderBy('produk.nama_produk', 'ASC')
             ->findAll();
 
@@ -358,16 +357,18 @@ class LaporanController extends BaseController
         $totalPendapatan = 0;
         $totalItem = 0;
 
-        foreach ($items as $item) {
-            $pesan .= "- *" . $item['nama_produk'] . "*: " . $item['total_jumlah'] . " item | Rp " . number_format($item['total_pendapatan'], 0, ',', '.') . "\n";
-            $totalPendapatan += $item['total_pendapatan'];
-            $totalItem += $item['total_jumlah'];
+        // Loop melalui produk terjual dan membuat pesan
+        foreach ($produkTerjual as $produk) {
+            $pesan .= "- *" . $produk['nama_produk'] . "*: " . $produk['total_jumlah'] . " item | Rp " . number_format($produk['total_pendapatan'], 0, ',', '.') . "\n";
+            $totalPendapatan += $produk['total_pendapatan'];
+            $totalItem += $produk['total_jumlah'];
         }
 
         $pesan .= "\nTotal Produk Terjual: " . $totalItem . "\n";
         $pesan .= "Total Pendapatan: Rp " . number_format($totalPendapatan, 0, ',', '.') . "\n";
         $pesan .= "\nTerima kasih atas kerja keras tim! 🙌";
 
+        // Kirim pesan ke WhatsApp menggunakan Fonnte API
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.fonnte.com/send',
@@ -403,20 +404,20 @@ class LaporanController extends BaseController
         }
     }
 
-
     public function kirim_laporan_bulanan()
     {
         // Ambil bulan dan tahun yang difilter dari form
         $bulan = $this->request->getPost('bulan') ?? date('m');
         $tahun = $this->request->getPost('tahun') ?? date('Y');
 
-        $items = $this->orderItemModel
-            ->select('order_item.id_produk, produk.nama_produk, produk.harga, SUM(order_item.jumlah) as total_jumlah, SUM(order_item.total_harga) as total_pendapatan')
-            ->join('produk', 'produk.id_produk = order_item.id_produk')
-            ->join('order', 'order.id_order = order_item.id_order')
-            ->where("MONTH(order.created_at)", $bulan)  // Filter berdasarkan bulan
-            ->where("YEAR(order.created_at)", $tahun)  // Filter berdasarkan tahun
-            ->groupBy('order_item.id_produk, produk.nama_produk, produk.harga')
+        // Ambil data produk terjual berdasarkan bulan dan tahun yang dipilih
+        $produkTerjual = $this->produkTerjualModel
+            ->select('produk_terjual.id_produk_terjual, produk.nama_produk, produk.harga, SUM(rincian_produk_terjual.jumlah) as total_jumlah, SUM(rincian_produk_terjual.total_harga) as total_pendapatan')
+            ->join('rincian_produk_terjual', 'rincian_produk_terjual.id_produk_terjual = produk_terjual.id_produk_terjual')
+            ->join('produk', 'produk.id_produk = rincian_produk_terjual.id_produk')
+            ->where("MONTH(produk_terjual.created_at)", $bulan)  // Filter berdasarkan bulan
+            ->where("YEAR(produk_terjual.created_at)", $tahun)  // Filter berdasarkan tahun
+            ->groupBy('rincian_produk_terjual.id_produk, produk.nama_produk, produk.harga')
             ->orderBy('produk.nama_produk', 'ASC')
             ->findAll();
 
@@ -429,16 +430,18 @@ class LaporanController extends BaseController
         $totalPendapatan = 0;
         $totalItem = 0;
 
-        foreach ($items as $item) {
-            $pesan .= "- *" . $item['nama_produk'] . "*: " . $item['total_jumlah'] . " item | Rp " . number_format($item['total_pendapatan'], 0, ',', '.') . "\n";
-            $totalPendapatan += $item['total_pendapatan'];
-            $totalItem += $item['total_jumlah'];
+        // Loop melalui produk terjual dan membuat pesan
+        foreach ($produkTerjual as $produk) {
+            $pesan .= "- *" . $produk['nama_produk'] . "*: " . $produk['total_jumlah'] . " item | Rp " . number_format($produk['total_pendapatan'], 0, ',', '.') . "\n";
+            $totalPendapatan += $produk['total_pendapatan'];
+            $totalItem += $produk['total_jumlah'];
         }
 
         $pesan .= "\nTotal Produk Terjual: " . $totalItem . "\n";
         $pesan .= "Total Pendapatan: Rp " . number_format($totalPendapatan, 0, ',', '.') . "\n";
         $pesan .= "\nTerima kasih atas kerja keras tim! 💪";
 
+        // Kirim pesan ke WhatsApp menggunakan Fonnte API
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.fonnte.com/send',

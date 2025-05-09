@@ -135,16 +135,16 @@
                                 <?php foreach ($laporan as $item): ?>
                                     <?php
                                     // Format Bulan dari created_at
-                                    $bulanOrder = '-';
+                                    $bulanProdukTerjual = '-';
                                     if (!empty($item['created_at'])) {
                                         $date = new DateTime($item['created_at'], new DateTimeZone('UTC'));
                                         $date->setTimezone(new DateTimeZone('Asia/Makassar'));
-                                        $bulanOrder = $date->format('F Y'); // Contoh: April 2025
+                                        $bulanProdukTerjual = $date->format('F Y'); // Contoh: April 2025
                                     }
                                     ?>
                                     <tr class="text-center align-middle">
                                         <td><?= $no++; ?></td>
-                                        <td><?= $bulanOrder; ?></td>
+                                        <td><?= $bulanProdukTerjual; ?></td>
                                         <td class="text-start"><?= esc($item['nama_produk']); ?></td>
                                         <td><?= esc($item['total_jumlah']); ?> pcs</td>
                                         <td>Rp <?= number_format($item['harga'], 0, ',', '.'); ?></td>

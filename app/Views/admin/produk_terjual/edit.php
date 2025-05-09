@@ -46,11 +46,9 @@
     .product-price {
         font-size: 16px;
         color: #28a745;
-        /* Warna hijau untuk penekanan harga */
         font-weight: bold;
         margin-top: 10px;
         background-color: #f0f8ff;
-        /* Latar belakang agar harga lebih menonjol */
         padding: 8px 15px;
         border-radius: 5px;
         display: inline-block;
@@ -70,40 +68,10 @@
         font-weight: bold;
         margin-bottom: 10px;
         text-align: center;
-        /* Menambahkan ini untuk memastikan teks berada di tengah */
     }
 
     .jumlah-wrapper {
         margin-top: 10px;
-    }
-
-    .jumlah-group-kustom button {
-        padding: 2px 6px;
-        font-size: 20px;
-        width: 30px;
-    }
-
-    .input-jumlah-kecil {
-        width: 40px;
-        padding: 2px;
-        font-size: 13px;
-    }
-
-    .checkbox-kustom {
-        width: 50px;
-        height: 18px;
-        margin-right: 8px;
-        margin-top: 2px;
-    }
-
-    .form-check-label {
-        font-size: 16px;
-        margin-left: 20px;
-    }
-
-    .card {
-        position: relative;
-        text-align: center;
     }
 
     /* Styling untuk gambar produk */
@@ -114,9 +82,6 @@
         border-radius: 10px;
     }
 
-    .jumlah-wrapper {
-        margin-top: 10px;
-    }
 </style>
 
 <div class="content-wrapper">
@@ -124,17 +89,12 @@
         <div class="content">
             <div class="container-fluid my-4">
                 <div class="paper p-4 shadow-sm bg-white rounded">
-                    <form action="<?= base_url('admin/produk_terjual/update/' . $order['id_order']); ?>" method="POST">
-                        <input type="hidden" name="id_order" value="<?= $order['id_order']; ?>">
-
-                       <!-- <div class="form-group mb-3">
-                            <label for="tanggal_order">Tanggal Produk Terjual</label>
-                            <input type="date" name="tanggal_order" id="tanggal_order" class="form-control" value="<?= date('Y-m-d', strtotime($order['created_at'])); ?>" required>
-                        </div> -->
+                    <form action="<?= base_url('admin/produk_terjual/update/' . $produkTerjual['id_produk_terjual']); ?>" method="POST">
+                        <input type="hidden" name="produk_terjual_id" value="<?= $produkTerjual['id_produk_terjual']; ?>">
 
                         <h5> Produk Terjual yang Dipilih:</h5>
                         <div class="row">
-                            <?php foreach ($orderItems as $item):
+                            <?php foreach ($produkItems as $item):
                                 // Ambil data produk berdasarkan ID produk
                                 $produk = $produkModel->find($item['id_produk']);
                             ?>
@@ -148,19 +108,16 @@
                                                     alt="<?= esc($produk['nama_produk']) ?>">
                                             </div>
 
-                                            <!-- Nama produk ditengah -->
                                             <div class="d-flex justify-content-center mb-2">
                                                 <label class="form-check-label fw-semibold product-title">
                                                     <?= esc($produk['nama_produk']); ?>
                                                 </label>
                                             </div>
 
-                                            <!-- Harga Produk di bawah gambar -->
                                             <div class="product-price">
                                                 Rp <?= number_format($produk['harga'], 0, ',', '.'); ?>/pcs
                                             </div>
 
-                                            <!-- Jumlah Produk -->
                                             <div class="jumlah-wrapper mt-1">
                                                 <label for="jumlah<?= $produk['id_produk'] ?>">Jumlah:</label>
                                                 <div class="d-flex justify-content-center align-items-center jumlah-group-kustom mt-1">
@@ -173,19 +130,13 @@
                                         </div>
                                     </div>
                                 </div>
-
                             <?php endforeach; ?>
                         </div>
 
-                        <!-- Tambahkan produk baru jika perlu -->
-
                         <div class="d-flex justify-content-between mt-4">
-                            <!-- Tombol Kembali -->
                             <a href="<?= base_url('admin/produk_terjual'); ?>" class="btn btn-secondary">Batal</a>
-
-                            <!-- Tombol Lanjut Update -->
                             <button type="submit" class="btn btn-primary">
-                                 Simpan 
+                                 Simpan
                             </button>
                         </div>
 

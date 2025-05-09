@@ -4,12 +4,12 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Order extends Migration
+class ProdukTerjual extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'id_order' => [
+            'id_produk_terjual' => [
                 'type'           => 'INT',
                 'unsigned'       => true,
                 'auto_increment' => true,
@@ -29,12 +29,12 @@ class Order extends Migration
             ]
         ]);
 
-        $this->forge->addKey('id_order', true); // Primary key
-        $this->forge->createTable('order');
+        $this->forge->addKey('id_produk_terjual', true); // Primary key
+        $this->forge->createTable('produk_terjual');
     }
 
     public function down()
     {
-        $this->forge->dropTable('order');
+        $this->forge->dropTable('produk_terjual');
     }
 }

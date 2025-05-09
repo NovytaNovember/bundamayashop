@@ -81,7 +81,6 @@
                                             <?= csrf_field(); ?>
                                             <input type="hidden" value="<?= $data['id_perhitungan'] ?>" name="id_perhitungan">
                                             <div class="modal-body">
-
                                                 <div class="row">
                                                     <!-- Bulan Dropdown -->
                                                     <div class="col-md-6 mb-3">
@@ -89,6 +88,7 @@
                                                             <label for="bulan" class="font-weight-bold text-muted">Bulan</label>
                                                             <select name="bulan" id="bulan" class="form-control">
                                                                 <?php foreach ($listBulan as $key => $value): ?>
+                                                                    <!-- Menampilkan bulan yang sudah ada sebelumnya -->
                                                                     <option value="<?= $key; ?>" <?= ($bulan == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
                                                                 <?php endforeach; ?>
                                                             </select>
@@ -101,6 +101,7 @@
                                                             <label for="tahun" class="font-weight-bold text-muted">Tahun</label>
                                                             <select name="tahun" id="tahun" class="form-control">
                                                                 <?php foreach ($listTahun as $key => $value): ?>
+                                                                    <!-- Menampilkan tahun yang sudah ada sebelumnya -->
                                                                     <option value="<?= $key; ?>" <?= ($tahun == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
                                                                 <?php endforeach; ?>
                                                             </select>

@@ -98,28 +98,28 @@
 
                             if (count($laporan) > 0):
                                 $no = 1;
-                                foreach ($laporan as $order):
-                                    // Format tanggal order
-                                    $date = new DateTime($order['created_at'], new DateTimeZone('UTC'));
+                                foreach ($laporan as $produk_terjual):
+                                    // Format tanggal produk terjual
+                                    $date = new DateTime($produk_terjual['created_at'], new DateTimeZone('UTC'));
                                     $date->setTimezone(new DateTimeZone('Asia/Makassar'));
-                                    $tanggalOrder = $date->format('d F Y H:i');
+                                    $tanggalProdukTerjual = $date->format('d F Y H:i');
                             ?>
 
-                                    <?php foreach ($order['items'] as $item): ?>
+                                    <?php foreach ($produk_terjual['rincian'] as $rincian): ?>
                                         <?php
                                         // Tambahkan total penjualan
-                                        $totalKeseluruhan += $item['total_harga'];
+                                        $totalKeseluruhan += $rincian['total_harga'];
                                         // Tambahkan jumlah terjual dan harga satuan
-                                        $totalJumlahTerjual += $item['jumlah'];
-                                        $totalHargaSatuan += ($item['total_harga'] / $item['jumlah']);
+                                        $totalJumlahTerjual += $rincian['jumlah'];
+                                        $totalHargaSatuan += ($rincian['total_harga'] / $rincian['jumlah']);
                                         ?>
                                         <tr class="text-center align-middle">
                                             <td><?= $no++; ?></td>
-                                            <td><?= $tanggalOrder; ?></td>
-                                            <td class="text-start"><?= esc($item['nama_produk']); ?></td>
-                                            <td><?= esc($item['jumlah']); ?> pcs</td>
-                                            <td>Rp <?= number_format($item['total_harga'] / $item['jumlah'], 0, ',', '.'); ?></td>
-                                            <td>Rp <?= number_format($item['total_harga'], 0, ',', '.'); ?></td>
+                                            <td><?= $tanggalProdukTerjual; ?></td>
+                                            <td class="text-start"><?= esc($rincian['nama_produk']); ?></td>
+                                            <td><?= esc($rincian['jumlah']); ?> pcs</td>
+                                            <td>Rp <?= number_format($rincian['total_harga'] / $rincian['jumlah'], 0, ',', '.'); ?></td>
+                                            <td>Rp <?= number_format($rincian['total_harga'], 0, ',', '.'); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php endforeach; ?>

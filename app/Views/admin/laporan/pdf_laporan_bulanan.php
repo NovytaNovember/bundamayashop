@@ -22,11 +22,6 @@
             margin-bottom: 40px;
         }
 
-        .header-info img {
-            max-width: 200px;
-            margin-bottom: 20px;
-        }
-
         h3 {
             font-size: 18px;
             color: #2c3e50;
@@ -34,33 +29,17 @@
             font-weight: bold;
         }
 
-        .header-info span {
+        /* Period Styling */
+        .periode {
+            font-size: 16px;
             font-weight: bold;
-            color: #2980b9;
+            color: black;
+            margin-top: 10px;
         }
 
-         /* Global Styles */
-    body {
-        font-family: 'Arial', sans-serif;
-        font-size: 12px;
-        margin: 0;
-        padding: 0;
-        background-color: #ffffff;
-        color: #333;
-    }
-
-    /* Period Styling */
-    .periode {
-        font-size: 16px;
-        font-weight: bold;
-        color: black; /* Ensure the 'Periode:' text is black */
-        margin-top: 10px;
-    }
-
-    /* Ensure the period (month and year) text is black */
-    .periode span {
-        color: black; /* Set color for the month-year */
-    }
+        .periode span {
+            color: black;
+        }
 
         /* Table Styles */
         table {
@@ -93,19 +72,6 @@
         tfoot {
             background-color: #f8f9fa;
             font-weight: bold;
-        }
-
-        /* Column Alignments */
-        .text-start {
-            text-align: left;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-end {
-            text-align: right;
         }
 
         /* Footer Styles */
@@ -148,7 +114,6 @@
     <div class="header-info">
         <h3>Laporan Penjualan Bulanan</h3>
         <h4 class="mb-4">"Bunda Maya Shop"</h4>
-        <!-- Period display in Indonesian -->
         <p class="periode">Periode: <span><?= strftime("%B %Y", strtotime("$tahun-$bulan-01")) ?></span></p>
     </div>
 
@@ -174,8 +139,8 @@
                     <td class="text-center"><?= $no++; ?></td>
                     <td class="text-start"><?= esc($item['nama_produk']); ?></td>
                     <td class="text-center"><?= esc($item['total_jumlah']); ?> pcs</td>
-                    <td class="text-end">Rp <?= number_format($item['harga'], 0, ',', '.'); ?></td>
-                    <td class="text-end">Rp <?= number_format($item['total_penjualan'], 0, ',', '.'); ?></td>
+                    <td class="text-center">Rp <?= number_format($item['harga'], 0, ',', '.'); ?></td>
+                    <td class="text-center">Rp <?= number_format($item['total_penjualan'], 0, ',', '.'); ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -183,7 +148,7 @@
             <tr>
                 <th colspan="3" class="text-start">Total Penjualan</th>
                 <th class="text-center"><?= $totalJumlahTerjual; ?> pcs</th>
-                <th class="text-end">Rp <?= number_format($totalKeseluruhan, 0, ',', '.'); ?></th>
+                <th class="text-center">Rp <?= number_format($totalKeseluruhan, 0, ',', '.'); ?></th>
             </tr>
         </tfoot>
     </table>

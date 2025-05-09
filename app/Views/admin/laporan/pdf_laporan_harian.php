@@ -139,8 +139,8 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>Tanggal Produk Terjual</th>
                 <th>Nama Produk</th>
-                <th>Tanggal Order</th>
                 <th>Jumlah Terjual</th>
                 <th>Harga Satuan</th>
                 <th>Total Penjualan</th>
@@ -150,24 +150,25 @@
             <?php $no = 1;
             $totalKeseluruhan = 0;
             $totalJumlahTerjual = 0; ?>
-            <?php foreach ($laporan as $order): ?>
+            <?php foreach ($laporan as $produk_terjual): ?>
                 <?php
-                $date = new DateTime($order['created_at'], new DateTimeZone('UTC'));
+                // Format tanggal produk terjual
+                $date = new DateTime($produk_terjual['created_at'], new DateTimeZone('UTC'));
                 $date->setTimezone(new DateTimeZone('Asia/Makassar'));
-                $tanggalOrder = $date->format('d F Y H:i');
+                $tanggalProdukTerjual = $date->format('d F Y');
                 ?>
-                <?php foreach ($order['items'] as $item): ?>
+                <?php foreach ($produk_terjual['rincian'] as $rincian): ?>
                     <?php
-                    $totalKeseluruhan += $item['total_harga'];
-                    $totalJumlahTerjual += $item['jumlah'];
+                    $totalKeseluruhan += $rincian['total_harga'];
+                    $totalJumlahTerjual += $rincian['jumlah'];
                     ?>
                     <tr>
                         <td class="text-center"><?= $no++; ?></td>
-                        <td class="text-start"><?= esc($item['nama_produk']); ?></td>
-                        <td class="text-center"><?= $tanggalOrder; ?></td>
-                        <td class="text-center"><?= esc($item['jumlah']); ?> pcs</td>
-                        <td class="text-end">Rp <?= number_format($item['total_harga'] / $item['jumlah'], 0, ',', '.'); ?></td>
-                        <td class="text-end">Rp <?= number_format($item['total_harga'], 0, ',', '.'); ?></td>
+                        <td class="text-center"><?= $tanggalProdukTerjual; ?></td> <!-- Tanggal Produk Terjual -->
+                        <td class="text-start"><?= esc($rincian['nama_produk']); ?></td> <!-- Nama Produk -->
+                        <td class="text-center"><?= esc($rincian['jumlah']); ?> pcs</td>
+                        <td class="text-end">Rp <?= number_format($rincian['harga'], 0, ',', '.'); ?></td>
+                        <td class="text-end">Rp <?= number_format($rincian['total_harga'], 0, ',', '.'); ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endforeach; ?>

@@ -44,14 +44,14 @@
                             </table>
                         </div>
 
-                        <!-- Form Simpan Order -->
+                        <!-- Form Simpan Produk Terjual -->
                         <div class="mt-4 d-flex justify-content-between">
                             <a href="<?= base_url('admin/produk_terjual') ?>" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i> Kembali
                             </a>
                             <form action="<?= base_url('admin/produk_terjual/simpan') ?>" method="post">
                                 <?= csrf_field(); ?>
-                                <input type="hidden" name="order_id" value="<?= $order_id ?>">
+                                <input type="hidden" name="produk_terjual_id" value="<?= $produk_terjual_id ?>">
                                 <?php foreach ($produk_terpilih as $i => $pr): ?>
                                     <input type="hidden" name="produk[<?= $i ?>][id_produk]" value="<?= $pr['id_produk'] ?>">
                                     <input type="hidden" name="produk[<?= $i ?>][jumlah]" value="<?= $pr['jumlah'] ?>">

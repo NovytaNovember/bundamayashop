@@ -4,33 +4,44 @@ namespace App\Controllers;
 
 use App\Models\PerhitunganModel;
 use App\Models\ProdukModel;
-use App\Models\LaporanModel;
-use App\Models\OrderModel;
+use App\Models\ProdukTerjualModel;
+use App\Models\RincianProdukTerjualModel;
 
 class PerhitunganController extends BaseController
 {
-    // Menampilkan Halaman Perhitungan
+    // Menampilkan Halaman Perhitungan Harian
     public function perhitungan_perhari()
+
     {
         $perhitunganModel = new PerhitunganModel();
         $produkModel = new ProdukModel();
-        $orderModel = new OrderModel();
+        $produkTerjualModel = new ProdukTerjualModel();
+        $rincianProdukTerjualModel = new RincianProdukTerjualModel();
 
         // Ambil tanggal dari input user, atau default ke hari ini
         $tanggal = $this->request->getGet('tanggal') ?? date('Y-m-d');
 
-        // Ambil data order berdasarkan tanggal yang dipilih
-        $data['order'] = $orderModel
+        // Ambil data produk terjual berdasarkan tanggal yang dipilih
+        $data['produk_terjual'] = $produkTerjualModel
             ->where("DATE(created_at)", $tanggal)
             ->findAll();
 
         // Hitung total harga
         $totalHarga = 0;
-        foreach ($data['order'] as $order) {
-            $totalHarga += (int) str_replace(['.', ','], '', $order['total_harga']);
+        foreach ($data['produk_terjual'] as $produk_terjual) {
+            $totalHarga += (int) str_replace(['.', ','], '', $produk_terjual['total_harga']);
         }
 
         $data['total_harga'] = $totalHarga;
+
+        // Ambil rincian produk terjual
+        foreach ($data['produk_terjual'] as &$produk) {
+            $produk['rincian'] = $rincianProdukTerjualModel
+                ->select('rincian_produk_terjual.*, produk.nama_produk, produk.harga')
+                ->join('produk', 'produk.id_produk = rincian_produk_terjual.id_produk')
+                ->where('rincian_produk_terjual.id_produk_terjual', $produk['id_produk_terjual'])
+                ->findAll();
+        }
 
         // Data lainnya
         $data['produk'] = $produkModel->findAll();
@@ -41,13 +52,12 @@ class PerhitunganController extends BaseController
         return view('admin/perhitungan/perhitungan_perhari', $data);
     }
 
-
     // Menyimpan Perhitungan Harian
     public function store()
     {
         $perhitunganModel = new PerhitunganModel();
-        $laporanModel = new LaporanModel(); // Menggunakan LaporanModel untuk mengambil total penjualan
-        $orderModel = new OrderModel();
+        $produkTerjualModel = new ProdukTerjualModel();
+        $rincianProdukTerjualModel = new RincianProdukTerjualModel();
 
         $id_produk = $this->request->getPost('id_produk');
         $tanggal = $this->request->getPost('tanggal');
@@ -62,22 +72,21 @@ class PerhitunganController extends BaseController
             return redirect()->to('admin/perhitungan_perhari');
         }
 
-        // Ambil data order berdasarkan tanggal yang dipilih
-        $data['order'] = $orderModel
+        // Ambil data produk terjual berdasarkan tanggal yang dipilih
+        $data['produk_terjual'] = $produkTerjualModel
             ->where("DATE(created_at)", $tanggal)
             ->findAll();
 
         // Hitung total harga
         $totalHarga = 0;
-        foreach ($data['order'] as $order) {
-            $totalHarga += (int) str_replace(['.', ','], '', $order['total_harga']);
+        foreach ($data['produk_terjual'] as $produk_terjual) {
+            $totalHarga += (int) str_replace(['.', ','], '', $produk_terjual['total_harga']);
         }
 
         $data['total_harga'] = $totalHarga;
 
         // Hitung keuntungan
-        $keuntungan =  $data['total_harga'] - $modal; //Perhitungan modal - pendapatan dihari ini = keuntungan
-
+        $keuntungan =  $data['total_harga'] - $modal; // Perhitungan modal - pendapatan dihari ini = keuntungan
 
         $data = [
             'id_produk'  => $id_produk,
@@ -100,13 +109,14 @@ class PerhitunganController extends BaseController
         }
     }
 
-    // Update Perhitungan
+    // Update Perhitungan Harian
     public function update()
     {
         $id = $this->request->getPost('id_perhitungan');
         $perhitunganModel = new PerhitunganModel();
-        $orderModel = new OrderModel();
+        $produkTerjualModel = new ProdukTerjualModel();
 
+        // Ambil data perhitungan yang akan diupdate
         $dataPerhitungan = $perhitunganModel->find($id);
 
         // Ambil data dari form
@@ -123,15 +133,15 @@ class PerhitunganController extends BaseController
             return redirect()->to('admin/perhitungan_perhari');
         }
 
-        // Ambil data order berdasarkan tanggal
-        $orderList = $orderModel
+        // Ambil data produk terjual berdasarkan tanggal
+        $produkTerjualList = $produkTerjualModel
             ->where("DATE(created_at)", $tanggal)
             ->findAll();
 
-        // Hitung total harga dari order yang ditemukan
+        // Hitung total harga dari produk terjual yang ditemukan
         $totalHarga = 0;
-        foreach ($orderList as $order) {
-            $totalHarga += (int) str_replace(['.', ','], '', $order['total_harga']);
+        foreach ($produkTerjualList as $produk_terjual) {
+            $totalHarga += (int) str_replace(['.', ','], '', $produk_terjual['total_harga']);
         }
 
         // Hitung keuntungan
@@ -156,8 +166,7 @@ class PerhitunganController extends BaseController
         return redirect()->to('admin/perhitungan_perhari');
     }
 
-
-    // Menghapus Perhitungan
+    // Menghapus Perhitungan Harian
     public function delete($id)
     {
         $perhitunganModel = new PerhitunganModel();
@@ -171,15 +180,20 @@ class PerhitunganController extends BaseController
         return redirect()->to('admin/perhitungan_perhari'); // Redirect ke halaman perhitungan setelah menghapus
     }
 
+    // Menampilkan Halaman Perhitungan Bulanan
     public function perhitungan_perbulan($bulan = null, $tahun = null)
     {
-        // Use default values for bulan and tahun if not set
+        $perhitunganModel = new PerhitunganModel();
+        $produkModel = new ProdukModel();
+        $produkTerjualModel = new ProdukTerjualModel();
+
+
+        // Gunakan nilai default jika bulan dan tahun tidak diset
         if (!$bulan || !$tahun) {
             $bulan = $this->request->getGet('bulan') ?? date('m');
             $tahun = $this->request->getGet('tahun') ?? date('Y');
         }
 
-        // Define months and years in the controller
         $listBulan = [
             '01' => 'Januari',
             '02' => 'Februari',
@@ -197,34 +211,31 @@ class PerhitunganController extends BaseController
 
         $currentYear = date('Y');
         $listTahun = [
-            $currentYear - 1 => $currentYear - 1, // Last year
-            $currentYear => $currentYear, // Current year
+            $currentYear - 1 => $currentYear - 1, // Tahun sebelumnya
+            $currentYear => $currentYear, // Tahun sekarang
         ];
-        $perhitunganModel = new PerhitunganModel();
+
+        $produkTerjualModel = new ProdukTerjualModel();
         $produkModel = new ProdukModel();
-        $orderModel = new OrderModel();
 
-        // Ambil tanggal dari input user, atau default ke hari ini
-        $tanggal = $this->request->getGet('tanggal') ?? date('Y-m-d');
-
-        // Ambil data order berdasarkan tanggal yang dipilih
-        $data['order'] = $orderModel
-            ->where("DATE(created_at)", $tanggal)
+        // Ambil data produk terjual berdasarkan bulan dan tahun yang dipilih
+        $produkTerjual = $produkTerjualModel
+            ->select('produk_terjual.id_produk_terjual, produk.nama_produk, produk.harga, SUM(rincian_produk_terjual.jumlah) as total_jumlah, SUM(rincian_produk_terjual.total_harga) as total_pendapatan')
+            ->join('rincian_produk_terjual', 'rincian_produk_terjual.id_produk_terjual = produk_terjual.id_produk_terjual')
+            ->join('produk', 'produk.id_produk = rincian_produk_terjual.id_produk')
+            ->where("MONTH(produk_terjual.created_at)", $bulan)  // Filter berdasarkan bulan
+            ->where("YEAR(produk_terjual.created_at)", $tahun)  // Filter berdasarkan tahun
+            ->groupBy('rincian_produk_terjual.id_produk, produk.nama_produk, produk.harga')
+            ->orderBy('produk.nama_produk', 'ASC')
             ->findAll();
 
-        // Hitung total harga
-        $totalHarga = 0;
-        foreach ($data['order'] as $order) {
-            $totalHarga += (int) str_replace(['.', ','], '', $order['total_harga']);
-        }
-
-        $data['total_harga'] = $totalHarga;
+        $data['produk_terjual'] = $produkTerjual;
+        $data['total_harga'] = array_sum(array_column($produkTerjual, 'total_pendapatan'));
 
         // Data lainnya
         $data['produk'] = $produkModel->findAll();
         $data['laporan'] = $perhitunganModel->where('type', 'perbulan')->findAll();
         $data['judul'] = 'Perhitungan Perbulan';
-        $data['tanggal_terpilih'] = $tanggal;
         $data['bulan'] = $bulan;
         $data['tahun'] = $tahun;
         $data['listBulan'] = $listBulan;
@@ -233,11 +244,11 @@ class PerhitunganController extends BaseController
         return view('admin/perhitungan/perhitungan_perbulan', $data);
     }
 
+    // Menyimpan Perhitungan Bulanan
     public function store_perbulan()
     {
         $perhitunganModel = new PerhitunganModel();
-        $laporanModel = new LaporanModel();
-        $orderModel = new OrderModel();
+        $produkTerjualModel = new ProdukTerjualModel();
 
         $bulan = $this->request->getPost('bulan');
         $tahun = $this->request->getPost('tahun');
@@ -247,16 +258,16 @@ class PerhitunganController extends BaseController
         $tanggalAwal = date("$tahun-$bulan-01");
         $tanggalAkhir = date("Y-m-t", strtotime($tanggalAwal)); // t = last day of the month
 
-        // Ambil data order dari tanggal awal sampai akhir bulan
-        $orders = $orderModel
+        // Ambil data produk terjual dari tanggal awal sampai akhir bulan
+        $produkTerjual = $produkTerjualModel
             ->where('DATE(created_at) >=', $tanggalAwal)
             ->where('DATE(created_at) <=', $tanggalAkhir)
             ->findAll();
 
         // Hitung total pendapatan
         $totalPendapatan = 0;
-        foreach ($orders as $order) {
-            $totalPendapatan += (int) str_replace(['.', ','], '', $order['total_harga']);
+        foreach ($produkTerjual as $produk) {
+            $totalPendapatan += (int) str_replace(['.', ','], '', $produk['total_harga']);
         }
 
         // Hitung keuntungan
@@ -281,60 +292,72 @@ class PerhitunganController extends BaseController
         return redirect()->to('admin/perhitungan_perbulan');
     }
 
-
-    public function update_perbulan()
+    public function update_perbulan($id)
     {
-        $id = $this->request->getPost('id_perhitungan'); // Ambil ID perhitungan dari form
         $perhitunganModel = new PerhitunganModel();
-        $orderModel = new OrderModel();
+        $produkTerjualModel = new ProdukTerjualModel();
+        $rincianProdukTerjualModel = new RincianProdukTerjualModel();
+        $produkModel = new ProdukModel();
 
-        $bulan = $this->request->getPost('bulan');
-        $tahun = $this->request->getPost('tahun');
-        $modal = $this->request->getPost('modal');
+        // Ambil data perhitungan lama berdasarkan ID
+        $dataPerhitungan = $perhitunganModel->find($id);
+        if (!$dataPerhitungan) {
+            session()->setFlashdata('error', 'Perhitungan tidak ditemukan.');
+            return redirect()->to('admin/perhitungan_perbulan');
+        }
+
+        // Ambil bulan dan tahun yang sudah ada sebelumnya
+        $bulan = date('m', strtotime($dataPerhitungan['tanggal']));
+        $tahun = date('Y', strtotime($dataPerhitungan['tanggal']));
 
         // Format tanggal awal dan akhir bulan
         $tanggalAwal = date("$tahun-$bulan-01");
         $tanggalAkhir = date("Y-m-t", strtotime($tanggalAwal)); // t = last day of the month
 
-        // Ambil semua data order dalam bulan tersebut
-        $orders = $orderModel
+        // Ambil semua data produk terjual dalam bulan tersebut
+        $produkTerjual = $produkTerjualModel
             ->where('DATE(created_at) >=', $tanggalAwal)
             ->where('DATE(created_at) <=', $tanggalAkhir)
             ->findAll();
 
         // Hitung total pendapatan
         $totalPendapatan = 0;
-        foreach ($orders as $order) {
-            $totalPendapatan += (int) str_replace(['.', ','], '', $order['total_harga']);
+        foreach ($produkTerjual as $produk) {
+            // Ambil rincian produk terjual untuk menghitung total pendapatan
+            $rincian = $rincianProdukTerjualModel
+                ->where('id_produk_terjual', $produk['id_produk_terjual'])
+                ->findAll();
+
+            // Tambahkan total harga dari rincian produk terjual
+            foreach ($rincian as $item) {
+                $totalPendapatan += (int) str_replace(['.', ','], '', $item['total_harga']);
+            }
         }
 
         // Hitung keuntungan
-        $keuntungan = $totalPendapatan - $modal;
+        $keuntungan = $totalPendapatan - $dataPerhitungan['modal']; // Gunakan modal yang lama
 
-        // Siapkan data untuk update
+        // Siapkan data untuk view
         $data = [
-            'tanggal'    => $tanggalAwal,
-            'pendapatan' => $totalPendapatan,
-            'modal'      => $modal,
-            'keuntungan' => $keuntungan,
-            'updated_at' => date('Y-m-d H:i:s'),
-            'type'       => 'perbulan'
+            'judul' => 'Update Perhitungan Perbulan',
+            'perhitungan' => $dataPerhitungan, // Kirimkan data perhitungan yang lama
+            'produk' => $produkModel->findAll(),
+            'bulan' => $bulan, // Tampilkan bulan yang sudah ada sebelumnya
+            'tahun' => $tahun, // Tampilkan tahun yang sudah ada sebelumnya
+            'totalPendapatan' => $totalPendapatan, // Kirimkan total pendapatan untuk bulan tersebut
+            'keuntungan' => $keuntungan, // Kirimkan keuntungan untuk bulan tersebut
         ];
 
-        // Simpan perubahan ke database
-        if ($perhitunganModel->update($id, $data)) {
-            session()->setFlashdata('pesan', 'Perhitungan bulanan berhasil diperbarui!');
-        } else {
-            session()->setFlashdata('error', 'Gagal memperbarui perhitungan bulanan.');
-        }
-
-        return redirect()->to('admin/perhitungan_perbulan');
+        return view('admin/perhitungan/form_update_perbulan', $data);
     }
+
+
 
     public function delete_perbulan($id)
     {
         $perhitunganModel = new PerhitunganModel();
 
+        // Menghapus perhitungan berdasarkan ID
         if ($perhitunganModel->delete($id)) {
             session()->setFlashdata('pesan', 'Perhitungan berhasil dihapus!');
         } else {
