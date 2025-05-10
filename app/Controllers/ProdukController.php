@@ -46,7 +46,7 @@ class ProdukController extends BaseController
         }
 
         if ($model->insert($data)) {
-            session()->setFlashdata('pesan', 'Data produk berhasil disimpan!');
+            session()->setFlashdata('pesan', 'Data produk berhasil ditambahkan!');
         } else {
             session()->setFlashdata('error', 'Gagal menyimpan data produk.');
         }

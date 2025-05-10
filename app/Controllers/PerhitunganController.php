@@ -4,19 +4,17 @@ namespace App\Controllers;
 
 use App\Models\PerhitunganModel;
 use App\Models\ProdukModel;
+use App\Models\LaporanModel;
 use App\Models\ProdukTerjualModel;
-use App\Models\RincianProdukTerjualModel;
 
 class PerhitunganController extends BaseController
 {
-    // Menampilkan Halaman Perhitungan Harian
+    // Menampilkan Halaman Perhitungan
     public function perhitungan_perhari()
-
     {
         $perhitunganModel = new PerhitunganModel();
         $produkModel = new ProdukModel();
         $produkTerjualModel = new ProdukTerjualModel();
-        $rincianProdukTerjualModel = new RincianProdukTerjualModel();
 
         // Ambil tanggal dari input user, atau default ke hari ini
         $tanggal = $this->request->getGet('tanggal') ?? date('Y-m-d');
@@ -34,15 +32,6 @@ class PerhitunganController extends BaseController
 
         $data['total_harga'] = $totalHarga;
 
-        // Ambil rincian produk terjual
-        foreach ($data['produk_terjual'] as &$produk) {
-            $produk['rincian'] = $rincianProdukTerjualModel
-                ->select('rincian_produk_terjual.*, produk.nama_produk, produk.harga')
-                ->join('produk', 'produk.id_produk = rincian_produk_terjual.id_produk')
-                ->where('rincian_produk_terjual.id_produk_terjual', $produk['id_produk_terjual'])
-                ->findAll();
-        }
-
         // Data lainnya
         $data['produk'] = $produkModel->findAll();
         $data['laporan'] = $perhitunganModel->where('type', 'perhari')->getLaporanBulanan('2025-05');
@@ -53,11 +42,11 @@ class PerhitunganController extends BaseController
     }
 
     // Menyimpan Perhitungan Harian
-    public function store()
+    public function store_perhari()
     {
         $perhitunganModel = new PerhitunganModel();
+        $laporanModel = new LaporanModel(); // Menggunakan LaporanModel untuk mengambil total penjualan
         $produkTerjualModel = new ProdukTerjualModel();
-        $rincianProdukTerjualModel = new RincianProdukTerjualModel();
 
         $id_produk = $this->request->getPost('id_produk');
         $tanggal = $this->request->getPost('tanggal');
@@ -86,7 +75,8 @@ class PerhitunganController extends BaseController
         $data['total_harga'] = $totalHarga;
 
         // Hitung keuntungan
-        $keuntungan =  $data['total_harga'] - $modal; // Perhitungan modal - pendapatan dihari ini = keuntungan
+        $keuntungan =  $data['total_harga'] - $modal; //Perhitungan modal - pendapatan dihari ini = keuntungan
+
 
         $data = [
             'id_produk'  => $id_produk,
@@ -101,7 +91,7 @@ class PerhitunganController extends BaseController
 
         // Simpan data ke tabel perhitungan
         if ($perhitunganModel->insert($data)) {
-            session()->setFlashdata('pesan', 'Perhitungan berhasil disimpan!');
+            session()->setFlashdata('pesan', 'Perhitungan berhasil ditambahkan!');
             return redirect()->to('admin/perhitungan_perhari'); // Redirect ke halaman perhitungan setelah berhasil menyimpan
         } else {
             session()->setFlashdata('error', 'Gagal menyimpan perhitungan.');
@@ -109,14 +99,13 @@ class PerhitunganController extends BaseController
         }
     }
 
-    // Update Perhitungan Harian
-    public function update()
+    // Update Perhitungan
+    public function update_perhari()
     {
         $id = $this->request->getPost('id_perhitungan');
         $perhitunganModel = new PerhitunganModel();
         $produkTerjualModel = new ProdukTerjualModel();
 
-        // Ambil data perhitungan yang akan diupdate
         $dataPerhitungan = $perhitunganModel->find($id);
 
         // Ambil data dari form
@@ -166,8 +155,8 @@ class PerhitunganController extends BaseController
         return redirect()->to('admin/perhitungan_perhari');
     }
 
-    // Menghapus Perhitungan Harian
-    public function delete($id)
+    // Menghapus Perhitungan
+    public function delete_perhari($id)
     {
         $perhitunganModel = new PerhitunganModel();
 
@@ -180,20 +169,15 @@ class PerhitunganController extends BaseController
         return redirect()->to('admin/perhitungan_perhari'); // Redirect ke halaman perhitungan setelah menghapus
     }
 
-    // Menampilkan Halaman Perhitungan Bulanan
     public function perhitungan_perbulan($bulan = null, $tahun = null)
     {
-        $perhitunganModel = new PerhitunganModel();
-        $produkModel = new ProdukModel();
-        $produkTerjualModel = new ProdukTerjualModel();
-
-
-        // Gunakan nilai default jika bulan dan tahun tidak diset
+        // Use default values for bulan and tahun if not set
         if (!$bulan || !$tahun) {
             $bulan = $this->request->getGet('bulan') ?? date('m');
             $tahun = $this->request->getGet('tahun') ?? date('Y');
         }
 
+        // Define months and years in the controller
         $listBulan = [
             '01' => 'Januari',
             '02' => 'Februari',
@@ -211,12 +195,13 @@ class PerhitunganController extends BaseController
 
         $currentYear = date('Y');
         $listTahun = [
-            $currentYear - 1 => $currentYear - 1, // Tahun sebelumnya
-            $currentYear => $currentYear, // Tahun sekarang
+            $currentYear - 1 => $currentYear - 1, // Last year
+            $currentYear => $currentYear, // Current year
         ];
 
-        $produkTerjualModel = new ProdukTerjualModel();
+        $perhitunganModel = new PerhitunganModel();
         $produkModel = new ProdukModel();
+        $produkTerjualModel = new ProdukTerjualModel();
 
         // Ambil data produk terjual berdasarkan bulan dan tahun yang dipilih
         $produkTerjual = $produkTerjualModel
@@ -244,7 +229,6 @@ class PerhitunganController extends BaseController
         return view('admin/perhitungan/perhitungan_perbulan', $data);
     }
 
-    // Menyimpan Perhitungan Bulanan
     public function store_perbulan()
     {
         $perhitunganModel = new PerhitunganModel();
@@ -284,7 +268,7 @@ class PerhitunganController extends BaseController
         ];
 
         if ($perhitunganModel->insert($data)) {
-            session()->setFlashdata('pesan', 'Perhitungan bulanan berhasil disimpan!');
+            session()->setFlashdata('pesan', 'Perhitungan bulanan berhasil ditambahkan!');
         } else {
             session()->setFlashdata('error', 'Gagal menyimpan perhitungan bulanan.');
         }
@@ -292,29 +276,24 @@ class PerhitunganController extends BaseController
         return redirect()->to('admin/perhitungan_perbulan');
     }
 
-    public function update_perbulan($id)
+    public function update_perbulan()
     {
+        $id = $this->request->getPost('id_perhitungan');
         $perhitunganModel = new PerhitunganModel();
         $produkTerjualModel = new ProdukTerjualModel();
-        $rincianProdukTerjualModel = new RincianProdukTerjualModel();
-        $produkModel = new ProdukModel();
 
-        // Ambil data perhitungan lama berdasarkan ID
         $dataPerhitungan = $perhitunganModel->find($id);
-        if (!$dataPerhitungan) {
-            session()->setFlashdata('error', 'Perhitungan tidak ditemukan.');
-            return redirect()->to('admin/perhitungan_perbulan');
-        }
 
-        // Ambil bulan dan tahun yang sudah ada sebelumnya
-        $bulan = date('m', strtotime($dataPerhitungan['tanggal']));
-        $tahun = date('Y', strtotime($dataPerhitungan['tanggal']));
+        // Ambil data dari form
+        $bulan = $this->request->getPost('bulan');
+        $tahun = $this->request->getPost('tahun');
+        $modal = $this->request->getPost('modal');
 
-        // Format tanggal awal dan akhir bulan
+        // Format tanggal awal dan akhir dari bulan yang dipilih
         $tanggalAwal = date("$tahun-$bulan-01");
         $tanggalAkhir = date("Y-m-t", strtotime($tanggalAwal)); // t = last day of the month
 
-        // Ambil semua data produk terjual dalam bulan tersebut
+        // Ambil data produk terjual dari tanggal awal sampai akhir bulan
         $produkTerjual = $produkTerjualModel
             ->where('DATE(created_at) >=', $tanggalAwal)
             ->where('DATE(created_at) <=', $tanggalAkhir)
@@ -323,47 +302,40 @@ class PerhitunganController extends BaseController
         // Hitung total pendapatan
         $totalPendapatan = 0;
         foreach ($produkTerjual as $produk) {
-            // Ambil rincian produk terjual untuk menghitung total pendapatan
-            $rincian = $rincianProdukTerjualModel
-                ->where('id_produk_terjual', $produk['id_produk_terjual'])
-                ->findAll();
-
-            // Tambahkan total harga dari rincian produk terjual
-            foreach ($rincian as $item) {
-                $totalPendapatan += (int) str_replace(['.', ','], '', $item['total_harga']);
-            }
+            $totalPendapatan += (int) str_replace(['.', ','], '', $produk['total_harga']);
         }
 
         // Hitung keuntungan
-        $keuntungan = $totalPendapatan - $dataPerhitungan['modal']; // Gunakan modal yang lama
+        $keuntungan = $totalPendapatan - $modal;
 
-        // Siapkan data untuk view
         $data = [
-            'judul' => 'Update Perhitungan Perbulan',
-            'perhitungan' => $dataPerhitungan, // Kirimkan data perhitungan yang lama
-            'produk' => $produkModel->findAll(),
-            'bulan' => $bulan, // Tampilkan bulan yang sudah ada sebelumnya
-            'tahun' => $tahun, // Tampilkan tahun yang sudah ada sebelumnya
-            'totalPendapatan' => $totalPendapatan, // Kirimkan total pendapatan untuk bulan tersebut
-            'keuntungan' => $keuntungan, // Kirimkan keuntungan untuk bulan tersebut
+            'pendapatan' => $totalPendapatan,
+            'modal'      => $modal,
+            'keuntungan' => $keuntungan,
+            'tanggal'    => $tanggalAwal,
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-        return view('admin/perhitungan/form_update_perbulan', $data);
-    }
+        if ($perhitunganModel->update($id, $data)) {
+            session()->setFlashdata('pesan', 'Perhitungan bulanan berhasil diperbarui!');
+        } else {
+            session()->setFlashdata('error', 'Gagal memperbarui perhitungan bulanan.');
+        }
 
+        return redirect()->to('admin/perhitungan_perbulan');
+    }
 
 
     public function delete_perbulan($id)
     {
         $perhitunganModel = new PerhitunganModel();
 
-        // Menghapus perhitungan berdasarkan ID
         if ($perhitunganModel->delete($id)) {
-            session()->setFlashdata('pesan', 'Perhitungan berhasil dihapus!');
+            session()->setFlashdata('pesan', 'Perhitungan bulanan berhasil dihapus!');
         } else {
-            session()->setFlashdata('error', 'Gagal menghapus perhitungan.');
+            session()->setFlashdata('error', 'Gagal menghapus perhitungan bulanan.');
         }
 
-        return redirect()->to('admin/perhitungan_perbulan'); // Redirect ke halaman perhitungan setelah menghapus
+        return redirect()->to('admin/perhitungan_perbulan'); // Redirect ke halaman perhitungan bulanan setelah menghapus
     }
 }

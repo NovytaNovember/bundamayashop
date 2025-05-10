@@ -6,7 +6,17 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
-$routes->get('/', 'DashboardController::index');
+// Rute untuk login dan logout
+$routes->get('/', 'ValidasiController::login'); // Halaman pertama langsung ke login
+$routes->get('/login', 'ValidasiController::login'); // Halaman login
+$routes->post('/login', 'ValidasiController::authenticate'); // Proses autentikasi
+$routes->get('/logout', 'ValidasiController::logout'); // Halaman logout
+
+// Rute untuk dashboard (admin, petugas, owner)
+$routes->get('/admin/dashboard', 'DashboardController::index'); // Dashboard admin
+$routes->get('/petugas/dashboard', 'DashboardController::index'); // Dashboard petugas
+$routes->get('/owner/dashboard', 'DashboardController::index'); // Dashboard owner
+
 
 $routes->group('admin', function ($routes) {
 

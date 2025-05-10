@@ -102,10 +102,10 @@ class ProdukTerjualController extends BaseController
             ]);
 
             // Redirect kembali ke halaman daftar produk terjual dengan pesan sukses
-            return redirect()->to(base_url('admin/produk_terjual'))->with('success', 'Produk Terjual berhasil disimpan.');
+            return redirect()->to(base_url('admin/produk_terjual'))->with('success', 'Produk Terjual berhasil ditambahkan.');
         } else {
             // Jika tidak ada produk yang dipilih
-            return redirect()->to(base_url('admin/produk_terjual'))->with('error', 'Tidak ada produk yang dipilih untuk disimpan.');
+            return redirect()->to(base_url('admin/produk_terjual'))->with('error', 'Tidak ada produk yang dipilih untuk ditambahkan.');
         }
     }
 
@@ -187,7 +187,7 @@ class ProdukTerjualController extends BaseController
             $this->rincianProdukTerjualModel->insert($data);
         }
 
-        return redirect()->to(base_url('admin/produk_terjual'))->with('success', 'Produk Terjual berhasil disimpan!');
+        return redirect()->to(base_url('admin/produk_terjual'))->with('success', 'Produk Terjual berhasil ditambahkan!');
     }
 
     public function edit($id_produk_terjual)
