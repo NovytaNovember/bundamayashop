@@ -139,7 +139,7 @@
                 <h5 class="modal-title">Tambah Data Penjualan</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <form action="<?= base_url('admin/penjualan/store') ?>" method="post">
+            <form action="<?= base_url('petugas/penjualan/store') ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Tanggal Penjualan</label>
@@ -180,7 +180,7 @@
                 <h5 class="modal-title">Edit Data Penjualan</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <form action="<?= base_url('admin/penjualan/update') ?>" method="post">
+            <form action="<?= base_url('petugas/penjualan/update') ?>" method="post">
                 <div class="modal-body">
                     <input type="hidden" id="edit-id" name="id"> <!-- Hidden input for ID -->
                     <div class="form-group">
@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
         if (deleteBtn) {
             const id = deleteBtn.getAttribute('data-id');
-            window.location.href = "/admin/penjualan/delete/" + id; // Arahkan ke rute hapus
+            window.location.href = "/petugas/penjualan/delete/" + id; // Arahkan ke rute hapus
         }
     });
 

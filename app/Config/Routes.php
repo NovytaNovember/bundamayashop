@@ -64,9 +64,9 @@ $routes->group('admin', function ($routes) {
 
     // Routes untuk Perhitungan
     $routes->get('perhitungan_perhari', 'PerhitunganController::perhitungan_perhari'); // Menampilkan halaman perhitungan untuk admin
-    $routes->post('perhitungan_perhari/store', 'PerhitunganController::store'); // Menyimpan perhitungan
-    $routes->post('perhitungan_perhari/update', 'PerhitunganController::update'); // Update perhitungan dengan ID perhitungan sebagai parameter
-    $routes->post('perhitungan_perhari/delete/(:num)', 'PerhitunganController::delete/$1'); // Menghapus perhitungan berdasarkan ID perhitungan
+    $routes->post('perhitungan_perhari/store', 'PerhitunganController::store_perhari'); // Menyimpan perhitungan
+    $routes->post('perhitungan_perhari/update', 'PerhitunganController::update_perhari'); // Update perhitungan dengan ID perhitungan sebagai parameter
+    $routes->post('perhitungan_perhari/delete/(:num)', 'PerhitunganController::delete_perhari/$1'); // Menghapus perhitungan berdasarkan ID perhitungan
 
     $routes->get('perhitungan_perbulan', 'PerhitunganController::perhitungan_perbulan'); // Menampilkan halaman perhitungan untuk admin
     $routes->post('perhitungan_perbulan/store', 'PerhitunganController::store_perbulan'); // Menyimpan perhitungan
@@ -81,3 +81,18 @@ $routes->group('admin', function ($routes) {
     $routes->get('pengguna/delete/(:num)', 'PenggunaController::delete/$1'); // Delete user
 
 });
+
+$routes->group('petugas', function ($routes) {
+
+    // Routes untuk Produk Terjual
+    $routes->get('produk_terjual', 'ProdukTerjualController::index'); // Menampilkan daftar produk terjual
+    $routes->get('produk_terjual/tambah', 'ProdukTerjualController::tambah'); // Halaman tambah produk terjual
+    $routes->post('produk_terjual/konfirmasi', 'ProdukTerjualController::konfirmasi'); // Konfirmasi sebelum simpan
+    $routes->post('produk_terjual/simpan', 'ProdukTerjualController::simpan'); // Simpan konfirmasi
+    $routes->post('produk_terjual/store', 'ProdukTerjualController::store'); // Tambah produk terjual
+    $routes->get('produk_terjual/edit/(:num)', 'ProdukTerjualController::edit/$1'); // Halaman edit produk terjual
+    $routes->post('produk_terjual/update/(:num)', 'ProdukTerjualController::update/$1'); // Mengedit produk terjual 
+    $routes->get('produk_terjual/delete/(:num)', 'ProdukTerjualController::delete/$1'); // Hapus produk terjual
+
+});
+

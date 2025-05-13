@@ -27,7 +27,7 @@ class Laporan extends Migration
             ],
             'total_penjualan' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 255,
+                'constraint' => 20,
             ],
             'kategori' => [
                 'type'       => 'ENUM',

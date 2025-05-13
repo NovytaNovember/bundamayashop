@@ -9,59 +9,59 @@ class ValidasiController extends Controller
 {
     public function login()
     {
-        // Menampilkan halaman login
-        return view('login');
+        return view('login'); // Menampilkan halaman login
     }
 
-    public function authenticate()
-    {
-        $session = session();
-        $model = new PenggunaModel();
+   public function authenticate()
+{
+    $username = $this->request->getPost('username');
+    $password = $this->request->getPost('password');
 
-        // Mendapatkan inputan pengguna
-        $username = $this->request->getPost('username');
-        $password = $this->request->getPost('password');
+    // Validasi input
+    if (!$username || !$password) {
+        return redirect()->back()->with('pesan', 'Username dan password harus diisi');
+    }
 
-        // Validasi data login
-        $user = $model->where('username', $username)->first();
+    // Cek apakah pengguna ada di database
+    $penggunaModel = new PenggunaModel();
+    $user = $penggunaModel->getUserByUsername($username);
 
-        // Cek jika user ditemukan dan password cocok
-   if ($user && password_verify($password, $user['password'])) {
-    // Set session dengan data pengguna
-    $session->set([
-        'id_pengguna' => $user['id_pengguna'],
-        'username' => $user['username'],
-        'level' => $user['level'],
-        'is_logged_in' => true
-    ]);
+    if ($user) {
+        // Verifikasi password
+        if (password_verify($password, $user['password'])) {
+            // Set session berdasarkan level
+            session()->set([
+                'id_pengguna' => $user['id_pengguna'],
+                'username' => $user['username'],
+                'level' => $user['level'], // admin, owner, petugas
+            ]);
 
-    // Debugging: Cek session setelah diset
-    echo '<pre>';
-    print_r($session->get());  // Debugging session yang telah diset
-    echo '</pre>';
-
-    // Redirect berdasarkan level pengguna
-    if ($user['level'] == 'admin') {
-        return redirect()->to('/admin/dashboard'); // Dashboard admin
-    } elseif ($user['level'] == 'petugas') {
-        return redirect()->to('/petugas/dashboard'); // Dashboard petugas
-    } elseif ($user['level'] == 'owner') {
-        return redirect()->to('/owner/dashboard'); // Dashboard owner
+            // Redirect ke dashboard sesuai level
+            switch ($user['level']) {
+                case 'admin':
+                    return redirect()->to('/admin/dashboard');
+                case 'owner':
+                    return redirect()->to('/owner/dashboard');
+                case 'petugas':
+                    return redirect()->to('/petugas/dashboard');
+                default:
+                    return redirect()->to('/login'); // Kembali ke login jika level tidak valid
+            }
+        } else {
+            session()->setFlashdata('pesan', '<div class="alert alert-danger" role="alert">Password salah</div>');
+            return redirect()->to('/login')->withInput();
+        }
     } else {
-        $session->setFlashdata('error', 'Level pengguna tidak valid.');
-        return redirect()->to('/login');
+        session()->setFlashdata('pesan', '<div class="alert alert-danger" role="alert">Username tidak ditemukan</div>');
+        return redirect()->to('/login')->withInput();
     }
-} else {
-    $session->setFlashdata('error', 'Username atau password salah.');
-    return redirect()->to('/login');
-}
 }
 
-    // Fungsionalitas logout
+
+
     public function logout()
     {
-        $session = session();
-        $session->destroy(); // Menghapus session
-        return redirect()->to('/login'); // Redirect ke halaman login
+        session()->destroy(); // Hapus session
+        return redirect()->to('/login'); // Kembali ke halaman login
     }
 }

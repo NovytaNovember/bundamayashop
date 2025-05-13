@@ -88,8 +88,8 @@
                                                             <label for="bulan" class="font-weight-bold text-muted">Bulan</label>
                                                             <select name="bulan" id="bulan" class="form-control">
                                                                 <?php foreach ($listBulan as $key => $value): ?>
-                                                                    <!-- Menampilkan bulan yang sudah ada sebelumnya -->
-                                                                    <option value="<?= $key; ?>" <?= ($bulan == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                                                                    <!-- Pastikan bulan yang terpilih sesuai dengan data -->
+                                                                    <option value="<?= $key; ?>" <?= (date('m', strtotime($data['tanggal'])) == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
                                                                 <?php endforeach; ?>
                                                             </select>
                                                         </div>
@@ -101,8 +101,8 @@
                                                             <label for="tahun" class="font-weight-bold text-muted">Tahun</label>
                                                             <select name="tahun" id="tahun" class="form-control">
                                                                 <?php foreach ($listTahun as $key => $value): ?>
-                                                                    <!-- Menampilkan tahun yang sudah ada sebelumnya -->
-                                                                    <option value="<?= $key; ?>" <?= ($tahun == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                                                                    <!-- Pastikan tahun yang terpilih sesuai dengan data -->
+                                                                    <option value="<?= $key; ?>" <?= (date('Y', strtotime($data['tanggal'])) == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
                                                                 <?php endforeach; ?>
                                                             </select>
                                                         </div>
@@ -119,6 +119,7 @@
                                                 <button type="submit" class="btn btn-primary">Simpan</button>
                                             </div>
                                         </form>
+
                                     </div>
                                 </div>
                             </div>

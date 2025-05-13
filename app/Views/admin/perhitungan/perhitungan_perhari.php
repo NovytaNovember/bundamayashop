@@ -194,7 +194,7 @@
         const pendapatanInput = document.getElementById('pendapatan');
         const modalInput = document.getElementById('modal');
         const pendapatanHariIniInput = document.getElementById('pendapatan_hariini');
-
+z
         function hitungPendapatan() {
             let pendapatanHariIni = parseInt(pendapatanHariIniInput?.value.replace(/\D/g, '')) || 0;
             let modal = parseInt(modalInput?.value) || 0;

@@ -21,32 +21,27 @@ class PenggunaController extends BaseController
     }
 
     public function store()
-    {
-        $penggunaModel = new PenggunaModel();
+{
+    $penggunaModel = new PenggunaModel();
 
-        $data = [
-            'username'  => $this->request->getPost('username'),
-            'email'     => $this->request->getPost('email'),
-            'password'  => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-            'level'     => $this->request->getPost('level'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ];
+    $data = [
+        'username'  => $this->request->getPost('username'),
+        'email'     => $this->request->getPost('email'),
+        'password'  => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),  // Menggunakan bcrypt secara default
+        'level'     => $this->request->getPost('level'),
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s'),
+    ];
 
-        // $userAdmin = $penggunaModel->where('level', 'admin')->first();
-        
-        // if ($userAdmin) {
-        //     return redirect()->to('/admin/pengguna')->with('error', 'Tidak dapat menambahkan user admin.');
-        // }
-
-        if ($penggunaModel->insert($data)) {
-            session()->setFlashdata('pesan', 'Data pengguna berhasil ditambahkan!');
-        } else {
-            session()->setFlashdata('error', 'Gagal menambahkan data pengguna.');
-        }
-
-        return redirect()->to('/admin/pengguna');
+    if ($penggunaModel->insert($data)) {
+        session()->setFlashdata('pesan', 'Data pengguna berhasil ditambahkan!');
+    } else {
+        session()->setFlashdata('error', 'Gagal menambahkan data pengguna.');
     }
+
+    return redirect()->to('/admin/pengguna');
+}
+
 
     public function edit($id)
     {
