@@ -9,29 +9,6 @@
                 <!-- Ringkasan Data -->
                 <div class="row">
 
-                    <!-- Total Produk -->
-                    <div class="col-md-6 col-lg-3 mb-4">
-                        <div class="card shadow-sm rounded-4">
-                            <div class="card-body text-center">
-                                <h5 class="card-title text-primary">Produk</h5>
-                                <h3 class="fw-bold"><?= $totalProduk; ?></h3>
-                                <p>Total Produk</p>
-                                <i class="fas fa-box fa-4x text-primary"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Kategori -->
-                    <div class="col-md-6 col-lg-3 mb-4">
-                        <div class="card shadow-sm rounded-4">
-                            <div class="card-body text-center">
-                                <h5 class="card-title text-success">Kategori</h5>
-                                <h3 class="fw-bold"><?= $totalKategori; ?></h3>
-                                <p>Jenis Kategori</p>
-                                <i class="fas fa-tags fa-4x text-success"></i>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Total Laporan Harian Produk Terjual -->
                     <div class="col-md-6 col-lg-3 mb-4">

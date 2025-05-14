@@ -41,10 +41,11 @@
                         <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" method="post">
                             <!-- Hidden field untuk tanggal yang difilter -->
                             <input type="hidden" name="tanggal" value="<?= esc($tanggal) ?>">
-
-                            <button type="submit" class="btn btn-success" id="submitButton">
-                                <i class="fab fa-whatsapp"></i> Kirim Laporan Harian
-                            </button>
+                            <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
+                                <button type="submit" class="btn btn-success" id="submitButton">
+                                    <i class="fab fa-whatsapp"></i> Kirim Laporan Harian
+                                </button>
+                            <?php endif; ?>
                         </form>
                     </div>
                 </div>

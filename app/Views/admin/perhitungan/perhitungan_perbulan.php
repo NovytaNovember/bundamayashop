@@ -27,11 +27,13 @@
                             <i class="fas fa-calendar-alt"></i> Perbulan
                         </a>
                     </div>
+                    <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
 
-                    <!-- Tombol Tambah Perhitungan -->
-                    <button type="button" class="btn btn-success text-white mt-2" data-toggle="modal" data-target="#addModalBulanan">
-                        <i class="fas fa-plus me-1"></i> Tambah Perhitungan Perbulan
-                    </button>
+                        <!-- Tombol Tambah Perhitungan -->
+                        <button type="button" class="btn btn-success text-white mt-2" data-toggle="modal" data-target="#addModalBulanan">
+                            <i class="fas fa-plus me-1"></i> Tambah Perhitungan Perbulan
+                        </button>
+                    <?php endif; ?>
                 </div>
 
                 <!-- Tabel Data Perhitungan -->
@@ -43,7 +45,10 @@
                             <th>Pendapatan Hari Ini</th>
                             <th>Modal</th>
                             <th>Keuntungan</th>
-                            <th>Aksi</th>
+                            <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
+
+                                <th>Aksi</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,16 +60,19 @@
                                 <td>Rp <?= number_format($data['pendapatan'], 0, ',', '.') ?></td>
                                 <td>Rp <?= number_format($data['modal'], 0, ',', '.') ?></td>
                                 <td>Rp <?= number_format($data['keuntungan'], 0, ',', '.') ?></td>
-                                <td>
-                                    <button class="btn btn-sm btn-warning edit-btn" data-toggle="modal" data-target="#editModal<?= $data['id_perhitungan'] ?>"
-                                        data-id="<?= $data['id_perhitungan'] ?>" data-tanggal="<?= $data['tanggal'] ?>"
-                                        data-modal="<?= $data['modal'] ?>">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </button>
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="<?= $data['id_perhitungan'] ?>" data-toggle="modal" data-target="#deleteModal">
-                                        <i class="fas fa-trash-alt"></i> Hapus
-                                    </button>
-                                </td>
+                                <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
+
+                                    <td>
+                                        <button class="btn btn-sm btn-warning edit-btn" data-toggle="modal" data-target="#editModal<?= $data['id_perhitungan'] ?>"
+                                            data-id="<?= $data['id_perhitungan'] ?>" data-tanggal="<?= $data['tanggal'] ?>"
+                                            data-modal="<?= $data['modal'] ?>">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-sm btn-danger delete-btn" data-id="<?= $data['id_perhitungan'] ?>" data-toggle="modal" data-target="#deleteModal">
+                                            <i class="fas fa-trash-alt"></i> Hapus
+                                        </button>
+                                    </td>
+                                <?php endif; ?>
                             </tr>
 
                             <!-- Modal Edit Perhitungan -->

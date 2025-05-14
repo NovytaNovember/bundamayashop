@@ -35,15 +35,19 @@
                             <i class="fas fa-download"></i> Download Laporan Bulanan
                         </a>
 
-                        <!-- Tombol Kirim Laporan Bulanan -->
-                        <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_bulanan'); ?>" method="post">
-                            <!-- Hidden field untuk bulan dan tahun yang difilter -->
-                            <input type="hidden" name="bulan" value="<?= esc($bulan ?? date('m')) ?>">
-                            <input type="hidden" name="tahun" value="<?= esc($tahun ?? date('Y')) ?>">
-                            <button type="submit" class="btn btn-success" id="submitButton">
-                                <i class="fab fa-whatsapp"></i> Kirim Laporan Bulanan
-                            </button>
-                        </form>
+                        <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
+
+                            <!-- Tombol Kirim Laporan Bulanan -->
+                            <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_bulanan'); ?>" method="post">
+                                <!-- Hidden field untuk bulan dan tahun yang difilter -->
+                                <input type="hidden" name="bulan" value="<?= esc($bulan ?? date('m')) ?>">
+                                <input type="hidden" name="tahun" value="<?= esc($tahun ?? date('Y')) ?>">
+                                <button type="submit" class="btn btn-success" id="submitButton">
+                                    <i class="fab fa-whatsapp"></i> Kirim Laporan Bulanan
+                                </button>
+                            </form>
+
+                        <?php endif; ?>
 
                     </div>
 

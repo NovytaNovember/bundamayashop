@@ -27,9 +27,11 @@
                     </div>
 
                     <!-- Tombol Tambah -->
-                    <button type="button" class="btn btn-success text-white mt-2" data-toggle="modal" data-target="#addModalHarian">
-                        <i class="fas fa-plus me-1"></i> Tambah Perhitungan Perhari
-                    </button>
+                    <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
+                        <button type="button" class="btn btn-success text-white mt-2" data-toggle="modal" data-target="#addModalHarian">
+                            <i class="fas fa-plus me-1"></i> Tambah Perhitungan Perhari
+                        </button>
+                    <?php endif; ?>
                 </div>
 
 
@@ -42,7 +44,10 @@
                             <th>Pendapatan Hari Ini</th>
                             <th>Modal</th>
                             <th>Keuntungan</th>
-                            <th>Aksi</th>
+                            <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
+
+                                <th>Aksi</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,14 +59,17 @@
                                 <td>Rp <?= number_format($data['pendapatan'], 0, ',', '.'); ?></td>
                                 <td>Rp <?= number_format($data['modal'], 0, ',', '.'); ?></td>
                                 <td>Rp <?= number_format($data['keuntungan'], 0, ',', '.'); ?></td>
-                                <td>
-                                    <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal<?= $data['id_perhitungan']; ?>">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </button>
-                                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal<?= $data['id_perhitungan']; ?>">
-                                        <i class="fas fa-trash-alt"></i> Hapus
-                                    </button>
-                                </td>
+                                <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
+
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal<?= $data['id_perhitungan']; ?>">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal<?= $data['id_perhitungan']; ?>">
+                                            <i class="fas fa-trash-alt"></i> Hapus
+                                        </button>
+                                    </td>
+                                <?php endif; ?>
                             </tr>
 
                             <!-- Modal Edit -->
@@ -194,7 +202,8 @@
         const pendapatanInput = document.getElementById('pendapatan');
         const modalInput = document.getElementById('modal');
         const pendapatanHariIniInput = document.getElementById('pendapatan_hariini');
-z
+        z
+
         function hitungPendapatan() {
             let pendapatanHariIni = parseInt(pendapatanHariIniInput?.value.replace(/\D/g, '')) || 0;
             let modal = parseInt(modalInput?.value) || 0;

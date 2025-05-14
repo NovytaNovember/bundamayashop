@@ -262,8 +262,9 @@
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <span class="dropdown-item dropdown-header">Info Pengguna</span>
                         <div class="dropdown-divider"></div>
+
                         <a href="#" class="dropdown-item">
-                            <i class="fas fa-key mr-2"></i> Level: Admin
+                            <i class="fas fa-key mr-2"></i> Level: <?= ucfirst(session()->get('level')); ?>
                         </a>
                         <!-- <a href="/admin/user" class="dropdown-item">
                             <i class="fas fa-users mr-2"></i> Daftar User
@@ -289,62 +290,120 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
+                    <?php if (session()->get('level') === 'admin') : ?>
 
-                    <li class="nav-item">
-                        <a href="/admin/dashboard" class="nav-link">
-                            <i class="fas fa-home"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a href="/admin/dashboard" class="nav-link">
+                                <i class="fas fa-home"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a href="/admin/kategori" class="nav-link">
-                            <i class="fas fa-th-list"></i>
-                            <p>Kategori</p>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a href="/admin/kategori" class="nav-link">
+                                <i class="fas fa-th-list"></i>
+                                <p>Kategori</p>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a href="/admin/produk" class="nav-link">
-                            <i class="fas fa-birthday-cake"></i>
-                            <p>Produk</p>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a href="/admin/produk" class="nav-link">
+                                <i class="fas fa-birthday-cake"></i>
+                                <p>Produk</p>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a href="/admin/produk_terjual" class="nav-link">
-                            <i class="fas fa-shopping-cart"></i>
-                            <p>Produk Terjual</p>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a href="/admin/produk_terjual" class="nav-link">
+                                <i class="fas fa-shopping-cart"></i>
+                                <p>Produk Terjual</p>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a href="/admin/laporan/laporan_harian" class="nav-link">
-                            <i class="fas fa-file-alt"></i>
-                            <p>Laporan</p>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a href="/admin/laporan/laporan_harian" class="nav-link">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Laporan</p>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a href="/admin/arsip_laporan/arsip_laporan_perhari" class="nav-link">
-                            <i class="fas fa-archive"></i>
-                            <p>Arsip Laporan</p>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a href="/admin/arsip_laporan/arsip_laporan_perhari" class="nav-link">
+                                <i class="fas fa-archive"></i>
+                                <p>Arsip Laporan</p>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a href="/admin/perhitungan_perhari/" class="nav-link d-flex align-items-center">
-                            <i class="fas fa-file-invoice-dollar mr-2" style="font-size: 16px;"></i>
-                            <p class="mb-0">Perhitungan</p>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a href="/admin/perhitungan_perhari/" class="nav-link d-flex align-items-center">
+                                <i class="fas fa-file-invoice-dollar mr-2" style="font-size: 16px;"></i>
+                                <p class="mb-0">Perhitungan</p>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a href="/admin/pengguna" class="nav-link d-flex align-items-center">
-                            <i class="fas fa-user mr-2" style="font-size: 14px;"></i>
-                            <p class="mb-0">Data Pengguna</p>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a href="/admin/pengguna" class="nav-link d-flex align-items-center">
+                                <i class="fas fa-user mr-2" style="font-size: 14px;"></i>
+                                <p class="mb-0">Data Pengguna</p>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (session()->get('level') === 'petugas') : ?>
+
+                        <li class="nav-item">
+                            <a href="/admin/dashboard" class="nav-link">
+                                <i class="fas fa-home"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/admin/produk_terjual" class="nav-link">
+                                <i class="fas fa-shopping-cart"></i>
+                                <p>Produk Terjual</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/admin/laporan/laporan_harian" class="nav-link">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Laporan</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/admin/perhitungan_perhari/" class="nav-link d-flex align-items-center">
+                                <i class="fas fa-file-invoice-dollar mr-2" style="font-size: 16px;"></i>
+                                <p class="mb-0">Perhitungan</p>
+                            </a>
+                        </li>
+
+
+                    <?php endif; ?>
+                    <?php if (session()->get('level') === 'owner') : ?>
+
+                        <li class="nav-item">
+                            <a href="/admin/dashboard" class="nav-link">
+                                <i class="fas fa-home"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/admin/laporan/laporan_harian" class="nav-link">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Laporan</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/admin/perhitungan_perhari/" class="nav-link d-flex align-items-center">
+                                <i class="fas fa-file-invoice-dollar mr-2" style="font-size: 16px;"></i>
+                                <p class="mb-0">Perhitungan</p>
+                            </a>
+                        </li>
+
+                    <?php endif; ?>
 
 
 

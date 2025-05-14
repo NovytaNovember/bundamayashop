@@ -25,7 +25,7 @@ class ValidasiController extends Controller
     // Cek apakah pengguna ada di database
     $penggunaModel = new PenggunaModel();
     $user = $penggunaModel->getUserByUsername($username);
-
+// dd($user);
     if ($user) {
         // Verifikasi password
         if (password_verify($password, $user['password'])) {
