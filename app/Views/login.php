@@ -9,8 +9,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-image: url('/img/spanduk.png');
-            background-size: cover;
+            background-image: url('/img/logo_BM.png');
+            background-size: 700px;
+            background-repeat: no-repeat;
+            background-position: center;
             height: 100vh;
             display: flex;
             align-items: center;
