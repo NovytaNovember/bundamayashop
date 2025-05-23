@@ -18,11 +18,13 @@
                 <?php endif ?>
 
                 <!-- Informasi Modal -->
-                <div class="alert alert-info" style="background-color: #a7c7e7; color: #3b3b3b; border-color: #8da9c4;">
-                    <i class="fas fa-info-circle me-2"></i>
-                    <strong>Catatan:</strong> Modal yang digunakan dalam perhitungan perbulan ini akan diambil dari data histori modal penjualan yang sudah ada. Pilih modal yang sesuai dari daftar yang tersedia sebelum menyimpan perhitungan.
-                    <a href="<?= base_url('admin/modal_penjualan'); ?>" class="btn btn-link" style="color: #007bff; text-decoration: underline;">Klik di sini untuk tambah modal</a>
-                </div>
+                <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
+                    <div class="alert alert-info" style="background-color: #a7c7e7; color: #3b3b3b; border-color: #8da9c4;">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Catatan:</strong> Modal yang digunakan dalam perhitungan perbulan ini akan diambil dari data histori modal penjualan yang sudah ada. Pilih modal yang sesuai dari daftar yang tersedia sebelum menyimpan perhitungan.
+                        <a href="<?= base_url('admin/modal_penjualan'); ?>" class="btn btn-link" style="color: #007bff; text-decoration: underline;">Klik di sini untuk tambah modal</a>
+                    </div>
+                <?php endif; ?>
 
                 <!-- Tombol Perhitungan Perbulan dan Tambah -->
                 <div class="d-flex flex-column align-items-start gap-3 mb-3">
@@ -59,9 +61,18 @@
                                     <?php
                                     $bulan = (new \DateTime($data['tanggal']))->format('m');
                                     $bulanIndo = [
-                                        '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April', '05' => 'Mei', 
-                                        '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus', '09' => 'September', '10' => 'Oktober', 
-                                        '11' => 'November', '12' => 'Desember'
+                                        '01' => 'Januari',
+                                        '02' => 'Februari',
+                                        '03' => 'Maret',
+                                        '04' => 'April',
+                                        '05' => 'Mei',
+                                        '06' => 'Juni',
+                                        '07' => 'Juli',
+                                        '08' => 'Agustus',
+                                        '09' => 'September',
+                                        '10' => 'Oktober',
+                                        '11' => 'November',
+                                        '12' => 'Desember'
                                     ];
                                     echo $bulanIndo[$bulan];
                                     ?>
@@ -134,7 +145,7 @@
                         <label for="modal">Modal Penjualan</label>
                         <select class="form-control" name="modal" required>
                             <option value="">Pilih Modal Penjual</option>
-                            <?php foreach ($modal_history as $modal) : ?>
+                            <?php foreach ($modal_penjualan as $modal) : ?>
                                 <option value="<?= $modal['id_modal']; ?>"><?= "Rp " . number_format($modal['modal'], 0, ',', '.'); ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -149,7 +160,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Modal Edit Perhitungan Perbulan -->
 <?php foreach ($laporan as $data) : ?>
@@ -190,14 +200,24 @@
                             </div>
                         </div>
 
-                        <!-- Modal Selections -->
+                        <!-- Modal Penjualan Display (Modal yang sudah dipilih sebelumnya) -->
                         <div class="form-group">
                             <label for="modal">Modal Penjualan</label>
+                            <input type="text" class="form-control" value="Rp <?= number_format($data['modal'], 0, ',', '.'); ?>" readonly> <!-- Menampilkan modal yang dipilih sebelumnya -->
+                        </div>
+
+                        <!-- Modal Penjualan Dropdown (Modal yang belum dipilih sebelumnya) -->
+                        <div class="form-group">
+                            <label for="modal">Perbarui Modal Penjualan</label>
                             <select class="form-control" name="modal" required>
-                                <?php foreach ($modal_history as $modal) : ?>
-                                    <option value="<?= $modal['id_modal']; ?>" <?= ($modal['id_modal'] == $data['modal']) ? 'selected' : ''; ?>>
-                                        <?= "Rp " . number_format($modal['modal'], 0, ',', '.'); ?>
-                                    </option>
+                                <option value="">Pilih Modal Penjualan</option>
+                                <?php foreach ($modal_penjualan as $modal) : ?>
+                                    <!-- Pastikan modal yang sudah dipilih sebelumnya tidak muncul lagi di dropdown -->
+                                    <?php if ($modal['id_modal'] != $data['modal']): ?>
+                                        <option value="<?= $modal['id_modal']; ?>">
+                                            Rp <?= number_format($modal['modal'], 0, ',', '.'); ?>
+                                        </option>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>
                         </div>

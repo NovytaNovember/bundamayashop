@@ -33,13 +33,13 @@
 
                 </div>
 
-                <!-- Tabel Data Modal History -->
+                <!-- Tabel Data Modal Penjualan -->
                 <table class="table table-bordered mt-3">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>Modal</th>
+                            <th>Modal Penjualan</th>
                             <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
                                 <th>Aksi</th>
                             <?php endif; ?>
@@ -47,7 +47,7 @@
                     </thead>
                     <tbody>
                         <?php $no = 1; ?>
-                        <?php foreach ($modal_history as $data) : ?>
+                        <?php foreach ($modal_penjualan as $data) : ?>
                             <tr>
                                 <td><?= $no++; ?></td>
                                 <td><?= $data['tanggal']; ?></td>
@@ -72,7 +72,7 @@
                                         <input type="hidden" name="id_modal" value="<?= $data['id_modal']; ?>">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Edit Modal</h5>
+                                                <h5 class="modal-title">Edit Modal Penjualan</h5>
                                                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                             </div>
                                             <div class="modal-body">
@@ -81,8 +81,8 @@
                                                     <input type="date" name="tanggal" class="form-control" value="<?= $data['tanggal']; ?>" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="modal">Modal</label>
-                                                    <input type="number" name="modal" class="form-control" value="<?= $data['modal']; ?>" required>
+                                                    <label for="modal">Modal Penjualan</label>
+                                                    <input type="number" name="modal" class="form-control" value="<?= $data['modal']; ?>" required oninput="return hanyaAngka(event)">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -105,7 +105,7 @@
                                                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                             </div>
                                             <div class="modal-body">
-                                                Apakah anda yakin ingin menghapus data modal ini?
+                                                Apakah anda yakin ingin menghapus data modal penjualan ini?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -131,7 +131,7 @@
         <form action="<?= base_url('admin/modal_penjualan/store'); ?>" method="post">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Modal</h5>
+                    <h5 class="modal-title">Tambah Modal Penjualan</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -140,8 +140,8 @@
                         <input type="date" name="tanggal" class="form-control" value="<?= date('Y-m-d'); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="modal">Modal</label>
-                        <input type="number" name="modal" class="form-control" required>
+                        <label for="modal">Modal Penjualan</label>
+                        <input type="number" name="modal" class="form-control" required oninput="return hanyaAngka(event)">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -154,3 +154,21 @@
 </div>
 
 <?= $this->endSection(); ?>
+
+<!-- Script -->
+<script>
+    // Fungsi untuk membatasi input hanya angka
+    function hanyaAngka(event) {
+        var charCode = (event.which) ? event.which : event.keyCode;
+        // Memeriksa jika karakter yang dimasukkan adalah angka atau tanda desimal (titik)
+        if (charCode >= 48 && charCode <= 57) {
+            return true;
+        } else if (charCode == 46) {
+            // Izinkan titik untuk desimal
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+</script>

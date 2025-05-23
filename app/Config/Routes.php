@@ -82,17 +82,3 @@ $routes->group('admin', function ($routes) {
     $routes->get('pengguna/delete/(:num)', 'PenggunaController::delete/$1'); // Delete user
 
 });
-
-// $routes->group('petugas', function ($routes) {
-
-//     // Routes untuk Produk Terjual
-//     $routes->get('produk_terjual', 'ProdukTerjualController::index'); // Menampilkan daftar produk terjual
-//     $routes->get('produk_terjual/tambah', 'ProdukTerjualController::tambah'); // Halaman tambah produk terjual
-//     $routes->post('produk_terjual/konfirmasi', 'ProdukTerjualController::konfirmasi'); // Konfirmasi sebelum simpan
-//     $routes->post('produk_terjual/simpan', 'ProdukTerjualController::simpan'); // Simpan konfirmasi
-//     $routes->post('produk_terjual/store', 'ProdukTerjualController::store'); // Tambah produk terjual
-//     $routes->get('produk_terjual/edit/(:num)', 'ProdukTerjualController::edit/$1'); // Halaman edit produk terjual
-//     $routes->post('produk_terjual/update/(:num)', 'ProdukTerjualController::update/$1'); // Mengedit produk terjual 
-//     $routes->get('produk_terjual/delete/(:num)', 'ProdukTerjualController::delete/$1'); // Hapus produk terjual
-
-// });

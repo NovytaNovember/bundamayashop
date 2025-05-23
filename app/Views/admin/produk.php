@@ -73,6 +73,7 @@
     </div>
 </div>
 
+
 <!-- Modal Tambah Produk -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -85,7 +86,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Nama Produk</label>
-                        <input type="text" class="form-control" name="nama_produk" required>
+                        <input type="text" class="form-control" name="nama_produk" required onkeypress="return hanyaHuruf(event)">
                     </div>
                     <div class="form-group">
                         <label>Deskripsi</label>
@@ -104,7 +105,7 @@
                     </div>
                     <div class="form-group">
                         <label>Harga</label>
-                        <input type="number" class="form-control" name="harga" required>
+                        <input type="number" class="form-control" name="harga" required oninput="return hanyaAngka(event)" step="0.01" min="0">
                     </div>
                     <div class="form-group">
                         <label>Gambar Produk</label>
@@ -119,6 +120,8 @@
         </div>
     </div>
 </div>
+
+
 
 <!-- Modal Edit Produk -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -136,7 +139,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="edit-nama">Nama Produk</label>
-                        <input type="text" class="form-control" id="edit-nama" name="nama_produk" required>
+                        <input type="text" class="form-control" id="edit-nama" name="nama_produk" required onkeypress="return hanyaHuruf(event)">
                     </div>
                     <div class="form-group">
                         <label for="edit-deskripsi">Deskripsi</label>
@@ -153,7 +156,7 @@
                     </div>
                     <div class="form-group">
                         <label for="edit-harga">Harga</label>
-                        <input type="number" class="form-control" id="edit-harga" name="harga" required>
+                        <input type="number" class="form-control" id="edit-harga" name="harga" required oninput="return hanyaAngka(event)" step="0.01" min="0">
                     </div>
                     <div class="form-group">
                         <label for="edit-gambar">Gambar</label>
@@ -169,6 +172,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Modal Konfirmasi Hapus -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
@@ -194,6 +198,33 @@
 
 <!-- Script -->
 <script>
+    // Fungsi untuk membatasi input hanya huruf
+    function hanyaHuruf(event) {
+        var charCode = (event.which) ? event.which : event.keyCode;
+        // Memeriksa jika karakter yang dimasukkan adalah huruf atau spasi
+        if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || charCode == 32) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
+    // Fungsi untuk membatasi input hanya angka
+    function hanyaAngka(event) {
+        var charCode = (event.which) ? event.which : event.keyCode;
+        // Memeriksa jika karakter yang dimasukkan adalah angka
+        if (charCode >= 48 && charCode <= 57) {
+            return true;
+        } else if (charCode == 46) {
+            // Izinkan titik untuk desimal
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Edit Produk
         const editBtns = document.querySelectorAll('.edit-btn');
@@ -229,5 +260,6 @@
         });
     });
 </script>
+
 
 <?= $this->endSection(); ?>

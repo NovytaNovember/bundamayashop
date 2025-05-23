@@ -58,7 +58,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" name="nama_kategori" class="form-control" placeholder="Masukkan Nama Kategori" required>
+                    <input type="text" name="nama_kategori" class="form-control" placeholder="Masukkan Nama Kategori" required onkeypress="return hanyaHuruf(event)">
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -76,10 +76,10 @@
                 <input type="hidden" name="id_kategori" id="edit-id">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Kategori</h5>
-                    <button class="close" data-dismiss="modal">&times;</button>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" name="nama_kategori" id="edit-nama" class="form-control" required>
+                    <input type="text" name="nama_kategori" id="edit-nama" class="form-control" required onkeypress="return hanyaHuruf(event)">
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -113,6 +113,18 @@
 </div>
 
 <script>
+    // Fungsi untuk membatasi input hanya huruf
+    function hanyaHuruf(event) {
+        var charCode = (event.which) ? event.which : event.keyCode;
+        // Jika karakter yang dimasukkan adalah huruf atau spasi
+        if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || charCode == 32) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Edit Produk
         const editButtons = document.querySelectorAll('[data-target="#editModal"]');
@@ -132,7 +144,7 @@
             btn.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
                 const nama = this.getAttribute('data-nama');
-                
+
                 // Tampilkan nama kategori yang akan dihapus di modal
 
                 // Saat tombol hapus diklik, proses penghapusan kategori
