@@ -335,7 +335,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="/admin/perhitungan_perhari/" class="nav-link d-flex align-items-center">
+                            <a href="/admin/perhitungan_perbulan/" class="nav-link d-flex align-items-center">
                                 <i class="fas fa-file-invoice-dollar mr-2" style="font-size: 16px;"></i>
                                 <p class="mb-0">Perhitungan</p>
                             </a>
@@ -372,7 +372,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="/admin/perhitungan_perhari/" class="nav-link d-flex align-items-center">
+                            <a href="/admin/perhitungan_perbulan/" class="nav-link d-flex align-items-center">
                                 <i class="fas fa-file-invoice-dollar mr-2" style="font-size: 16px;"></i>
                                 <p class="mb-0">Perhitungan</p>
                             </a>
@@ -397,7 +397,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="/admin/perhitungan_perhari/" class="nav-link d-flex align-items-center">
+                            <a href="/admin/perhitungan_perbulan/" class="nav-link d-flex align-items-center">
                                 <i class="fas fa-file-invoice-dollar mr-2" style="font-size: 16px;"></i>
                                 <p class="mb-0">Perhitungan</p>
                             </a>

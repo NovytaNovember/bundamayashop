@@ -4,21 +4,30 @@ namespace App\Controllers;
 
 use App\Models\PerhitunganModel;
 use App\Models\ProdukModel;
-use App\Models\LaporanModel;
 use App\Models\ProdukTerjualModel;
+use App\Models\ModalHistoryModel;
 
 class PerhitunganController extends BaseController
 {
-    // Menampilkan Halaman Perhitungan
-    public function perhitungan_perhari()
+    // Menampilkan Halaman Modal (Perhitungan Perhari)
+    // Di dalam Controller
+
+    public function modal_perhitungan()
     {
         $perhitunganModel = new PerhitunganModel();
         $produkModel = new ProdukModel();
         $produkTerjualModel = new ProdukTerjualModel();
+        $modalHistoryModel = new ModalHistoryModel(); // Model untuk histori modal
 
         // Ambil tanggal dari input user, atau default ke hari ini
         $tanggal = $this->request->getGet('tanggal') ?? date('Y-m-d');
 
+        // Mengatur locale untuk bahasa Indonesia
+        setlocale(LC_TIME, 'id_ID', 'id_ID.utf8', 'indonesia');
+
+        // Format tanggal dengan strftime
+        $data['tanggal_terpilih'] = strftime('%A, %d %B %Y', strtotime($tanggal)); // Format "Rabu, 21 Mei 2025"
+
         // Ambil data produk terjual berdasarkan tanggal yang dipilih
         $data['produk_terjual'] = $produkTerjualModel
             ->where("DATE(created_at)", $tanggal)
@@ -31,142 +40,89 @@ class PerhitunganController extends BaseController
         }
 
         $data['total_harga'] = $totalHarga;
+
+        // Ambil history modal
+        $data['modal_history'] = $modalHistoryModel->orderBy('created_at', 'DESC')->findAll(); // Ambil semua histori modal yang terbaru
 
         // Data lainnya
         $data['produk'] = $produkModel->findAll();
-        $data['laporan'] = $perhitunganModel->where('type', 'perhari')->getLaporanBulanan('2025-05');
-        $data['judul'] = 'Perhitungan Perhari';
-        $data['tanggal_terpilih'] = $tanggal;
+        $data['judul'] = 'Modal Penjualan';
+        $data['tanggal_terpilih'] = $data['tanggal_terpilih'];  // Tanggal yang sudah diformat
 
-        return view('admin/perhitungan/perhitungan_perhari', $data);
+        return view('admin/perhitungan/modal_perhitungan', $data);
     }
 
-    // Menyimpan Perhitungan Harian
-    public function store_perhari()
+    // Menyimpan History Modal
+    public function store_modal()
     {
-        $perhitunganModel = new PerhitunganModel();
-        $laporanModel = new LaporanModel(); // Menggunakan LaporanModel untuk mengambil total penjualan
-        $produkTerjualModel = new ProdukTerjualModel();
+        $modalHistoryModel = new ModalHistoryModel();
 
-        $id_produk = $this->request->getPost('id_produk');
-        $tanggal = $this->request->getPost('tanggal');
         $modal = $this->request->getPost('modal');
+        $tanggal = $this->request->getPost('tanggal');
 
-        // Validasi id_produk
-        $produkModel = new ProdukModel();
-        $produk = $produkModel->find($id_produk);
-
-        if (!$produk) {
-            session()->setFlashdata('error', 'Produk tidak ditemukan.');
-            return redirect()->to('admin/perhitungan_perhari');
+        // Validasi modal
+        if (!$modal) {
+            session()->setFlashdata('error', 'Modal tidak boleh kosong.');
+            return redirect()->to('admin/modal_perhitungan');
         }
 
-        // Ambil data produk terjual berdasarkan tanggal yang dipilih
-        $data['produk_terjual'] = $produkTerjualModel
-            ->where("DATE(created_at)", $tanggal)
-            ->findAll();
-
-        // Hitung total harga
-        $totalHarga = 0;
-        foreach ($data['produk_terjual'] as $produk_terjual) {
-            $totalHarga += (int) str_replace(['.', ','], '', $produk_terjual['total_harga']);
-        }
-
-        $data['total_harga'] = $totalHarga;
-
-        // Hitung keuntungan
-        $keuntungan =  $data['total_harga'] - $modal; //Perhitungan modal - pendapatan dihari ini = keuntungan
-
-
+        // Simpan history modal
         $data = [
-            'id_produk'  => $id_produk,
-            'tanggal'    => $tanggal,
-            'pendapatan' => $data['total_harga'],
-            'modal'      => $modal,
-            'keuntungan' => $keuntungan,
+            'tanggal'   => $tanggal,
+            'modal'     => $modal,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
-            'type'       => 'perhari'
         ];
 
-        // Simpan data ke tabel perhitungan
-        if ($perhitunganModel->insert($data)) {
-            session()->setFlashdata('pesan', 'Perhitungan berhasil ditambahkan!');
-            return redirect()->to('admin/perhitungan_perhari'); // Redirect ke halaman perhitungan setelah berhasil menyimpan
+        // Simpan data modal
+        if ($modalHistoryModel->insert($data)) {
+            session()->setFlashdata('pesan', 'History modal penjualan berhasil ditambahkan!');
         } else {
-            session()->setFlashdata('error', 'Gagal menyimpan perhitungan.');
-            return redirect()->to('admin/perhitungan_perhari');
+            session()->setFlashdata('error', 'Gagal menyimpan history modal penjualan.');
         }
+
+        return redirect()->to('admin/modal_perhitungan');
     }
 
-    // Update Perhitungan
-    public function update_perhari()
+    // Update Modal
+    public function update_modal()
     {
-        $id = $this->request->getPost('id_perhitungan');
-        $perhitunganModel = new PerhitunganModel();
-        $produkTerjualModel = new ProdukTerjualModel();
+        $id = $this->request->getPost('id_modal');
+        $modalHistoryModel = new ModalHistoryModel();
 
-        $dataPerhitungan = $perhitunganModel->find($id);
+        $dataModal = $modalHistoryModel->find($id);
 
         // Ambil data dari form
-        $id_produk = $this->request->getPost('id_produk');
-        $tanggal = $this->request->getPost('tanggal');
         $modal = $this->request->getPost('modal');
+        $tanggal = $this->request->getPost('tanggal');
 
-        // Validasi id_produk
-        $produkModel = new ProdukModel();
-        $produk = $produkModel->find($id_produk);
-
-        if (!$produk) {
-            session()->setFlashdata('error', 'Produk tidak ditemukan.');
-            return redirect()->to('admin/perhitungan_perhari');
-        }
-
-        // Ambil data produk terjual berdasarkan tanggal
-        $produkTerjualList = $produkTerjualModel
-            ->where("DATE(created_at)", $tanggal)
-            ->findAll();
-
-        // Hitung total harga dari produk terjual yang ditemukan
-        $totalHarga = 0;
-        foreach ($produkTerjualList as $produk_terjual) {
-            $totalHarga += (int) str_replace(['.', ','], '', $produk_terjual['total_harga']);
-        }
-
-        // Hitung keuntungan
-        $keuntungan = $totalHarga - $modal;
-
-        // Siapkan data untuk update
         $data = [
-            'id_produk'  => $id_produk,
-            'pendapatan' => $totalHarga,
-            'modal'      => $modal,
-            'keuntungan' => $keuntungan,
-            'tanggal'    => $tanggal,
+            'modal' => $modal,
+            'tanggal' => $tanggal,
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-        if ($perhitunganModel->update($id, $data)) {
-            session()->setFlashdata('pesan', 'Perhitungan berhasil diperbarui!');
+        if ($modalHistoryModel->update($id, $data)) {
+            session()->setFlashdata('pesan', 'History modal penjualan berhasil diperbarui!');
         } else {
-            session()->setFlashdata('error', 'Gagal memperbarui perhitungan.');
+            session()->setFlashdata('error', 'Gagal memperbarui history modal penjualan.');
         }
 
-        return redirect()->to('admin/perhitungan_perhari');
+        return redirect()->to('admin/modal_perhitungan');
     }
 
-    // Menghapus Perhitungan
-    public function delete_perhari($id)
+    // Menghapus Modal
+    public function delete_modal($id)
     {
-        $perhitunganModel = new PerhitunganModel();
+        $modalHistoryModel = new ModalHistoryModel();
 
-        if ($perhitunganModel->delete($id)) {
-            session()->setFlashdata('pesan', 'Perhitungan berhasil dihapus!');
+        if ($modalHistoryModel->delete($id)) {
+            session()->setFlashdata('pesan', 'History modal penjualan berhasil dihapus!');
         } else {
-            session()->setFlashdata('error', 'Gagal menghapus perhitungan.');
+            session()->setFlashdata('error', 'Gagal menghapus history modal penjualan.');
         }
 
-        return redirect()->to('admin/perhitungan_perhari'); // Redirect ke halaman perhitungan setelah menghapus
+        return redirect()->to('admin/modal_perhitungan');
     }
 
     public function perhitungan_perbulan($bulan = null, $tahun = null)
@@ -202,6 +158,7 @@ class PerhitunganController extends BaseController
         $perhitunganModel = new PerhitunganModel();
         $produkModel = new ProdukModel();
         $produkTerjualModel = new ProdukTerjualModel();
+        $modalHistoryModel = new ModalHistoryModel();
 
         // Ambil data produk terjual berdasarkan bulan dan tahun yang dipilih
         $produkTerjual = $produkTerjualModel
@@ -216,6 +173,9 @@ class PerhitunganController extends BaseController
 
         $data['produk_terjual'] = $produkTerjual;
         $data['total_harga'] = array_sum(array_column($produkTerjual, 'total_pendapatan'));
+
+        // Ambil semua modal history
+        $data['modal_history'] = $modalHistoryModel->findAll(); // Ambil semua histori modal
 
         // Data lainnya
         $data['produk'] = $produkModel->findAll();
@@ -233,10 +193,11 @@ class PerhitunganController extends BaseController
     {
         $perhitunganModel = new PerhitunganModel();
         $produkTerjualModel = new ProdukTerjualModel();
+        $modalHistoryModel = new ModalHistoryModel();
 
         $bulan = $this->request->getPost('bulan');
         $tahun = $this->request->getPost('tahun');
-        $modal = $this->request->getPost('modal');
+        $selectedModal = $this->request->getPost('modal'); // Ambil modal yang dipilih dari form
 
         // Format tanggal awal dan akhir dari bulan yang dipilih
         $tanggalAwal = date("$tahun-$bulan-01");
@@ -254,13 +215,16 @@ class PerhitunganController extends BaseController
             $totalPendapatan += (int) str_replace(['.', ','], '', $produk['total_harga']);
         }
 
+        // Ambil modal yang dipilih
+        $modal = $modalHistoryModel->find($selectedModal); // Ambil modal yang dipilih dari modal history
+
         // Hitung keuntungan
-        $keuntungan = $totalPendapatan - $modal;
+        $keuntungan = $totalPendapatan - $modal['modal'];
 
         $data = [
             'tanggal'    => $tanggalAwal, // disimpan sebagai awal bulan
             'pendapatan' => $totalPendapatan,
-            'modal'      => $modal,
+            'modal'      => $modal['modal'], // Gunakan modal yang dipilih
             'keuntungan' => $keuntungan,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
@@ -268,7 +232,7 @@ class PerhitunganController extends BaseController
         ];
 
         if ($perhitunganModel->insert($data)) {
-            session()->setFlashdata('pesan', 'Perhitungan bulanan berhasil ditambahkan!');
+            session()->setFlashdata('pesan', 'Perhitungan perbulan berhasil ditambahkan!');
         } else {
             session()->setFlashdata('error', 'Gagal menyimpan perhitungan bulanan.');
         }
@@ -276,66 +240,67 @@ class PerhitunganController extends BaseController
         return redirect()->to('admin/perhitungan_perbulan');
     }
 
-    public function update_perbulan()
-    {
-        $id = $this->request->getPost('id_perhitungan');
-        $perhitunganModel = new PerhitunganModel();
-        $produkTerjualModel = new ProdukTerjualModel();
+   public function update_perbulan()
+{
+    $id_perhitungan = $this->request->getPost('id_perhitungan');
+    $bulan = $this->request->getPost('bulan');
+    $tahun = $this->request->getPost('tahun');
+    $modal = $this->request->getPost('modal');
 
-        $dataPerhitungan = $perhitunganModel->find($id);
+    // Format tanggal awal dan akhir dari bulan yang dipilih
+    $tanggalAwal = date("$tahun-$bulan-01");
+    $tanggalAkhir = date("Y-m-t", strtotime($tanggalAwal)); // t = last day of the month
 
-        // Ambil data dari form
-        $bulan = $this->request->getPost('bulan');
-        $tahun = $this->request->getPost('tahun');
-        $modal = $this->request->getPost('modal');
+    $produkTerjualModel = new ProdukTerjualModel();
+    $totalPendapatan = 0;
+    // Ambil data produk terjual dari tanggal awal sampai akhir bulan
+    $produkTerjual = $produkTerjualModel
+        ->where('DATE(created_at) >=', $tanggalAwal)
+        ->where('DATE(created_at) <=', $tanggalAkhir)
+        ->findAll();
 
-        // Format tanggal awal dan akhir dari bulan yang dipilih
-        $tanggalAwal = date("$tahun-$bulan-01");
-        $tanggalAkhir = date("Y-m-t", strtotime($tanggalAwal)); // t = last day of the month
-
-        // Ambil data produk terjual dari tanggal awal sampai akhir bulan
-        $produkTerjual = $produkTerjualModel
-            ->where('DATE(created_at) >=', $tanggalAwal)
-            ->where('DATE(created_at) <=', $tanggalAkhir)
-            ->findAll();
-
-        // Hitung total pendapatan
-        $totalPendapatan = 0;
-        foreach ($produkTerjual as $produk) {
-            $totalPendapatan += (int) str_replace(['.', ','], '', $produk['total_harga']);
-        }
-
-        // Hitung keuntungan
-        $keuntungan = $totalPendapatan - $modal;
-
-        $data = [
-            'pendapatan' => $totalPendapatan,
-            'modal'      => $modal,
-            'keuntungan' => $keuntungan,
-            'tanggal'    => $tanggalAwal,
-            'updated_at' => date('Y-m-d H:i:s'),
-        ];
-
-        if ($perhitunganModel->update($id, $data)) {
-            session()->setFlashdata('pesan', 'Perhitungan bulanan berhasil diperbarui!');
-        } else {
-            session()->setFlashdata('error', 'Gagal memperbarui perhitungan bulanan.');
-        }
-
-        return redirect()->to('admin/perhitungan_perbulan');
+    foreach ($produkTerjual as $produk) {
+        $totalPendapatan += (int) str_replace(['.', ','], '', $produk['total_harga']);
     }
 
+    // Ambil modal yang dipilih
+    $modalHistoryModel = new ModalHistoryModel();
+    $modalData = $modalHistoryModel->find($modal);
 
-    public function delete_perbulan($id)
-    {
-        $perhitunganModel = new PerhitunganModel();
+    // Hitung keuntungan
+    $keuntungan = $totalPendapatan - $modalData['modal'];
 
-        if ($perhitunganModel->delete($id)) {
-            session()->setFlashdata('pesan', 'Perhitungan bulanan berhasil dihapus!');
-        } else {
-            session()->setFlashdata('error', 'Gagal menghapus perhitungan bulanan.');
-        }
+    $data = [
+        'tanggal'    => $tanggalAwal,
+        'pendapatan' => $totalPendapatan,
+        'modal'      => $modalData['modal'],
+        'keuntungan' => $keuntungan,
+        'updated_at' => date('Y-m-d H:i:s'),
+    ];
 
-        return redirect()->to('admin/perhitungan_perbulan'); // Redirect ke halaman perhitungan bulanan setelah menghapus
+    $perhitunganModel = new PerhitunganModel();
+    if ($perhitunganModel->update($id_perhitungan, $data)) {
+        session()->setFlashdata('pesan', 'Perhitungan perbulan berhasil diperbarui!');
+    } else {
+        session()->setFlashdata('error', 'Gagal memperbarui perhitungan bulanan.');
     }
+
+    return redirect()->to('admin/perhitungan_perbulan');
 }
+
+
+public function delete_perbulan($id)
+{
+    $perhitunganModel = new PerhitunganModel();
+
+    if ($perhitunganModel->delete($id)) {
+        session()->setFlashdata('pesan', 'Perhitungan perbulan berhasil dihapus');
+    } else {
+        session()->setFlashdata('error', 'Gagal menghapus perhitungan');
+    }
+
+    return redirect()->to('admin/perhitungan_perbulan');
+}
+
+}
+

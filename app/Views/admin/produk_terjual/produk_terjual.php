@@ -105,9 +105,6 @@
             button.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
                 const produk = this.getAttribute('data-nama');
-                
-                // Update nama produk di modal
-                document.getElementById('produk-nama').textContent = produk;
 
                 // Saat tombol hapus diklik, proses penghapusan produk
                 const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
