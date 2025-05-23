@@ -143,13 +143,16 @@
                     <!-- Modal Selections -->
                     <div class="form-group">
                         <label for="modal">Modal Penjualan</label>
-                        <select class="form-control" name="modal" required>
-                            <option value="">Pilih Modal Penjual</option>
+                        <select class="form-control" name="modal" id="modal" required>
+                            <option value="">Pilih Modal Penjualan</option>
                             <?php foreach ($modal_penjualan as $modal) : ?>
-                                <option value="<?= $modal['id_modal']; ?>"><?= "Rp " . number_format($modal['modal'], 0, ',', '.'); ?></option>
+                                <option value="<?= $modal['id_modal']; ?>">
+                                    Rp <?= number_format($modal['modal'], 0, ',', '.'); ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
+
 
                 </div>
                 <div class="modal-footer">
@@ -163,12 +166,14 @@
 
 <!-- Modal Edit Perhitungan Perbulan -->
 <?php foreach ($laporan as $data) : ?>
-    <div class="modal fade" id="editModal<?= $data['id_perhitungan']; ?>" tabindex="-1" role="dialog">
+    <div class="modal fade" id="editModal<?= $data['id_perhitungan']; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?= $data['id_perhitungan']; ?>" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Perhitungan Perbulan</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="editModalLabel<?= $data['id_perhitungan']; ?>">Edit Perhitungan Perbulan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <form action="<?= base_url('admin/perhitungan_perbulan/update') ?>" method="post">
                     <?= csrf_field(); ?>
@@ -178,10 +183,12 @@
                             <!-- Bulan Dropdown -->
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label for="bulan" class="font-weight-bold text-muted">Bulan</label>
-                                    <select name="bulan" id="bulan" class="form-control" required>
+                                    <label for="bulan<?= $data['id_perhitungan']; ?>" class="font-weight-bold text-muted">Bulan</label>
+                                    <select name="bulan" id="bulan<?= $data['id_perhitungan']; ?>" class="form-control" required>
                                         <?php foreach ($listBulan as $key => $value): ?>
-                                            <option value="<?= $key; ?>" <?= (date('m', strtotime($data['tanggal'])) == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                                            <option value="<?= $key; ?>" <?= (date('m', strtotime($data['tanggal'])) == $key) ? 'selected="selected"' : ''; ?>>
+                                                <?= $value; ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -190,30 +197,30 @@
                             <!-- Tahun Dropdown -->
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label for="tahun" class="font-weight-bold text-muted">Tahun</label>
-                                    <select name="tahun" id="tahun" class="form-control" required>
+                                    <label for="tahun<?= $data['id_perhitungan']; ?>" class="font-weight-bold text-muted">Tahun</label>
+                                    <select name="tahun" id="tahun<?= $data['id_perhitungan']; ?>" class="form-control" required>
                                         <?php foreach ($listTahun as $key => $value): ?>
-                                            <option value="<?= $key; ?>" <?= (date('Y', strtotime($data['tanggal'])) == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                                            <option value="<?= $key; ?>" <?= (date('Y', strtotime($data['tanggal'])) == $key) ? 'selected="selected"' : ''; ?>>
+                                                <?= $value; ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Modal Penjualan Display (Modal yang sudah dipilih sebelumnya) -->
+                        <!-- Modal Penjualan Dropdown -->
                         <div class="form-group">
-                            <label for="modal">Modal Penjualan</label>
-                            <input type="text" class="form-control" value="Rp <?= number_format($data['modal'], 0, ',', '.'); ?>" readonly> <!-- Menampilkan modal yang dipilih sebelumnya -->
-                        </div>
+                            <label for="modal<?= $data['id_perhitungan']; ?>">Modal Penjualan</label>
+                            <select class="form-control" name="modal" id="modal<?= $data['id_perhitungan']; ?>" required>
+                                <!-- Opsi modal yang sudah dipilih tetap muncul dan selected -->
+                                <option value="<?= $data['modal']; ?>" selected>
+                                    Rp <?= number_format($data['modal'], 0, ',', '.'); ?>
+                                </option>
 
-                        <!-- Modal Penjualan Dropdown (Modal yang belum dipilih sebelumnya) -->
-                        <div class="form-group">
-                            <label for="modal">Perbarui Modal Penjualan</label>
-                            <select class="form-control" name="modal" required>
-                                <option value="">Pilih Modal Penjualan</option>
+                                <!-- Opsi lain dari modal_penjualan tanpa modal yang sudah dipilih -->
                                 <?php foreach ($modal_penjualan as $modal) : ?>
-                                    <!-- Pastikan modal yang sudah dipilih sebelumnya tidak muncul lagi di dropdown -->
-                                    <?php if ($modal['id_modal'] != $data['modal']): ?>
+                                    <?php if ((string)$modal['id_modal'] !== (string)$data['modal']) : ?>
                                         <option value="<?= $modal['id_modal']; ?>">
                                             Rp <?= number_format($modal['modal'], 0, ',', '.'); ?>
                                         </option>
@@ -221,6 +228,7 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
+
 
                     </div>
                     <div class="modal-footer">
