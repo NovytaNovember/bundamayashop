@@ -21,7 +21,7 @@
                 <div class="alert alert-info" style="background-color: #a7c7e7; color: #3b3b3b; border-color: #8da9c4;">
                     <i class="fas fa-info-circle me-2"></i>
                     <strong>Catatan:</strong> Modal yang digunakan dalam perhitungan perbulan ini akan diambil dari data histori modal penjualan yang sudah ada. Pilih modal yang sesuai dari daftar yang tersedia sebelum menyimpan perhitungan.
-                    <a href="<?= base_url('admin/modal_perhitungan'); ?>" class="btn btn-link" style="color: #007bff; text-decoration: underline;">Klik di sini untuk tambah modal</a>
+                    <a href="<?= base_url('admin/modal_penjualan'); ?>" class="btn btn-link" style="color: #007bff; text-decoration: underline;">Klik di sini untuk tambah modal</a>
                 </div>
 
                 <!-- Tombol Perhitungan Perbulan dan Tambah -->

@@ -62,19 +62,11 @@ $routes->group('admin', function ($routes) {
     $routes->get('arsip_laporan/arsip_laporan_perhari/download/(:num)', 'ArsipLaporanController::downloadLaporanPerHari/$1'); // Download arsip laporan perhari
     $routes->get('arsip_laporan/arsip_laporan_perbulan/download/(:num)', 'ArsipLaporanController::downloadLaporanPerBulan/$1'); // Download arsip laporan bulanan
 
-    // // Routes untuk Perhitungan
-    // $routes->get('perhitungan_perhari', 'PerhitunganController::perhitungan_perhari'); // Menampilkan halaman perhitungan untuk admin
-    // $routes->post('perhitungan_perhari/store', 'PerhitunganController::store_perhari'); // Menyimpan perhitungan
-    // $routes->post('perhitungan_perhari/update', 'PerhitunganController::update_perhari'); // Update perhitungan dengan ID perhitungan sebagai parameter
-    // $routes->post('perhitungan_perhari/delete/(:num)', 'PerhitunganController::delete_perhari/$1'); // Menghapus perhitungan berdasarkan ID perhitungan
-
-    // // Route untuk Histori Modal
-    // $routes->post('perhitungan_perhari/store_modal', 'PerhitunganController::store_modal');  // Menyimpan modal histori
-
-    $routes->get('modal_perhitungan', 'PerhitunganController::modal_perhitungan'); // Menampilkan halaman modal dan perhitungan
-    $routes->post('modal_perhitungan/store', 'PerhitunganController::store_modal'); // Menyimpan history modal
-    $routes->post('modal_perhitungan/update', 'PerhitunganController::update_modal'); // Update modal
-    $routes->post('modal_perhitungan/delete/(:num)', 'PerhitunganController::delete_modal/$1'); // Menghapus modal berdasarkan ID
+    // Routes untuk Perhitungan
+    $routes->get('modal_penjualan', 'PerhitunganController::modal_penjualan'); // Menampilkan halaman modal dan perhitungan
+    $routes->post('modal_penjualan/store', 'PerhitunganController::store_modal'); // Menyimpan history modal
+    $routes->post('modal_penjualan/update', 'PerhitunganController::update_modal'); // Update modal
+    $routes->post('modal_penjualan/delete/(:num)', 'PerhitunganController::delete_modal/$1'); // Menghapus modal berdasarkan ID
 
 
     $routes->get('perhitungan_perbulan', 'PerhitunganController::perhitungan_perbulan'); // Menampilkan halaman perhitungan untuk admin

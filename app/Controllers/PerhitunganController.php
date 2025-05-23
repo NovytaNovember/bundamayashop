@@ -5,19 +5,19 @@ namespace App\Controllers;
 use App\Models\PerhitunganModel;
 use App\Models\ProdukModel;
 use App\Models\ProdukTerjualModel;
-use App\Models\ModalHistoryModel;
+use App\Models\ModalPenjualanModel;
 
 class PerhitunganController extends BaseController
 {
     // Menampilkan Halaman Modal (Perhitungan Perhari)
     // Di dalam Controller
 
-    public function modal_perhitungan()
+    public function modal_penjualan()
     {
         $perhitunganModel = new PerhitunganModel();
         $produkModel = new ProdukModel();
         $produkTerjualModel = new ProdukTerjualModel();
-        $modalHistoryModel = new ModalHistoryModel(); // Model untuk histori modal
+        $modalPenjualanModel = new ModalPenjualanModel(); // Ganti dengan Model yang baru
 
         // Ambil tanggal dari input user, atau default ke hari ini
         $tanggal = $this->request->getGet('tanggal') ?? date('Y-m-d');
@@ -42,20 +42,20 @@ class PerhitunganController extends BaseController
         $data['total_harga'] = $totalHarga;
 
         // Ambil history modal
-        $data['modal_history'] = $modalHistoryModel->orderBy('created_at', 'DESC')->findAll(); // Ambil semua histori modal yang terbaru
+        $data['modal_history'] = $modalPenjualanModel->orderBy('created_at', 'DESC')->findAll(); // Ambil semua histori modal yang terbaru
 
         // Data lainnya
         $data['produk'] = $produkModel->findAll();
         $data['judul'] = 'Modal Penjualan';
         $data['tanggal_terpilih'] = $data['tanggal_terpilih'];  // Tanggal yang sudah diformat
 
-        return view('admin/perhitungan/modal_perhitungan', $data);
+        return view('admin/perhitungan/modal_penjualan', $data);
     }
 
     // Menyimpan History Modal
     public function store_modal()
     {
-        $modalHistoryModel = new ModalHistoryModel();
+        $modalPenjualanModel = new ModalPenjualanModel(); // Ganti dengan Model yang baru
 
         $modal = $this->request->getPost('modal');
         $tanggal = $this->request->getPost('tanggal');
@@ -75,22 +75,22 @@ class PerhitunganController extends BaseController
         ];
 
         // Simpan data modal
-        if ($modalHistoryModel->insert($data)) {
+        if ($modalPenjualanModel->insert($data)) {
             session()->setFlashdata('pesan', 'History modal penjualan berhasil ditambahkan!');
         } else {
             session()->setFlashdata('error', 'Gagal menyimpan history modal penjualan.');
         }
 
-        return redirect()->to('admin/modal_perhitungan');
+        return redirect()->to('admin/modal_penjualan');
     }
 
     // Update Modal
     public function update_modal()
     {
         $id = $this->request->getPost('id_modal');
-        $modalHistoryModel = new ModalHistoryModel();
+        $modalPenjualanModel = new ModalPenjualanModel(); // Ganti dengan Model yang baru
 
-        $dataModal = $modalHistoryModel->find($id);
+        $dataModal = $modalPenjualanModel->find($id);
 
         // Ambil data dari form
         $modal = $this->request->getPost('modal');
@@ -102,27 +102,27 @@ class PerhitunganController extends BaseController
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-        if ($modalHistoryModel->update($id, $data)) {
+        if ($modalPenjualanModel->update($id, $data)) {
             session()->setFlashdata('pesan', 'History modal penjualan berhasil diperbarui!');
         } else {
             session()->setFlashdata('error', 'Gagal memperbarui history modal penjualan.');
         }
 
-        return redirect()->to('admin/modal_perhitungan');
+        return redirect()->to('admin/modal_penjualan');
     }
 
     // Menghapus Modal
     public function delete_modal($id)
     {
-        $modalHistoryModel = new ModalHistoryModel();
+        $modalPenjualanModel = new ModalPenjualanModel(); // Ganti dengan Model yang baru
 
-        if ($modalHistoryModel->delete($id)) {
+        if ($modalPenjualanModel->delete($id)) {
             session()->setFlashdata('pesan', 'History modal penjualan berhasil dihapus!');
         } else {
             session()->setFlashdata('error', 'Gagal menghapus history modal penjualan.');
         }
 
-        return redirect()->to('admin/modal_perhitungan');
+        return redirect()->to('admin/modal_penjualan');
     }
 
     public function perhitungan_perbulan($bulan = null, $tahun = null)
@@ -158,7 +158,7 @@ class PerhitunganController extends BaseController
         $perhitunganModel = new PerhitunganModel();
         $produkModel = new ProdukModel();
         $produkTerjualModel = new ProdukTerjualModel();
-        $modalHistoryModel = new ModalHistoryModel();
+        $modalPenjualanModel = new ModalPenjualanModel(); // Ganti dengan Model yang baru
 
         // Ambil data produk terjual berdasarkan bulan dan tahun yang dipilih
         $produkTerjual = $produkTerjualModel
@@ -175,7 +175,7 @@ class PerhitunganController extends BaseController
         $data['total_harga'] = array_sum(array_column($produkTerjual, 'total_pendapatan'));
 
         // Ambil semua modal history
-        $data['modal_history'] = $modalHistoryModel->findAll(); // Ambil semua histori modal
+        $data['modal_history'] = $modalPenjualanModel->findAll(); // Ambil semua histori modal
 
         // Data lainnya
         $data['produk'] = $produkModel->findAll();
@@ -193,7 +193,7 @@ class PerhitunganController extends BaseController
     {
         $perhitunganModel = new PerhitunganModel();
         $produkTerjualModel = new ProdukTerjualModel();
-        $modalHistoryModel = new ModalHistoryModel();
+        $modalPenjualanModel = new ModalPenjualanModel(); // Ganti dengan Model yang baru
 
         $bulan = $this->request->getPost('bulan');
         $tahun = $this->request->getPost('tahun');
@@ -216,7 +216,7 @@ class PerhitunganController extends BaseController
         }
 
         // Ambil modal yang dipilih
-        $modal = $modalHistoryModel->find($selectedModal); // Ambil modal yang dipilih dari modal history
+        $modal = $modalPenjualanModel->find($selectedModal); // Ambil modal yang dipilih dari modal history
 
         // Hitung keuntungan
         $keuntungan = $totalPendapatan - $modal['modal'];
@@ -264,8 +264,8 @@ class PerhitunganController extends BaseController
     }
 
     // Ambil modal yang dipilih
-    $modalHistoryModel = new ModalHistoryModel();
-    $modalData = $modalHistoryModel->find($modal);
+    $modalPenjualanModel = new ModalPenjualanModel(); // Ganti dengan Model yang baru
+    $modalData = $modalPenjualanModel->find($modal);
 
     // Hitung keuntungan
     $keuntungan = $totalPendapatan - $modalData['modal'];
@@ -303,4 +303,3 @@ public function delete_perbulan($id)
 }
 
 }
-

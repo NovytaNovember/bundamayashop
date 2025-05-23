@@ -67,7 +67,7 @@
                             <!-- Modal Edit -->
                             <div class="modal fade" id="editModal<?= $data['id_modal']; ?>" tabindex="-1" role="dialog">
                                 <div class="modal-dialog" role="document">
-                                    <form action="<?= base_url('admin/modal_perhitungan/update'); ?>" method="post">
+                                    <form action="<?= base_url('admin/modal_penjualan/update'); ?>" method="post">
                                         <?= csrf_field(); ?>
                                         <input type="hidden" name="id_modal" value="<?= $data['id_modal']; ?>">
                                         <div class="modal-content">
@@ -97,7 +97,7 @@
                             <!-- Modal Hapus -->
                             <div class="modal fade" id="deleteModal<?= $data['id_modal']; ?>" tabindex="-1" role="dialog">
                                 <div class="modal-dialog" role="document">
-                                    <form action="<?= base_url('admin/modal_perhitungan/delete/' . $data['id_modal']); ?>" method="post">
+                                    <form action="<?= base_url('admin/modal_penjualan/delete/' . $data['id_modal']); ?>" method="post">
                                         <?= csrf_field(); ?>
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -128,7 +128,7 @@
 <!-- Modal Tambah Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <form action="<?= base_url('admin/modal_perhitungan/store'); ?>" method="post">
+        <form action="<?= base_url('admin/modal_penjualan/store'); ?>" method="post">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Tambah Modal</h5>
