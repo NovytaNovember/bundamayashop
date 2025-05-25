@@ -43,7 +43,7 @@
                             <th>No</th>
                             <th>Bulan</th>
                             <th>Tahun</th>
-                            <th>Pendapatan Hari Ini</th>
+                            <th>Pendapatan Bulan Ini</th>
                             <th>Modal Penjualan</th>
                             <th>Keuntungan</th>
                             <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
@@ -254,7 +254,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        Apakah anda yakin ingin menghapus perhitungan ini?
+                        Apakah anda yakin ingin menghapus perhitungan perbulan ini?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
