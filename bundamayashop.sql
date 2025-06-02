@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2025 at 06:14 AM
+-- Generation Time: May 28, 2025 at 01:21 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -58,7 +58,7 @@ CREATE TABLE `laporan` (
   `file_laporan` varchar(255) NOT NULL,
   `bulan` varchar(20) NOT NULL,
   `tahun` year(4) NOT NULL,
-  `total_penjualan` varchar(255) NOT NULL,
+  `total_penjualan` varchar(20) NOT NULL,
   `kategori` enum('perhari','perbulan') NOT NULL DEFAULT 'perbulan',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -72,18 +72,20 @@ INSERT INTO `laporan` (`id_laporan`, `file_laporan`, `bulan`, `tahun`, `total_pe
 (6, 'laporan_harian_20250424_134042.pdf', '', 0000, '40000', 'perhari', '2025-04-24 13:39:13', '2025-04-24 13:39:04'),
 (9, 'laporan_harian_20250425_080848.pdf', '', 0000, '20000', 'perhari', '2025-04-25 00:39:58', '2025-04-25 08:07:38'),
 (10, 'laporan_harian_20250426_142257.pdf', '', 0000, '70000', 'perhari', '2025-04-26 14:22:46', '2025-04-26 14:22:46'),
+(11, 'laporan_harian_20250428_072810.pdf', '', 0000, '110000', 'perhari', '2025-04-28 05:16:29', '2025-04-28 07:25:15'),
 (12, 'laporan_harian_20250429_141216.pdf', '', 0000, '25000', 'perhari', '2025-04-29 03:27:23', '2025-04-29 14:11:35'),
 (19, 'laporan_bulanan_April_2025.pdf', '04', 2025, '190000', 'perbulan', '2025-05-04 08:20:12', '2025-05-09 16:19:36'),
-(20, 'laporan_bulanan_Mei_2025.pdf', '05', 2025, '590000', 'perbulan', '2025-05-04 08:23:52', '2025-05-10 04:11:41'),
-(26, 'laporan_harian_20250510_040430.pdf', '', 0000, '35000', 'perhari', '2025-04-28 07:25:15', '2025-04-28 07:25:15'),
-(27, 'laporan_harian_20250510_040757.pdf', '', 0000, '30000', 'perhari', '2025-05-02 14:54:26', '2025-05-02 14:54:26'),
-(28, 'laporan_harian_20250510_040818.pdf', '', 0000, '200000', 'perhari', '2025-05-04 08:50:20', '2025-05-04 08:50:20'),
-(29, 'laporan_harian_20250510_040827.pdf', '', 0000, '30000', 'perhari', '2025-05-05 02:23:51', '2025-05-05 02:23:51'),
-(30, 'laporan_harian_20250510_040840.pdf', '', 0000, '100000', 'perhari', '2025-05-06 03:11:28', '2025-05-06 03:11:28'),
-(31, 'laporan_harian_20250510_040853.pdf', '', 0000, '120000', 'perhari', '2025-05-07 01:45:53', '2025-05-07 01:45:53'),
-(32, 'laporan_harian_20250510_040902.pdf', '', 0000, '30000', 'perhari', '2025-05-08 07:20:20', '2025-05-08 07:20:20'),
-(33, 'laporan_harian_20250510_040920.pdf', '', 0000, '60000', 'perhari', '2025-05-09 04:04:14', '2025-05-09 04:04:14'),
-(34, 'laporan_harian_20250510_041023.pdf', '', 0000, '20000', 'perhari', '2025-05-10 03:37:44', '2025-05-10 03:37:44');
+(20, 'laporan_bulanan_Mei_2025.pdf', '05', 2025, '640000', 'perbulan', '2025-05-04 08:23:52', '2025-05-15 03:17:10'),
+(21, 'laporan_harian_20250504_091653.pdf', '', 0000, '30000', 'perhari', '2025-05-02 14:54:26', '2025-05-02 14:54:26'),
+(22, 'laporan_harian_20250504_094833.pdf', '', 0000, '275000', 'perhari', '2025-05-04 08:50:20', '2025-05-04 08:50:20'),
+(23, 'laporan_harian_20250505_024729.pdf', '', 0000, '30000', 'perhari', '2025-05-05 02:23:51', '2025-05-05 02:23:51'),
+(24, 'laporan_harian_20250506_031142.pdf', '', 0000, '100000', 'perhari', '2025-05-06 00:01:58', '2025-05-06 03:11:28'),
+(25, 'laporan_harian_20250509_164656.pdf', '', 0000, '35000', 'perhari', '2025-05-09 04:04:14', '2025-04-28 07:25:15'),
+(26, 'laporan_harian_20250510_084955.pdf', '', 0000, '20000', 'perhari', '2025-05-10 03:37:44', '2025-05-10 03:37:44'),
+(27, 'laporan_harian_20250511_044628.pdf', '', 0000, '20000', 'perhari', '2025-05-11 04:46:02', '2025-05-11 04:46:02'),
+(28, 'laporan_harian_20250515_031638.pdf', '', 0000, '20000', 'perhari', '2025-05-15 02:19:18', '2025-05-15 02:19:18'),
+(29, 'laporan_harian_20250521_064120.pdf', '', 0000, '30000', 'perhari', '2025-05-21 06:40:37', '2025-05-21 06:40:37'),
+(30, 'laporan_harian_20250522_073822.pdf', '', 0000, '30000', 'perhari', '2025-05-21 06:40:37', '2025-05-21 06:40:37');
 
 -- --------------------------------------------------------
 
@@ -119,6 +121,29 @@ INSERT INTO `migrations` (`id`, `version`, `class`, `group`, `namespace`, `time`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `modal_penjualan`
+--
+
+CREATE TABLE `modal_penjualan` (
+  `id_modal` int(10) UNSIGNED NOT NULL,
+  `tanggal` date NOT NULL,
+  `modal` varchar(20) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `modal_penjualan`
+--
+
+INSERT INTO `modal_penjualan` (`id_modal`, `tanggal`, `modal`, `created_at`, `updated_at`) VALUES
+(12, '2025-05-23', '50000', '2025-05-23 13:26:09', '2025-05-23 13:26:09'),
+(15, '2025-05-23', '100000', '2025-05-23 13:28:07', '2025-05-23 13:28:07'),
+(16, '2025-05-23', '30000', '2025-05-23 14:17:08', '2025-05-23 14:17:08');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pengguna`
 --
 
@@ -126,7 +151,7 @@ CREATE TABLE `pengguna` (
   `id_pengguna` int(10) UNSIGNED NOT NULL,
   `username` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `level` enum('admin','petugas','owner') NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -137,8 +162,9 @@ CREATE TABLE `pengguna` (
 --
 
 INSERT INTO `pengguna` (`id_pengguna`, `username`, `email`, `password`, `level`, `created_at`, `updated_at`) VALUES
-(1, 'Novyta Maharani', 'novytamaharani@gmail.com', '$2y$10$Z5z7h8DuEZCJC', 'admin', '2025-05-08 17:42:53', '2025-05-08 17:42:53'),
-(2, 'Norrahmah', 'norrahmah@gmail.com', '$2y$10$TG7IaPugmgyVN', 'petugas', '2025-05-09 16:43:42', '2025-05-09 16:43:42');
+(11, 'novyta', 'novyta@gmail.com', '$2y$10$dFQbAZ0B8p.SG/.LvSKRHubzybjOcyGMqYWMTbCfClSCcgUqjE.ca', 'admin', '2025-05-14 07:03:01', '2025-05-14 07:32:39'),
+(12, 'rahmah', 'rahmah@gmail.com', '$2y$10$lnWz5D4iQIslYSeyNXNVq.D0rTvHf2nLBo1aV5OC4luLsSR5g0MRG', 'petugas', '2025-05-14 07:33:00', '2025-05-14 07:33:00'),
+(13, 'owner', 'owner@gmail.com', '$2y$10$09euz.TCm.ZS/t0JgyxXh.a66P9/5YGxwAc0sXF7aLD.U0goU02nu', 'owner', '2025-05-14 07:33:21', '2025-05-14 07:33:21');
 
 -- --------------------------------------------------------
 
@@ -162,10 +188,7 @@ CREATE TABLE `perhitungan` (
 --
 
 INSERT INTO `perhitungan` (`id_perhitungan`, `tanggal`, `pendapatan`, `modal`, `type`, `keuntungan`, `created_at`, `updated_at`) VALUES
-(32, '2025-05-06', '100000', '30000', 'perhari', '70000', '2025-05-08 15:49:07', '2025-05-08 15:50:18'),
-(39, '2025-04-01', '190000', '20000', 'perbulan', '170000', '2025-05-09 16:28:53', '2025-05-09 16:35:15'),
-(40, '2025-05-09', '60000', '10000', 'perhari', '50000', '2025-05-09 16:32:16', '2025-05-09 16:32:16'),
-(41, '2025-05-01', '570000', '250000', 'perbulan', '320000', '2025-05-09 16:43:09', '2025-05-09 16:43:09');
+(77, '2025-04-01', '185000', '50000', 'perbulan', '135000', '2025-05-23 09:38:52', '2025-05-23 10:07:30');
 
 -- --------------------------------------------------------
 
@@ -224,7 +247,6 @@ INSERT INTO `produk_terjual` (`id_produk_terjual`, `total_harga`, `created_at`, 
 (24, '30000', '2025-04-26 14:22:46', '2025-04-26 14:22:46'),
 (25, '5000', '2025-04-28 05:16:29', '2025-04-28 05:16:29'),
 (28, '30000', '2025-04-28 07:25:15', '2025-04-28 07:25:15'),
-(34, '5000', '2025-04-29 14:03:45', '2025-04-29 14:03:45'),
 (35, '20000', '2025-04-29 14:11:35', '2025-04-29 14:11:35'),
 (71, '10000', '2025-05-02 03:10:05', '2025-05-02 03:25:01'),
 (72, '20000', '2025-05-02 14:54:26', '2025-05-02 14:54:26'),
@@ -238,7 +260,11 @@ INSERT INTO `produk_terjual` (`id_produk_terjual`, `total_harga`, `created_at`, 
 (84, '20000', '2025-05-08 06:37:25', '2025-05-08 06:37:25'),
 (85, '10000', '2025-05-08 07:20:20', '2025-05-08 07:20:20'),
 (86, '60000', '2025-05-09 04:04:14', '2025-05-09 04:04:14'),
-(89, '20000', '2025-05-10 03:37:44', '2025-05-10 03:37:44');
+(89, '20000', '2025-05-10 03:37:44', '2025-05-10 03:37:44'),
+(92, '20000', '2025-05-11 04:46:02', '2025-05-11 04:46:02'),
+(93, '10000', '2025-05-13 10:20:02', '2025-05-13 10:20:02'),
+(95, '20000', '2025-05-15 02:19:18', '2025-05-15 02:19:18'),
+(97, '30000', '2025-05-21 06:40:37', '2025-05-21 06:40:37');
 
 -- --------------------------------------------------------
 
@@ -272,7 +298,6 @@ INSERT INTO `rincian_produk_terjual` (`id_rincian_produk_terjual`, `id_produk_te
 (42, 24, 6, 1, '30000', '2025-04-26 14:22:46', '2025-04-26 14:22:46'),
 (43, 25, 1, 1, '5000', '2025-04-28 05:16:29', '2025-04-28 05:16:29'),
 (47, 28, 6, 1, '30000', '2025-04-28 07:25:15', '2025-04-28 07:25:15'),
-(107, 34, 1, 1, '5000', '2025-04-29 14:03:45', '2025-04-29 14:03:45'),
 (108, 35, 1, 2, '10000', '2025-04-29 14:11:35', '2025-04-29 14:11:35'),
 (109, 35, 2, 2, '10000', '2025-04-29 14:11:35', '2025-04-29 14:11:35'),
 (229, 71, 1, 2, '10000', '2025-05-02 03:25:01', '2025-05-02 03:25:01'),
@@ -293,7 +318,16 @@ INSERT INTO `rincian_produk_terjual` (`id_rincian_produk_terjual`, `id_produk_te
 (254, 86, 6, 1, '30000', '2025-05-09 04:04:14', '2025-05-09 04:04:14'),
 (255, 86, 18, 1, '30000', '2025-05-09 04:04:14', '2025-05-09 04:04:14'),
 (259, 89, 1, 2, '10000', '2025-05-10 03:37:44', '2025-05-10 03:37:44'),
-(260, 89, 4, 2, '10000', '2025-05-10 03:37:44', '2025-05-10 03:37:44');
+(260, 89, 4, 2, '10000', '2025-05-10 03:37:44', '2025-05-10 03:37:44'),
+(264, 92, 1, 2, '10000', '2025-05-11 04:46:02', '2025-05-11 04:46:02'),
+(265, 92, 2, 2, '10000', '2025-05-11 04:46:02', '2025-05-11 04:46:02'),
+(266, 93, 1, 1, '5000', '2025-05-13 10:20:02', '2025-05-13 10:20:02'),
+(267, 93, 2, 1, '5000', '2025-05-13 10:20:02', '2025-05-13 10:20:02'),
+(270, 95, 1, 2, '10000', '2025-05-15 02:19:18', '2025-05-15 02:19:18'),
+(271, 95, 2, 2, '10000', '2025-05-15 02:19:18', '2025-05-15 02:19:18'),
+(273, 97, 1, 2, '10000', '2025-05-21 06:40:37', '2025-05-21 06:40:37'),
+(274, 97, 2, 2, '10000', '2025-05-21 06:40:38', '2025-05-21 06:40:38'),
+(275, 97, 3, 2, '10000', '2025-05-21 06:40:38', '2025-05-21 06:40:38');
 
 --
 -- Indexes for dumped tables
@@ -318,11 +352,16 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `modal_penjualan`
+--
+ALTER TABLE `modal_penjualan`
+  ADD PRIMARY KEY (`id_modal`);
+
+--
 -- Indexes for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  ADD PRIMARY KEY (`id_pengguna`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD PRIMARY KEY (`id_pengguna`);
 
 --
 -- Indexes for table `perhitungan`
@@ -359,13 +398,13 @@ ALTER TABLE `rincian_produk_terjual`
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id_kategori` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_kategori` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `laporan`
 --
 ALTER TABLE `laporan`
-  MODIFY `id_laporan` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id_laporan` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -374,34 +413,40 @@ ALTER TABLE `migrations`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT for table `modal_penjualan`
+--
+ALTER TABLE `modal_penjualan`
+  MODIFY `id_modal` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `id_pengguna` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_pengguna` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `perhitungan`
 --
 ALTER TABLE `perhitungan`
-  MODIFY `id_perhitungan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id_perhitungan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_produk` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `produk_terjual`
 --
 ALTER TABLE `produk_terjual`
-  MODIFY `id_produk_terjual` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id_produk_terjual` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `rincian_produk_terjual`
 --
 ALTER TABLE `rincian_produk_terjual`
-  MODIFY `id_rincian_produk_terjual` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=261;
+  MODIFY `id_rincian_produk_terjual` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
 
 --
 -- Constraints for dumped tables

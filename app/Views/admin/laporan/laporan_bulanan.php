@@ -19,7 +19,6 @@
                 </div>
 
                 <div class="d-flex justify-content-between mb-3">
-                    <!-- Tombol Perhari dan Perbulan -->
                     <div class="btn-group">
                         <a class="btn btn-info text-white" href="<?= base_url('admin/laporan/laporan_harian'); ?>">
                             <i class="fas fa-calendar-day"></i> Perhari
@@ -30,38 +29,29 @@
                     </div>
 
                     <div class="d-flex gap-2">
-                        <!-- Tombol Download Laporan Bulanan -->
                         <a href="<?= base_url('admin/laporan/download_laporan_bulanan/' . $bulan . '/' . $tahun); ?>" class="btn btn-primary">
                             <i class="fas fa-download"></i> Download Laporan Bulanan
                         </a>
 
                         <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
-
-                            <!-- Tombol Kirim Laporan Bulanan -->
                             <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_bulanan'); ?>" method="post">
-                                <!-- Hidden field untuk bulan dan tahun yang difilter -->
                                 <input type="hidden" name="bulan" value="<?= esc($bulan ?? date('m')) ?>">
                                 <input type="hidden" name="tahun" value="<?= esc($tahun ?? date('Y')) ?>">
                                 <button type="submit" class="btn btn-success" id="submitButton">
                                     <i class="fab fa-whatsapp"></i> Kirim Laporan Bulanan
                                 </button>
                             </form>
-
                         <?php endif; ?>
-
                     </div>
-
                 </div>
+
                 <form method="get" action="<?= base_url('admin/laporan/laporan_bulanan'); ?>">
                     <div class="card mb-4">
                         <div class="card-header bg-light">
                             <strong>Filter Bulan dan Tahun untuk Mencari Data yang diinginkan:</strong>
                         </div>
                         <div class="card-body">
-
-
                             <div class="row mb-3">
-                                <!-- Bulan Dropdown -->
                                 <div class="col-md-3 mb-3 mb-md-0">
                                     <div class="form-group">
                                         <label for="bulan" class="font-weight-bold text-muted">Bulan</label>
@@ -73,7 +63,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Tahun Dropdown -->
                                 <div class="col-md-3 mb-3 mb-md-0">
                                     <div class="form-group">
                                         <label for="tahun" class="font-weight-bold text-muted">Tahun</label>
@@ -85,21 +74,17 @@
                                     </div>
                                 </div>
 
-                                <!-- Tombol Cari -->
                                 <div class="col-md-2 d-flex align-items-end">
                                     <div class="form-group w-100">
                                         <button type="submit" class="btn btn-primary w-100">
                                             <i class="fas fa-search"></i> Cari
-
                                         </button>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </form>
-
 
                 <div class="card-body">
                     <?php if (empty($laporan)) : ?>
@@ -133,17 +118,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $no = 1;
+                                <?php 
+                                $no = 1;
                                 $totalKeseluruhan = 0;
-                                $totalJumlahTerjual = 0; ?>
+                                $totalJumlahTerjual = 0;
+                                $bulanIndo = [
+                                    'January' => 'Januari', 'February' => 'Februari', 'March' => 'Maret',
+                                    'April' => 'April', 'May' => 'Mei', 'June' => 'Juni',
+                                    'July' => 'Juli', 'August' => 'Agustus', 'September' => 'September',
+                                    'October' => 'Oktober', 'November' => 'November', 'December' => 'Desember'
+                                ];
+                                ?>
                                 <?php foreach ($laporan as $item): ?>
                                     <?php
-                                    // Format Bulan dari created_at
                                     $bulanProdukTerjual = '-';
                                     if (!empty($item['created_at'])) {
                                         $date = new DateTime($item['created_at'], new DateTimeZone('UTC'));
                                         $date->setTimezone(new DateTimeZone('Asia/Makassar'));
-                                        $bulanProdukTerjual = $date->format('F Y'); // Contoh: April 2025
+                                        $bulan_en = $date->format('F'); // Nama bulan bahasa Inggris
+                                        $tahun_format = $date->format('Y');
+                                        $bulanProdukTerjual = ($bulanIndo[$bulan_en] ?? $bulan_en) . ' ' . $tahun_format;
                                     }
                                     ?>
                                     <tr class="text-center align-middle">

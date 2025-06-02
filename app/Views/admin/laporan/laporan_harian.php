@@ -3,9 +3,7 @@
 
 <div class="content-wrapper">
     <div class="content">
-
         <div class="container-fluid">
-
             <!-- Tabel Laporan Penjualan -->
             <div class="paper mt-4">
                 <?php if (session()->getFlashdata('success')) : ?>
@@ -39,7 +37,6 @@
 
                         <!-- Tombol Kirim Laporan Harian -->
                         <form id="laporanForm" action="<?= base_url('admin/laporan/kirim_laporan_harian'); ?>" method="post">
-                            <!-- Hidden field untuk tanggal yang difilter -->
                             <input type="hidden" name="tanggal" value="<?= esc($tanggal) ?>">
                             <?php if (in_array(session()->get('level'), ['admin', 'petugas'])) : ?>
                                 <button type="submit" class="btn btn-success" id="submitButton">
@@ -57,16 +54,13 @@
                         </div>
                         <div class="card-body">
                             <div class="row mb-3">
-                                <!-- Filter Tanggal (Lebar Dikurangi) -->
-                                <div class="col-md-4 mb-3 mb-md-0"> <!-- Ubah col-md-10 ke col-md-8 -->
+                                <div class="col-md-4 mb-3 mb-md-0">
                                     <div class="form-group">
                                         <label for="tanggal" class="font-weight-bold text-muted">Tanggal</label>
                                         <input type="date" id="tanggal" name="tanggal" class="form-control" value="<?= esc($_GET['tanggal'] ?? date('Y-m-d')) ?>">
                                     </div>
                                 </div>
-
-                                <!-- Tombol Cari -->
-                                <div class="col-md-2 d-flex align-items-end"> <!-- Sesuaikan dengan ukuran tombol -->
+                                <div class="col-md-2 d-flex align-items-end">
                                     <div class="form-group w-100">
                                         <button type="submit" class="btn btn-primary w-100">
                                             <i class="fas fa-search"></i> Cari
@@ -77,7 +71,6 @@
                         </div>
                     </div>
                 </form>
-
 
                 <div class="card-body">
                     <table class="table table-bordered table-hover">
@@ -100,20 +93,35 @@
                             if (count($laporan) > 0):
                                 $no = 1;
                                 foreach ($laporan as $produk_terjual):
-                                    // Format tanggal produk terjual
+
+                                    // Array bulan dalam Bahasa Indonesia
+                                    $bulanIndonesia = [
+                                        'January' => 'Januari',
+                                        'February' => 'Februari',
+                                        'March' => 'Maret',
+                                        'April' => 'April',
+                                        'May' => 'Mei',
+                                        'June' => 'Juni',
+                                        'July' => 'Juli',
+                                        'August' => 'Agustus',
+                                        'September' => 'September',
+                                        'October' => 'Oktober',
+                                        'November' => 'November',
+                                        'December' => 'Desember'
+                                    ];
+
+                                    // Format tanggal produk terjual dalam Bahasa Indonesia
                                     $date = new DateTime($produk_terjual['created_at'], new DateTimeZone('UTC'));
                                     $date->setTimezone(new DateTimeZone('Asia/Makassar'));
-                                    $tanggalProdukTerjual = $date->format('d F Y H:i');
-                            ?>
+                                    $bulanInggris = $date->format('F');
+                                    $namaBulan = $bulanIndonesia[$bulanInggris];
+                                    $tanggalProdukTerjual = $date->format('d') . ' ' . $namaBulan . ' ' . $date->format('Y H:i');
 
-                                    <?php foreach ($produk_terjual['rincian'] as $rincian): ?>
-                                        <?php
-                                        // Tambahkan total penjualan
+                                    foreach ($produk_terjual['rincian'] as $rincian):
                                         $totalKeseluruhan += $rincian['total_harga'];
-                                        // Tambahkan jumlah terjual dan harga satuan
                                         $totalJumlahTerjual += $rincian['jumlah'];
                                         $totalHargaSatuan += ($rincian['total_harga'] / $rincian['jumlah']);
-                                        ?>
+                            ?>
                                         <tr class="text-center align-middle">
                                             <td><?= $no++; ?></td>
                                             <td><?= $tanggalProdukTerjual; ?></td>
@@ -122,9 +130,11 @@
                                             <td>Rp <?= number_format($rincian['total_harga'] / $rincian['jumlah'], 0, ',', '.'); ?></td>
                                             <td>Rp <?= number_format($rincian['total_harga'], 0, ',', '.'); ?></td>
                                         </tr>
-                                    <?php endforeach; ?>
-                                <?php endforeach; ?>
-                            <?php else: ?>
+                            <?php
+                                    endforeach;
+                                endforeach;
+                            else:
+                            ?>
                                 <tr>
                                     <td colspan="6" class="text-center">Data tidak tersedia</td>
                                 </tr>
@@ -132,9 +142,9 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="3" class="text-start">Total Keseluruhan</th> <!-- Change from text-end to text-start -->
+                                <th colspan="3" class="text-start">Total Keseluruhan</th>
                                 <th class="text-center"><?= $totalJumlahTerjual; ?> pcs</th>
-                                <th class="text-center"></th> <!-- Kolom Harga Satuan dikosongkan -->
+                                <th class="text-center"></th>
                                 <th class="text-center">Rp <?= number_format($totalKeseluruhan, 0, ',', '.'); ?></th>
                             </tr>
                         </tfoot>

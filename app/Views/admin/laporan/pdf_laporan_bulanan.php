@@ -110,11 +110,37 @@
 </head>
 
 <body>
+    <?php
+    // Fungsi untuk mengubah bulan bahasa Inggris ke bahasa Indonesia
+    function bulanIndonesia($bulan)
+    {
+        $bulanIndo = [
+            'January' => 'Januari',
+            'February' => 'Februari',
+            'March' => 'Maret',
+            'April' => 'April',
+            'May' => 'Mei',
+            'June' => 'Juni',
+            'July' => 'Juli',
+            'August' => 'Agustus',
+            'September' => 'September',
+            'October' => 'Oktober',
+            'November' => 'November',
+            'December' => 'Desember'
+        ];
+        return $bulanIndo[$bulan] ?? $bulan;
+    }
+
+    // Ambil bulan dan tahun dari variabel $bulan dan $tahun
+    $namaBulanInggris = date('F', strtotime("$tahun-$bulan-01"));
+    $namaBulanIndonesia = bulanIndonesia($namaBulanInggris);
+    ?>
+
     <!-- Header Section with Logo -->
     <div class="header-info">
         <h3>Laporan Penjualan Bulanan</h3>
         <h4 class="mb-4">"Bunda Maya Shop"</h4>
-        <p class="periode">Periode: <span><?= strftime("%B %Y", strtotime("$tahun-$bulan-01")) ?></span></p>
+        <p class="periode">Periode: <span><?= $namaBulanIndonesia . ' ' . $tahun ?></span></p>
     </div>
 
     <!-- Table Section -->

@@ -127,11 +127,37 @@
 </head>
 
 <body>
+
+<?php
+// Fungsi untuk ubah bulan bahasa Inggris ke bahasa Indonesia
+function tgl_indo($tanggal)
+{
+    $bulan = [
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember'
+    ];
+    $tgl = date('d', strtotime($tanggal));
+    $bln = date('n', strtotime($tanggal));
+    $thn = date('Y', strtotime($tanggal));
+    return $tgl . ' ' . $bulan[$bln] . ' ' . $thn;
+}
+?>
+
     <!-- Header Section with Logo -->
     <div class="header-info">
         <h3>Laporan Penjualan Harian</h3>
         <h4 class="mb-4">"Bunda Maya Shop"</h4>
-        <p>Periode: <span><?= date('d F Y', strtotime($tanggal)) ?></span></p>
+        <p>Periode: <span><?= tgl_indo($tanggal) ?></span></p>
     </div>
 
     <!-- Table Section -->
@@ -152,10 +178,10 @@
             $totalJumlahTerjual = 0; ?>
             <?php foreach ($laporan as $produk_terjual): ?>
                 <?php
-                // Format tanggal produk terjual
+                // Format tanggal produk terjual ke bahasa Indonesia
                 $date = new DateTime($produk_terjual['created_at'], new DateTimeZone('UTC'));
                 $date->setTimezone(new DateTimeZone('Asia/Makassar'));
-                $tanggalProdukTerjual = $date->format('d F Y');
+                $tanggalProdukTerjual = tgl_indo($date->format('Y-m-d'));
                 ?>
                 <?php foreach ($produk_terjual['rincian'] as $rincian): ?>
                     <?php
